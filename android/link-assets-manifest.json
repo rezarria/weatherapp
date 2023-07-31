@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Lumanosimo.ttf",
+      "sha1": "95a41a2fb91528921b197cc24fee7f4387cd98b4"
+    },
+    {
+      "path": "assets/fonts/OpenSans.ttf",
+      "sha1": "b4596a8e11ee5b6331f2fecf656a53f61677b56e"
+    },
+    {
+      "path": "assets/fonts/ProductSans.ttf",
+      "sha1": "49bdf6c2dc3ca0c772da5bc3d10ff5da23badee3"
+    }
+  ]
+}
