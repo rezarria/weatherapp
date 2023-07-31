@@ -14,62 +14,65 @@ import TimeBar from './components/TimeBar';
 import HourlyForecast from './components/HourlyForecast';
 import Dayforecast from './components/DayForecast';
 import ChanceOfRain from './components/ChanceOfRain';
+import { NavigationContainer } from '@react-navigation/native';
 
 function App() {
 	return (
-		<View style={styles.background}>
-			<NavigationArea />
-			<TimeBar />
-			<ScrollView>
-				<View style={styles.scrollView}>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<Dayforecast />
-					<ChanceOfRain
-						data={[
-							{ time: new Date(), value: 14 },
-							{ time: new Date(), value: 14 },
-							{ time: new Date(), value: 14 },
-							{ time: new Date(), value: 14 },
-							{ time: new Date(), value: 14 },
-							{ time: new Date(), value: 14 },
-							{ time: new Date(), value: 14 },
-						]}
-					/>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<HourlyForecast />
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-					<Group>
-						<WindCard />
-						<WindCard />
-					</Group>
-				</View>
-			</ScrollView>
-		</View>
+		<NavigationContainer>
+			<View style={styles.background}>
+				<NavigationArea />
+				<TimeBar />
+				<ScrollView>
+					<View style={styles.scrollView}>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<Dayforecast />
+						<ChanceOfRain
+							data={[
+								{ time: new Date(), value: 14 },
+								{ time: new Date(), value: 14 },
+								{ time: new Date(), value: 14 },
+								{ time: new Date(), value: 14 },
+								{ time: new Date(), value: 14 },
+								{ time: new Date(), value: 14 },
+								{ time: new Date(), value: 14 },
+							]}
+						/>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<HourlyForecast />
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+						<Group>
+							<WindCard />
+							<WindCard />
+						</Group>
+					</View>
+				</ScrollView>
+			</View>
+		</NavigationContainer>
 	);
 }
 
