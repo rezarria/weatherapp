@@ -5,95 +5,52 @@
  * @format
  */
 
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 
 import NavigationArea from './components/NavigationArea';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import WindCard from './components/WindCard';
-import TimeBar from './components/TimeBar';
-import HourlyForecast from './components/HourlyForecast';
-import Dayforecast from './components/DayForecast';
-import ChanceOfRain from './components/ChanceOfRain';
-import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
+import TodayScreen from './screens/Today';
+import { SceneMap, TabView } from 'react-native-tab-view';
+import { CustomTabBar } from './components/TimeBar';
 
 function App() {
 	return (
-		<NavigationContainer>
-			<View style={styles.background}>
-				<NavigationArea />
-				<TimeBar />
-				<ScrollView>
-					<View style={styles.scrollView}>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<Dayforecast />
-						<ChanceOfRain
-							data={[
-								{ time: new Date(), value: 14 },
-								{ time: new Date(), value: 14 },
-								{ time: new Date(), value: 14 },
-								{ time: new Date(), value: 14 },
-								{ time: new Date(), value: 14 },
-								{ time: new Date(), value: 14 },
-								{ time: new Date(), value: 14 },
-							]}
-						/>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<HourlyForecast />
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-						<Group>
-							<WindCard />
-							<WindCard />
-						</Group>
-					</View>
-				</ScrollView>
-			</View>
-		</NavigationContainer>
+		<View style={styles.background}>
+			<NavigationArea />
+			<PageView />
+		</View>
 	);
 }
 
-export default App;
+const renderScence = SceneMap({
+	today: TodayScreen,
+	tomorrow: TodayScreen,
+	tenDay: TodayScreen,
+});
 
-function Group({ children }: PropsWithChildren) {
-	return <View style={styles.group}>{children}</View>;
+function PageView() {
+	const [index, setIndex] = React.useState(0);
+	const [routes] = React.useState([
+		{ key: 'today', title: 'Today' },
+		{ key: 'tomorrow', title: 'Tomorrow' },
+		{ key: 'tenDay', title: '10 Days' },
+	]);
+
+	return (
+		<TabView
+			renderTabBar={d => <CustomTabBar {...d} />}
+			renderScene={renderScence}
+			navigationState={{ index, routes }}
+			onIndexChange={setIndex}
+		/>
+	);
 }
 
 const styles = StyleSheet.create({
-	scrollView: {
-		padding: 16,
-		paddingTop: 8,
-		gap: 8,
-	},
 	background: {
 		backgroundColor: '#F6EDFF',
 		flex: 1,
 	},
-	group: {
-		flexDirection: 'row',
-		gap: 16,
-	},
 });
+
+export default App;

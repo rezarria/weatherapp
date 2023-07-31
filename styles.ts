@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 const AppStyle = StyleSheet.create({
+	scrollView: {
+		padding: 16,
+		paddingTop: 8,
+		gap: 8,
+	},
 	card: {
 		paddingVertical: 9,
 		paddingHorizontal: 11,
@@ -15,6 +20,10 @@ const AppStyle = StyleSheet.create({
 		fontWeight: '400',
 		lineHeight: 24,
 		letterSpacing: 0.15,
+	},
+	group: {
+		flexDirection: 'row',
+		gap: 16,
 	},
 });
 
