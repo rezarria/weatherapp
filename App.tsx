@@ -9,10 +9,7 @@ import React from 'react';
 
 import NavigationArea from './components/NavigationArea';
 import { StyleSheet, View } from 'react-native';
-import TodayScreen from './screens/Today';
-import { SceneMap, TabView } from 'react-native-tab-view';
-import { CustomTabBar } from './components/TimeBar';
-import { TomorrowScreen } from './screens/Tomorrow';
+import { PageView } from './components/PageView';
 
 function App() {
 	return (
@@ -20,30 +17,6 @@ function App() {
 			<NavigationArea />
 			<PageView />
 		</View>
-	);
-}
-
-const renderScence = SceneMap({
-	today: TodayScreen,
-	tomorrow: TomorrowScreen,
-	tenDay: TodayScreen,
-});
-
-function PageView() {
-	const [index, setIndex] = React.useState(0);
-	const [routes] = React.useState([
-		{ key: 'today', title: 'Today' },
-		{ key: 'tomorrow', title: 'Tomorrow' },
-		{ key: 'tenDay', title: '10 Days' },
-	]);
-
-	return (
-		<TabView
-			renderTabBar={d => <CustomTabBar {...d} />}
-			renderScene={renderScence}
-			navigationState={{ index, routes }}
-			onIndexChange={setIndex}
-		/>
 	);
 }
 

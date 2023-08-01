@@ -1,18 +1,20 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useContext } from 'react';
 import { ScrollView, View } from 'react-native';
 import AppStyle from '../styles';
 import WindCard from '../components/WindCard';
 import Dayforecast from '../components/DayForecast';
 import ChanceOfRain from '../components/ChanceOfRain';
 import HourlyForecast from '../components/HourlyForecast';
+import { AnimationContext } from '../components/PageView';
 
 function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>;
 }
 
 export default function TodayScreen() {
+	const animatinContext = useContext(AnimationContext);
 	return (
-		<ScrollView scrollEnabled={false}>
+		<ScrollView>
 			<View style={AppStyle.scrollView}>
 				<Group>
 					<WindCard />
