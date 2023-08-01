@@ -12,6 +12,7 @@ import { StyleSheet, View } from 'react-native';
 import TodayScreen from './screens/Today';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import { CustomTabBar } from './components/TimeBar';
+import { TomorrowScreen } from './screens/Tomorrow';
 
 function App() {
 	return (
@@ -24,7 +25,7 @@ function App() {
 
 const renderScence = SceneMap({
 	today: TodayScreen,
-	tomorrow: TodayScreen,
+	tomorrow: TomorrowScreen,
 	tenDay: TodayScreen,
 });
 

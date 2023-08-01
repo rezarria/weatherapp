@@ -12,7 +12,7 @@ function Group({ children }: PropsWithChildren) {
 
 export default function TodayScreen() {
 	return (
-		<ScrollView>
+		<ScrollView scrollEnabled={false}>
 			<View style={AppStyle.scrollView}>
 				<Group>
 					<WindCard />
