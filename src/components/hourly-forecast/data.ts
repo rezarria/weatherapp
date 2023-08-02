@@ -1,0 +1,86 @@
+import { WeatherInfoType } from './WeatherInfoType';
+
+const DATA: WeatherInfoType[] = [
+	{
+		id: 1,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 2,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 3,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 4,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 5,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 6,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 7,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 8,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 9,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+	{
+		id: 10,
+		idType: 500,
+		temp: 14,
+		time: new Date(),
+		status: 'Rain',
+		iconId: '10d',
+	},
+];
+
+export default DATA;
