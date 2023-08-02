@@ -16,7 +16,7 @@ type DrawLineProps = {
 	};
 };
 
-export function DrawLine({ points, pos, size, padding, x, y }: DrawLineProps) {
+export const DrawLine = ({ points, pos, size, padding, x, y }: DrawLineProps) => {
 	const realX = pos.x + padding.left;
 	const realY = size.height - padding.bottom;
 	const stepX = (size.width - realX - padding.right) / (x.max - x.min);
@@ -41,4 +41,4 @@ export function DrawLine({ points, pos, size, padding, x, y }: DrawLineProps) {
 	return (
 		<Path path={path} style={'stroke'} strokeWidth={2} color={'#000000'} />
 	);
-}
+};

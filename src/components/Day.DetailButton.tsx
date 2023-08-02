@@ -1,13 +1,11 @@
 import { Pressable, StyleSheet } from 'react-native';
 import Arrow from '../assets/svg/downArrow.svg';
 
-export function DetailButton() {
-	return (
-		<Pressable style={styles.container}>
-			<Arrow />
-		</Pressable>
-	);
-}
+export const DetailButton = () => (
+	<Pressable style={styles.container}>
+		<Arrow/>
+	</Pressable>
+);
 
 const styles = StyleSheet.create({
 	container: {

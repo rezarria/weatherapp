@@ -2,14 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Icon from '../assets/svg/cloud and sun 1.svg';
 
-export default function WeatherIcon() {
-	return (
-		<View style={styles.container}>
-			<Icon style={styles.icon} />
-			<Text style={styles.text}>Cloudy</Text>
-		</View>
-	);
-}
+export default () => (
+	<View style={styles.container}>
+		<Icon style={styles.icon}/>
+		<Text style={styles.text}>Cloudy</Text>
+	</View>
+)
 
 const styles = StyleSheet.create({
 	container: {

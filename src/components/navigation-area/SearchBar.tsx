@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
-import SearchLogo from '../assets/svg/search.svg';
+import SearchLogo from '@assets/svg/search.svg';
 
 export type SearchBarRef = {};
 export type SearchBarProps = {};

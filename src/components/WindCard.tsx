@@ -3,7 +3,7 @@ import Card from './card/Card';
 import Logo from '../assets/svg/wind.svg';
 import TrendStatus, { TrendStatusEnum, TrendStatusRef } from './TrendStatus';
 
-export default function WindCard() {
+export default () => {
 	const subContextRef = useRef<TrendStatusRef>(null);
 	useEffect(() => {
 		subContextRef.current?.set(TrendStatusEnum.UP, '100 m/s');

@@ -15,7 +15,7 @@ export type DrawTitleProps = {
 	padding?: Padding;
 };
 
-export default function DrawTitleY(props: DrawTitleProps) {
+export default (props: DrawTitleProps) => {
 	const padding: Padding = {
 		top: props.padding?.top ?? 0,
 		bottom: props.padding?.bottom ?? 0,

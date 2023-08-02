@@ -4,7 +4,7 @@ import AppStyle from '../styles';
 import Logo from '../assets/svg/clac.svg';
 import Graph from './DayForecast.Graph';
 
-export default function Dayforecast() {
+export default () => {
 	const days = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'];
 	const temps = [1, 0, 1].reverse().map(t => `${t}°`);
 	const subs = ['-', '', ''];

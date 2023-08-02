@@ -1,14 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Cals(props: { v: number; cv?: number }) {
-	return (
-		<View style={styles.container}>
-			<Text style={styles.cals}>{props.v}°</Text>
-			{props.cv && <Text style={styles.feelsLike}>Feels like {props.cv}°</Text>}
-		</View>
-	);
-}
+export default (props: { v: number; cv?: number }) => (
+	<View style={styles.container}>
+		<Text style={styles.cals}>{props.v}°</Text>
+		{props.cv && <Text style={styles.feelsLike}>Feels like {props.cv}°</Text>}
+	</View>
+)
 
 const styles = StyleSheet.create({
 	container: {

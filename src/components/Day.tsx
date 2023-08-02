@@ -18,30 +18,28 @@ type DayProps = {
 	styles: StyleProp<ViewStyle>;
 };
 
-export function Day(props: DayProps) {
-	return (
-		<View style={[props.styles, styles.container]}>
-			<View style={styles.main}>
-				<Text style={styles.text}>
-					{props.time.toLocaleDateString('en-US', { weekday: 'long' })}
-				</Text>
-				<Text style={[styles.text, styles.status_text]}>{props.status}</Text>
-			</View>
-			<View>
-				<Text style={[styles.text, styles.temp]}>{props.temp}°</Text>
-				<Text style={[styles.text, styles.temp]}>{props.feelLike}°</Text>
-			</View>
-			<View style={styles.vr} />
-			<Image
-				style={styles.image}
-				source={{
-					uri: `https://openweathermap.org/img/wn/${props.icon}@2x.png`,
-				}}
-			/>
-			<DetailButton />
+export const Day = (props: DayProps) => (
+	<View style={[props.styles, styles.container]}>
+		<View style={styles.main}>
+			<Text style={styles.text}>
+				{props.time.toLocaleDateString('en-US', {weekday: 'long'})}
+			</Text>
+			<Text style={[styles.text, styles.status_text]}>{props.status}</Text>
 		</View>
-	);
-}
+		<View>
+			<Text style={[styles.text, styles.temp]}>{props.temp}°</Text>
+			<Text style={[styles.text, styles.temp]}>{props.feelLike}°</Text>
+		</View>
+		<View style={styles.vr}/>
+		<Image
+			style={styles.image}
+			source={{
+				uri: `https://openweathermap.org/img/wn/${props.icon}@2x.png`,
+			}}
+		/>
+		<DetailButton/>
+	</View>
+);
 
 const styles = StyleSheet.create({
 	vr: {

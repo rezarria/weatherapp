@@ -8,27 +8,25 @@ export type CardProps = {
 	subContext?: ReactNode;
 };
 
-export default function Card(props: CardProps) {
-	return (
-		<View style={[AppStyle.card, styles.container]}>
-			<View style={styles.icon}>{props.icon}</View>
-			<View style={styles.body}>
-				<Text style={styles.title}>{props.title}</Text>
-				{props.children && (
-					<>
-						{typeof props.children === 'string' && (
-							<Text style={styles.content}>{props.children}</Text>
-						)}
-						{typeof props.children !== 'string' && (
-							<View style={{ flex: 1 }}>{props.children}</View>
-						)}
-					</>
-				)}
-			</View>
-			<View style={styles.subContent}>{props.subContext}</View>
+export default (props: CardProps) => (
+	<View style={[AppStyle.card, styles.container]}>
+		<View style={styles.icon}>{props.icon}</View>
+		<View style={styles.body}>
+			<Text style={styles.title}>{props.title}</Text>
+			{props.children && (
+				<>
+					{typeof props.children === 'string' && (
+						<Text style={styles.content}>{props.children}</Text>
+					)}
+					{typeof props.children !== 'string' && (
+						<View style={{flex: 1}}>{props.children}</View>
+					)}
+				</>
+			)}
 		</View>
-	);
-}
+		<View style={styles.subContent}>{props.subContext}</View>
+	</View>
+)
 
 export const styles = StyleSheet.create({
 	icon: {

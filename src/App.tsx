@@ -9,18 +9,24 @@ import React from 'react';
 
 import NavigationArea from './components/NavigationArea';
 import { StyleSheet, View } from 'react-native';
-import { PageView } from './components/PageView';
+import { PageView } from './screens/PageView';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 function App() {
 	return (
-		<View style={styles.background}>
-			<NavigationArea />
-			<PageView />
-		</View>
+		<GestureHandlerRootView style={styles.container}>
+			<View style={styles.background}>
+				<NavigationArea />
+				<PageView />
+			</View>
+		</GestureHandlerRootView>
 	);
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+	},
 	background: {
 		backgroundColor: '#F6EDFF',
 		flex: 1,

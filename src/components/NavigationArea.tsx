@@ -5,25 +5,23 @@ import { WeatherFastInfoBar } from './WeatherFastInfoBar';
 import CurrentTime from './CurrentTime';
 import { CalsDayNight } from './CalsDayNight';
 
-export default function NavigationArea() {
-	return (
-		<View style={[styles.rounded, styles.background]}>
-			<Image style={styles.image} source={require('../assets/img/bg.png')} />
-			<StatusBar translucent={true} backgroundColor={'#0000'} />
-			<View style={styles.containner}>
-				<SearchBar />
-				<WeatherFastInfoBar />
-				<View style={styles.footer}>
-					<CurrentTime />
-					<CalsDayNight />
-				</View>
+export default () => (
+	<View style={[styles.rounded, styles.background]}>
+		<Image style={styles.image} source={require('../assets/img/bg.png')}/>
+		<StatusBar translucent={true} backgroundColor={'#0000'}/>
+		<View style={styles.container}>
+			<SearchBar/>
+			<WeatherFastInfoBar/>
+			<View style={styles.footer}>
+				<CurrentTime/>
+				<CalsDayNight/>
 			</View>
 		</View>
-	);
-}
+	</View>
+)
 
 const styles = StyleSheet.create({
-	containner: {
+	container: {
 		paddingTop: (StatusBar.currentHeight ?? 0) + 8,
 		paddingLeft: 23,
 		paddingRight: 23,

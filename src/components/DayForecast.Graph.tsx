@@ -13,7 +13,7 @@ type GarphProp = {
 	titleBeforeY?: string[];
 };
 
-export default function Graph(props: GarphProp) {
+export default (props: GarphProp) => {
 	const [layoutInfo, setLayoutInfo] = useState<LayoutRectangle>();
 	return (
 		<View style={styles.container}>

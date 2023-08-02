@@ -1,20 +1,53 @@
-import { PropsWithChildren, useContext } from 'react';
-import { ScrollView, View } from 'react-native';
+import { PropsWithChildren, useCallback, useRef } from 'react';
+import { GestureResponderEvent, ScrollView, View } from 'react-native';
 import AppStyle from '../styles';
 import WindCard from '../components/WindCard';
 import Dayforecast from '../components/DayForecast';
-import ChanceOfRain from '../components/ChanceOfRain';
+
 import HourlyForecast from '../components/HourlyForecast';
-import { AnimationContext } from '../components/PageView';
+import ChanceOfRain from "../components/ChanceOfRain";
 
 function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>;
 }
 
-export default function TodayScreen() {
-	const animatinContext = useContext(AnimationContext);
+const TodayScreen = () => {
+	const lastPos = useRef<{ x: number; y: number } | null>(null);
+	const look = useRef(true);
+	const onStart = useCallback((e: GestureResponderEvent) => {
+		console.info('start');
+		lastPos.current = {
+			x: e.nativeEvent.locationX,
+			y: e.nativeEvent.locationY,
+		};
+	}, []);
+	const onCancel = useCallback((_: GestureResponderEvent) => {
+		lastPos.current = null;
+	}, []);
+	const onMove = useCallback(
+		({ nativeEvent: { locationX, locationY } }: GestureResponderEvent) => {
+			if (look.current) {
+				const dx = locationX - lastPos.current!.x;
+				const dy = locationY - lastPos.current!.y;
+			} else {
+				console.log('.....');
+			}
+			lastPos.current!.x = locationX;
+			lastPos.current!.y = locationY;
+		},
+		[]
+	);
+
 	return (
-		<ScrollView>
+		<ScrollView
+			onScroll={e => {
+				look.current = e.nativeEvent.contentOffset.y === 0;
+				console.info(`error: ${look.current}`);
+			}}
+			onTouchStart={onStart}
+			onTouchMove={onMove}
+			onTouchEnd={onCancel}
+			onTouchCancel={onCancel}>
 			<View style={AppStyle.scrollView}>
 				<Group>
 					<WindCard />
@@ -64,4 +97,5 @@ export default function TodayScreen() {
 			</View>
 		</ScrollView>
 	);
-}
+};
+export default TodayScreen

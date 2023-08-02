@@ -97,25 +97,23 @@ type ItemProps = {
 	data: WeatherInfo;
 };
 
-function Item(props: ItemProps) {
-	return (
-		<View style={itemStyle.container}>
-			<Text style={[AppStyle.font, itemStyle.time]}>
-				{props.data.time.getHours()}
-				<Text style={[AppStyle.font, itemStyle.meridiem]}>
-					{props.data.time.getHours() < 12 ? 'AM' : 'PM'}
-				</Text>
+const Item = (props: ItemProps) => (
+	<View style={itemStyle.container}>
+		<Text style={[AppStyle.font, itemStyle.time]}>
+			{props.data.time.getHours()}
+			<Text style={[AppStyle.font, itemStyle.meridiem]}>
+				{props.data.time.getHours() < 12 ? 'AM' : 'PM'}
 			</Text>
-			<Image
-				source={{
-					uri: `https://openweathermap.org/img/wn/${props.data.iconId}@2x.png`,
-				}}
-				style={itemStyle.icon}
-			/>
-			<Text style={[AppStyle.font, itemStyle.temp]}>{props.data.temp}°</Text>
-		</View>
-	);
-}
+		</Text>
+		<Image
+			source={{
+				uri: `https://openweathermap.org/img/wn/${props.data.iconId}@2x.png`,
+			}}
+			style={itemStyle.icon}
+		/>
+		<Text style={[AppStyle.font, itemStyle.temp]}>{props.data.temp}°</Text>
+	</View>
+);
 
 const itemStyle = StyleSheet.create({
 	time: {
@@ -146,24 +144,22 @@ const itemStyle = StyleSheet.create({
 	},
 });
 
-export default function HourlyForecast() {
-	return (
-		<View style={[AppStyle.card, styles.container]}>
-			<View style={styles.header}>
-				<HourLogo />
-				<Text style={[AppStyle.font]}>Hourly forecast</Text>
-			</View>
-			<FlatList
-				ItemSeparatorComponent={Separator}
-				horizontal
-				nestedScrollEnabled
-				data={DATA}
-				keyExtractor={item => item.id.toString()}
-				renderItem={({ item }) => <Item data={item} />}
-			/>
+export default () => (
+	<View style={[AppStyle.card, styles.container]}>
+		<View style={styles.header}>
+			<HourLogo/>
+			<Text style={[AppStyle.font]}>Hourly forecast</Text>
 		</View>
-	);
-}
+		<FlatList
+			ItemSeparatorComponent={Separator}
+			horizontal
+			nestedScrollEnabled
+			data={DATA}
+			keyExtractor={item => item.id.toString()}
+			renderItem={({item}) => <Item data={item}/>}
+		/>
+	</View>
+)
 
 const Separator = () => <View style={styles.gap} />;
 

@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export function CalsDayNight() {
-	return (
-		<View style={styles.container}>
-			<Text style={[styles.font, styles.day]}>Day 3°</Text>
-			<Text style={[styles.font, styles.night]}>Night -1°</Text>
-		</View>
-	);
-}
+export const CalsDayNight = () => (
+	<View style={styles.container}>
+		<Text style={[styles.font, styles.day]}>Day 3°</Text>
+		<Text style={[styles.font, styles.night]}>Night -1°</Text>
+	</View>
+);
 
 const styles = StyleSheet.create({
 	container: {},

@@ -1,29 +1,27 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { NavigationState, SceneRendererProps } from 'react-native-tab-view';
 
-export function CustomTabBar(
+export default (
 	props: SceneRendererProps & {
 		navigationState: NavigationState<{
 			key: string;
 			title: string;
 		}>;
 	}
-) {
-	return (
-		<View style={customTabBarStyles.container}>
-			{props.navigationState.routes.map(i => (
-				<Pressable
-					style={customTabBarStyles.button}
-					key={i.key}
-					onPress={() => props.jumpTo(i.key)}>
-					<View>
-						<Text style={customTabBarStyles.text}>{i.title}</Text>
-					</View>
-				</Pressable>
-			))}
-		</View>
-	);
-}
+) => (
+	<Animated.View style={[customTabBarStyles.container]}>
+		{props.navigationState.routes.map(i => (
+			<Pressable
+				style={customTabBarStyles.button}
+				key={i.key}
+				onPress={() => props.jumpTo(i.key)}>
+				<View>
+					<Text style={customTabBarStyles.text}>{i.title}</Text>
+				</View>
+			</Pressable>
+		))}
+	</Animated.View>
+)
 
 const customTabBarStyles = StyleSheet.create({
 	container: {

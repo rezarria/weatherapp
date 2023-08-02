@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function CurrentTime() {
+export default () => {
 	const currentTime = 'January 18, 16:14';
 
 	return (
