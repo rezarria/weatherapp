@@ -3,6 +3,6 @@ module.exports = {
 	extends: '@react-native',
 	rules: {
 		semi: 'off',
-		'react/react-in-jsx-scope': 'off'
-	}
-};
+		'react/react-in-jsx-scope': 'off',
+	},
+}

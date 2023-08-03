@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { styles as CardStyle, CardProps } from './Card';
-import AppStyle from '@src/style/styles';
+import { StyleSheet, Text, View } from 'react-native'
+import { styles as CardStyle, CardProps } from './Card'
+import AppStyle from '@src/style/styles'
 
 const Card2 = (props: CardProps) => (
 	<View style={[AppStyle.card, CardStyle.container, styles.container]}>
@@ -10,9 +10,9 @@ const Card2 = (props: CardProps) => (
 		</View>
 		<View style={[CardStyle.body, styles.body]}>{props.children}</View>
 	</View>
-);
+)
 
-export default Card2;
+export default Card2
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
 		alignSelf: 'stretch',
 		alignContent: 'stretch',
 	},
-});
+})

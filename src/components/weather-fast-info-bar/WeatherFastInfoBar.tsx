@@ -1,14 +1,14 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import WeatherIcon from './WeatherIcon';
-import Temp from './Temp';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import WeatherIcon from './WeatherIcon'
+import Temp from './Temp'
 
 const WeatherFastInfoBar = () => (
 	<View style={styles.container}>
 		<Temp v={3} cv={-2} />
 		<WeatherIcon />
 	</View>
-);
+)
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,6 +16,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 	},
-});
+})
 
-export default WeatherFastInfoBar;
+export default WeatherFastInfoBar

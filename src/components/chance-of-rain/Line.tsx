@@ -1,13 +1,13 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native'
 
 const Line = (props: { value: number }) => (
 	<View style={lineStyles.container}>
 		<View style={lineStyles.background} />
 		<View style={[lineStyles.line, { width: `${props.value}%` }]} />
 	</View>
-);
+)
 
-export default Line;
+export default Line
 
 const lineStyles = StyleSheet.create({
 	line: {
@@ -29,4 +29,4 @@ const lineStyles = StyleSheet.create({
 		overflow: 'hidden',
 		borderRadius: 24,
 	},
-});
+})

@@ -1,57 +1,57 @@
-import { PropsWithChildren, useCallback, useContext, useRef } from 'react';
-import { Button, GestureResponderEvent, ScrollView, View } from 'react-native';
-import AppStyle from '@src/style/styles';
+import { PropsWithChildren, useCallback, useContext, useRef } from 'react'
+import { Button, GestureResponderEvent, ScrollView, View } from 'react-native'
+import AppStyle from '@src/style/styles'
 import {
 	WindCard,
 	HourlyForecast,
 	DayForecast,
 	ChanceOfRain,
-} from '@src/components';
+} from '@src/components'
 
-const b = createNa();
+const b = createNa()
 
 export type ParamList = {
-	Today: undefined;
-	Tomorrow: undefined;
-};
+	Today: undefined
+	Tomorrow: undefined
+}
 
 function Group({ children }: PropsWithChildren) {
-	return <View style={AppStyle.group}>{children}</View>;
+	return <View style={AppStyle.group}>{children}</View>
 }
 
 const TodayScreen = () => {
-	const lastPos = useRef<{ x: number; y: number } | null>(null);
-	const look = useRef(true);
+	const lastPos = useRef<{ x: number; y: number } | null>(null)
+	const look = useRef(true)
 
 	const onStart = useCallback((e: GestureResponderEvent) => {
-		console.info('start');
+		console.info('start')
 		lastPos.current = {
 			x: e.nativeEvent.locationX,
 			y: e.nativeEvent.locationY,
-		};
-	}, []);
+		}
+	}, [])
 	const onCancel = useCallback((_: GestureResponderEvent) => {
-		lastPos.current = null;
-	}, []);
+		lastPos.current = null
+	}, [])
 	const onMove = useCallback(
 		({ nativeEvent: { locationX, locationY } }: GestureResponderEvent) => {
 			if (look.current) {
-				const dx = locationX - lastPos.current!.x;
-				const dy = locationY - lastPos.current!.y;
+				const dx = locationX - lastPos.current!.x
+				const dy = locationY - lastPos.current!.y
 			} else {
-				console.log('.....');
+				console.log('.....')
 			}
-			lastPos.current!.x = locationX;
-			lastPos.current!.y = locationY;
+			lastPos.current!.x = locationX
+			lastPos.current!.y = locationY
 		},
 		[]
-	);
+	)
 
 	return (
 		<ScrollView
 			onScroll={e => {
-				look.current = e.nativeEvent.contentOffset.y === 0;
-				console.info(`error: ${look.current}`);
+				look.current = e.nativeEvent.contentOffset.y === 0
+				console.info(`error: ${look.current}`)
 			}}
 			onTouchStart={onStart}
 			onTouchMove={onMove}
@@ -106,6 +106,6 @@ const TodayScreen = () => {
 				</Group>
 			</View>
 		</ScrollView>
-	);
-};
-export default TodayScreen;
+	)
+}
+export default TodayScreen

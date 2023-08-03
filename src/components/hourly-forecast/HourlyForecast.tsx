@@ -1,8 +1,8 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import AppStyle from '@src/style/styles';
-import HourLogo from '@assets/svg/hour.svg';
-import DATA from './data';
-import Item from './Item';
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+import AppStyle from '@src/style/styles'
+import HourLogo from '@assets/svg/hour.svg'
+import DATA from './data'
+import Item from './Item'
 
 const HourlyForecast = () => (
 	<View style={[AppStyle.card, styles.container]}>
@@ -19,9 +19,9 @@ const HourlyForecast = () => (
 			renderItem={({ item }) => <Item data={item} />}
 		/>
 	</View>
-);
+)
 
-const Separator = () => <View style={styles.gap} />;
+const Separator = () => <View style={styles.gap} />
 
 const styles = StyleSheet.create({
 	container: {},
@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'center',
 	},
-});
+})
 
-export default HourlyForecast;
+export default HourlyForecast

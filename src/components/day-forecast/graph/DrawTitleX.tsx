@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Props } from './DrawTitleY';
+import { StyleSheet, Text, View } from 'react-native'
+import { Props } from './DrawTitleY'
 
 const DrawTitleX = ({
 	values,
 	height,
 }: Props & {
-	height?: number;
+	height?: number
 }) => (
 	<View style={[styles.container]}>
 		{values?.map((n, i) => (
@@ -19,9 +19,9 @@ const DrawTitleX = ({
 			</Text>
 		))}
 	</View>
-);
+)
 
-export default DrawTitleX;
+export default DrawTitleX
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
 		lineHeight: 20,
 		letterSpacing: 0.15,
 	},
-});
+})

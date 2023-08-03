@@ -5,12 +5,12 @@
  * @format
  */
 
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { NavigationArea } from '@src/components';
-import CustomTabs from './src/navigator/CustomTabs';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { NavigationContainer } from '@react-navigation/native'
+import { NavigationArea } from '@src/components'
+import CustomTabs from './src/navigator/CustomTabs'
 
 function App() {
 	return (
@@ -22,7 +22,7 @@ function App() {
 				</View>
 			</GestureHandlerRootView>
 		</NavigationContainer>
-	);
+	)
 }
 
 const styles = StyleSheet.create({
@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F6EDFF',
 		flex: 1,
 	},
-});
+})
 
-export default App;
+export default App

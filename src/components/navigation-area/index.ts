@@ -1,1 +1,1 @@
-export { default as NavigationArea } from './NavigationArea';
+export { default as NavigationArea } from './NavigationArea'

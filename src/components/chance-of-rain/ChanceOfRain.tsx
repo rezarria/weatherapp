@@ -1,16 +1,16 @@
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import Logo from '@assets/svg/rain.svg';
-import { Card2 } from '@src/components/card';
-import Line from './Line';
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native'
+import Logo from '@assets/svg/rain.svg'
+import { Card2 } from '@src/components/card'
+import Line from './Line'
 
 export type ChanceOfRainItemType = {
-	time: Date;
-	value: number;
-};
+	time: Date
+	value: number
+}
 
 type ChanceOfRainProps = {
-	data: ChanceOfRainItemType[];
-};
+	data: ChanceOfRainItemType[]
+}
 
 const ChanceOfRain = (props: ChanceOfRainProps) => (
 	<Card2 title={'Chance of rain'} icon={<Logo />}>
@@ -34,9 +34,9 @@ const ChanceOfRain = (props: ChanceOfRainProps) => (
 			</View>
 		</View>
 	</Card2>
-);
+)
 
-export default ChanceOfRain;
+export default ChanceOfRain
 
 const styles = StyleSheet.create({
 	container: { flex: 1, flexDirection: 'row' },
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 		textAlign: 'right',
 		fontWeight: '400',
 	},
-});
+})
 
 function ShowTime(props: { time: Date; style?: StyleProp<TextStyle> }) {
 	return (
@@ -71,5 +71,5 @@ function ShowTime(props: { time: Date; style?: StyleProp<TextStyle> }) {
 			{(props.time.getHours() % 12) + 1}{' '}
 			<Text>{props.time.getHours() < 12 ? 'AM' : 'PM'}</Text>
 		</Text>
-	);
+	)
 }

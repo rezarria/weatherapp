@@ -1,1 +1,1 @@
-export { default as HourlyForecast } from './HourlyForecast';
+export { default as HourlyForecast } from './HourlyForecast'

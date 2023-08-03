@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import AppStyle from '@src/style/styles';
+import React, { ReactNode } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import AppStyle from '@src/style/styles'
 export type CardProps = {
-	icon?: ReactNode;
-	title: string;
-	children?: ReactNode;
-	subContext?: ReactNode;
-};
+	icon?: ReactNode
+	title: string
+	children?: ReactNode
+	subContext?: ReactNode
+}
 
 const Card = (props: CardProps) => (
 	<View style={[AppStyle.card, styles.container]}>
@@ -26,9 +26,9 @@ const Card = (props: CardProps) => (
 		</View>
 		<View style={styles.subContent}>{props.subContext}</View>
 	</View>
-);
+)
 
-export default Card;
+export default Card
 
 export const styles = StyleSheet.create({
 	icon: {
@@ -80,4 +80,4 @@ export const styles = StyleSheet.create({
 		alignSelf: 'stretch',
 		justifyContent: 'flex-end',
 	},
-});
+})

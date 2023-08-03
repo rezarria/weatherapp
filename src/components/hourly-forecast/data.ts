@@ -1,4 +1,4 @@
-import { WeatherInfoType } from './WeatherInfoType';
+import { WeatherInfoType } from './WeatherInfoType'
 
 const DATA: WeatherInfoType[] = [
 	{
@@ -81,6 +81,6 @@ const DATA: WeatherInfoType[] = [
 		status: 'Rain',
 		iconId: '10d',
 	},
-];
+]
 
-export default DATA;
+export default DATA

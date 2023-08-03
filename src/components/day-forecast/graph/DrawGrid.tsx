@@ -1,19 +1,18 @@
-import { Line, SkPoint } from '@shopify/react-native-skia';
-import { ReactNode } from 'react';
+import { Line, SkPoint } from '@shopify/react-native-skia'
+import { ReactNode } from 'react'
 
 type DrawGridProps = {
-	nums: number;
-	pos: SkPoint;
-	size: { width: number; height: number };
-	padding: { left: number; right: number; top: number; bottom: number };
-};
+	nums: number
+	pos: SkPoint
+	size: { width: number; height: number }
+	padding: { left: number; right: number; top: number; bottom: number }
+}
 export default function DrawGrid({ nums, pos, size, padding }: DrawGridProps) {
-	const step =
-		(size.height - padding.top - padding.bottom - pos.y) / (nums - 1);
-	const list: ReactNode[] = [];
+	const step = (size.height - padding.top - padding.bottom - pos.y) / (nums - 1)
+	const list: ReactNode[] = []
 	for (let i = 0; i < nums; i++) {
-		const x = pos.x + padding.left;
-		const y = pos.y + padding.top + i * step;
+		const x = pos.x + padding.left
+		const y = pos.y + padding.top + i * step
 		list.push(
 			<Line
 				key={i}
@@ -21,7 +20,7 @@ export default function DrawGrid({ nums, pos, size, padding }: DrawGridProps) {
 				p1={{ x, y }}
 				p2={{ x: size.width - padding.right, y }}
 			/>
-		);
+		)
 	}
-	return <>{list}</>;
+	return <>{list}</>
 }

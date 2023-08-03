@@ -1,12 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 
 const Temp = (props: { v: number; cv?: number }) => (
 	<View style={styles.container}>
 		<Text style={styles.cals}>{props.v}°</Text>
 		{props.cv && <Text style={styles.feelsLike}>Feels like {props.cv}°</Text>}
 	</View>
-);
+)
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
 		lineHeight: 24,
 		letterSpacing: 0.15,
 	},
-});
+})
 
-export default Temp;
+export default Temp

@@ -3,10 +3,10 @@ import React, {
 	useCallback,
 	useImperativeHandle,
 	useState,
-} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import UpArrow from '@assets/svg/up.svg';
-import DownArrow from '@assets/svg/down.svg';
+} from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import UpArrow from '@assets/svg/up.svg'
+import DownArrow from '@assets/svg/down.svg'
 
 export enum TrendStatusEnum {
 	UP,
@@ -14,32 +14,32 @@ export enum TrendStatusEnum {
 	NIL,
 }
 export type TrendStatusRef = {
-	set: (up: TrendStatusEnum, value: string) => void;
-};
+	set: (up: TrendStatusEnum, value: string) => void
+}
 
 const TrendStatus = forwardRef<TrendStatusRef>((props, ref) => {
-	const [text, setText] = useState('');
-	const [upTrend, setUpTrend] = useState(TrendStatusEnum.NIL);
+	const [text, setText] = useState('')
+	const [upTrend, setUpTrend] = useState(TrendStatusEnum.NIL)
 	const iconSelect = useCallback(() => {
 		switch (upTrend) {
 			case TrendStatusEnum.UP:
-				return <UpArrow />;
+				return <UpArrow />
 			case TrendStatusEnum.DOWN:
-				return <DownArrow />;
+				return <DownArrow />
 			case TrendStatusEnum.NIL:
-				return <></>;
+				return <></>
 		}
-	}, [upTrend]);
+	}, [upTrend])
 	useImperativeHandle(
 		ref,
 		() => ({
 			set: (up, value) => {
-				setUpTrend(up);
-				setText(value);
+				setUpTrend(up)
+				setText(value)
 			},
 		}),
 		[]
-	);
+	)
 	return (
 		<View style={styles.container}>
 			<View style={styles.align}>
@@ -47,8 +47,8 @@ const TrendStatus = forwardRef<TrendStatusRef>((props, ref) => {
 				<Text style={styles.sub}>{text}</Text>
 			</View>
 		</View>
-	);
-});
+	)
+})
 
 const styles = StyleSheet.create({
 	container: {
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
 		lineHeight: 16,
 		letterSpacing: 0.5,
 	},
-});
+})
 
-export default TrendStatus;
+export default TrendStatus

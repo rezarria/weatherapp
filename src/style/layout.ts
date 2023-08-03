@@ -1,6 +1,6 @@
 export type Padding = {
-	right?: number;
-	left?: number;
-	top?: number;
-	bottom?: number;
-};
+	right?: number
+	left?: number
+	top?: number
+	bottom?: number
+}

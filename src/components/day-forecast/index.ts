@@ -1,1 +1,1 @@
-export { default as DayForecast } from './DayForecast';
+export { default as DayForecast } from './DayForecast'

@@ -1,10 +1,13 @@
 module.exports = {
-	arrowParens: 'avoid',
-	bracketSameLine: true,
+	arrowParens: 'always',
+	bracketSameLine: false,
 	singleQuote: true,
 	trailingComma: 'es5',
 	useTabs: true,
 	jsxSingleQuote: true,
 	endOfLine: 'lf',
-	commaDangle: true,
-};
+	commaDangle: false,
+	semi: false,
+	bracketSpacing: true,
+	singleAttributePerLine: true,
+}

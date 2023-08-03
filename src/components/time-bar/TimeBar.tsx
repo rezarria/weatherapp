@@ -1,19 +1,19 @@
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
-import { NavigationState, SceneRendererProps } from 'react-native-tab-view';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native'
+import { NavigationState, SceneRendererProps } from 'react-native-tab-view'
 
 const TimeBar = (
 	props: SceneRendererProps & {
 		navigationState: NavigationState<{
-			key: string;
-			title: string;
-		}>;
+			key: string
+			title: string
+		}>
 	}
 ) => {
 	const isForced = (index: number) => {
 		return {
 			backgroundColor: props.navigationState.index === index ? 'white' : 'red',
-		};
-	};
+		}
+	}
 	return (
 		<Animated.View style={[styles.container]}>
 			{props.navigationState.routes.map((item, index) => (
@@ -27,8 +27,8 @@ const TimeBar = (
 				</Pressable>
 			))}
 		</Animated.View>
-	);
-};
+	)
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
 	text: {
 		textAlign: 'center',
 	},
-});
+})
 
-export default TimeBar;
+export default TimeBar

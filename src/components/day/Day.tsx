@@ -5,18 +5,18 @@ import {
 	Text,
 	View,
 	ViewStyle,
-} from 'react-native';
+} from 'react-native'
 
-import { DetailButton } from './DetailButton';
+import { DetailButton } from './DetailButton'
 
 type Props = {
-	time: Date;
-	status: string;
-	temp: number;
-	feelLike: number;
-	icon: string;
-	styles: StyleProp<ViewStyle>;
-};
+	time: Date
+	status: string
+	temp: number
+	feelLike: number
+	icon: string
+	styles: StyleProp<ViewStyle>
+}
 
 const Day = (props: Props) => (
 	<View style={[props.styles, styles.container]}>
@@ -39,9 +39,9 @@ const Day = (props: Props) => (
 		/>
 		<DetailButton />
 	</View>
-);
+)
 
-export default Day;
+export default Day
 
 const styles = StyleSheet.create({
 	vr: {
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
 		color: '#2E004E',
 		textAlign: 'right',
 	},
-});
+})

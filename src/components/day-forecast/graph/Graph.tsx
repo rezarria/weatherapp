@@ -1,20 +1,20 @@
-import { Canvas } from '@shopify/react-native-skia';
-import { useState } from 'react';
-import { LayoutRectangle, StyleSheet, View } from 'react-native';
-import DrawTitleY from './DrawTitleY';
-import DrawGrid from './DrawGrid';
-import DrawLine from './DrawLine';
-import DrawTitleX from './DrawTitleX';
+import { Canvas } from '@shopify/react-native-skia'
+import { useState } from 'react'
+import { LayoutRectangle, StyleSheet, View } from 'react-native'
+import DrawTitleY from './DrawTitleY'
+import DrawGrid from './DrawGrid'
+import DrawLine from './DrawLine'
+import DrawTitleX from './DrawTitleX'
 
 type Props = {
-	titleX?: string[];
-	titleY?: string[];
-	titleBeforeX?: string[];
-	titleBeforeY?: string[];
-};
+	titleX?: string[]
+	titleY?: string[]
+	titleBeforeX?: string[]
+	titleBeforeY?: string[]
+}
 
 const Graph = (props: Props) => {
-	const [layoutInfo, setLayoutInfo] = useState<LayoutRectangle>();
+	const [layoutInfo, setLayoutInfo] = useState<LayoutRectangle>()
 	return (
 		<View style={styles.container}>
 			{props.titleY && (
@@ -28,13 +28,13 @@ const Graph = (props: Props) => {
 			<View style={styles.group}>
 				<Canvas
 					onLayout={e => {
-						const layout = e.nativeEvent.layout;
+						const layout = e.nativeEvent.layout
 						if (
 							layoutInfo == null ||
 							layout.height !== layoutInfo.height ||
 							layout.width !== layoutInfo.width
 						) {
-							setLayoutInfo(e.nativeEvent.layout);
+							setLayoutInfo(e.nativeEvent.layout)
 						}
 					}}
 					style={styles.canvas}>
@@ -63,10 +63,10 @@ const Graph = (props: Props) => {
 				<DrawTitleX height={20} values={props.titleX} pos={{ x: 0, y: 0 }} />
 			</View>
 		</View>
-	);
-};
+	)
+}
 
-export default Graph;
+export default Graph
 
 const styles = StyleSheet.create({
 	container: {
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
 	group: {
 		flex: 1,
 	},
-});
+})

@@ -1,1 +1,1 @@
-export { default as WeatherFastInfoBar } from './WeatherFastInfoBar';
+export { default as WeatherFastInfoBar } from './WeatherFastInfoBar'

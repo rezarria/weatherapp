@@ -1,9 +1,9 @@
-import React from 'react';
-import { Image, StatusBar, StyleSheet, View } from 'react-native';
-import SearchBar from './SearchBar';
-import CurrentTime from './CurrentTime';
-import TempDayNight from './TempDayNight';
-import { WeatherFastInfoBar } from '@src/components';
+import React from 'react'
+import { Image, StatusBar, StyleSheet, View } from 'react-native'
+import SearchBar from './SearchBar'
+import CurrentTime from './CurrentTime'
+import TempDayNight from './TempDayNight'
+import { WeatherFastInfoBar } from '@src/components'
 
 const NavigationArea = () => (
 	<View style={[styles.rounded, styles.background]}>
@@ -18,7 +18,7 @@ const NavigationArea = () => (
 			</View>
 		</View>
 	</View>
-);
+)
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 		flexBasis: 'auto',
 	},
-});
+})
 
-export default NavigationArea;
+export default NavigationArea

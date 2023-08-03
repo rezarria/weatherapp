@@ -1,19 +1,14 @@
-import { SkPoint } from '@shopify/react-native-skia';
-import {
-	LayoutRectangle,
-	StyleSheet,
-	Text as TextRN,
-	View,
-} from 'react-native';
-import { Padding } from '@src/style/layout';
-import React, { useState } from 'react';
+import { SkPoint } from '@shopify/react-native-skia'
+import { LayoutRectangle, StyleSheet, Text as TextRN, View } from 'react-native'
+import { Padding } from '@src/style/layout'
+import React, { useState } from 'react'
 
 export type Props = {
-	values?: string[];
-	valuesBefore?: string[];
-	pos: SkPoint;
-	padding?: Padding;
-};
+	values?: string[]
+	valuesBefore?: string[]
+	pos: SkPoint
+	padding?: Padding
+}
 
 const DrawTitleY = (props: Props) => {
 	const padding: Padding = {
@@ -21,7 +16,7 @@ const DrawTitleY = (props: Props) => {
 		bottom: props.padding?.bottom ?? 0,
 		left: props.padding?.left ?? 0,
 		right: props.padding?.right ?? 0,
-	};
+	}
 	return (
 		<>
 			{props.values && (
@@ -33,17 +28,17 @@ const DrawTitleY = (props: Props) => {
 				/>
 			)}
 		</>
-	);
-};
+	)
+}
 
-export default DrawTitleY;
+export default DrawTitleY
 
 type DrawProps = {
-	values: string[];
-	valuesBefore?: string[];
-	pos: SkPoint;
-	padding: Padding;
-};
+	values: string[]
+	valuesBefore?: string[]
+	pos: SkPoint
+	padding: Padding
+}
 
 // function DrawYBySkia({ size, pos, values, padding }: DrawProps) {
 // 	const step =
@@ -63,11 +58,11 @@ type DrawProps = {
 // }
 
 function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
-	const [layout, setLayout] = useState<LayoutRectangle>();
+	const [layout, setLayout] = useState<LayoutRectangle>()
 	return (
 		<View
 			onLayout={l => {
-				setLayout(l.nativeEvent.layout);
+				setLayout(l.nativeEvent.layout)
 			}}
 			style={[
 				styles.container,
@@ -89,7 +84,7 @@ function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
 					))}
 			</View>
 		</View>
-	);
+	)
 }
 
 const styles = StyleSheet.create({
@@ -112,4 +107,4 @@ const styles = StyleSheet.create({
 		fontWeight: '400',
 		lineHeight: 16,
 	},
-});
+})

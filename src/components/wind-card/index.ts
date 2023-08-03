@@ -1,1 +1,1 @@
-export { default as WindCard } from './WindCard';
+export { default as WindCard } from './WindCard'

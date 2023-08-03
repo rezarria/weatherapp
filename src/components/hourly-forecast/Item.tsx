@@ -1,10 +1,10 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import AppStyle from '@src/style/styles';
-import { WeatherInfoType } from './WeatherInfoType';
+import { Image, StyleSheet, Text, View } from 'react-native'
+import AppStyle from '@src/style/styles'
+import { WeatherInfoType } from './WeatherInfoType'
 
 type ItemProps = {
-	data: WeatherInfoType;
-};
+	data: WeatherInfoType
+}
 
 const Item = (props: ItemProps) => (
 	<View style={itemStyle.container}>
@@ -22,7 +22,7 @@ const Item = (props: ItemProps) => (
 		/>
 		<Text style={[AppStyle.font, itemStyle.temp]}>{props.data.temp}°</Text>
 	</View>
-);
+)
 
 const itemStyle = StyleSheet.create({
 	time: {
@@ -51,6 +51,6 @@ const itemStyle = StyleSheet.create({
 		alignItems: 'center',
 		alignContent: 'center',
 	},
-});
+})
 
-export default Item;
+export default Item

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 const AppStyle = StyleSheet.create({
 	scrollView: {
@@ -25,6 +25,6 @@ const AppStyle = StyleSheet.create({
 		flexDirection: 'row',
 		gap: 16,
 	},
-});
+})
 
-export default AppStyle;
+export default AppStyle
