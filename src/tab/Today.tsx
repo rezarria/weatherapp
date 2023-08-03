@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useContext, useRef } from 'react'
+import { PropsWithChildren, memo, useCallback, useRef } from 'react'
 import { Button, GestureResponderEvent, ScrollView, View } from 'react-native'
 import AppStyle from '@src/style/styles'
 import {
@@ -7,8 +7,7 @@ import {
 	DayForecast,
 	ChanceOfRain,
 } from '@src/components'
-
-const b = createNa()
+import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
 
 export type ParamList = {
 	Today: undefined
@@ -19,10 +18,14 @@ function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>
 }
 
-const TodayScreen = () => {
+const TodayScreen = ({
+	route,
+	navigation,
+}: MaterialTopTabScreenProps<ParamList, 'Today'>) => {
+	console.log('🚀 ~ file: Today.tsx:26 ~ TodayScreen ~ route:', route)
+	console.log('🚀 ~ file: Today.tsx:30 ~ TodayScreen ~ navigation:', navigation)
 	const lastPos = useRef<{ x: number; y: number } | null>(null)
 	const look = useRef(true)
-
 	const onStart = useCallback((e: GestureResponderEvent) => {
 		console.info('start')
 		lastPos.current = {
@@ -36,8 +39,8 @@ const TodayScreen = () => {
 	const onMove = useCallback(
 		({ nativeEvent: { locationX, locationY } }: GestureResponderEvent) => {
 			if (look.current) {
-				const dx = locationX - lastPos.current!.x
-				const dy = locationY - lastPos.current!.y
+				const _dx = locationX - lastPos.current!.x
+				const _dy = locationY - lastPos.current!.y
 			} else {
 				console.log('.....')
 			}
@@ -61,7 +64,9 @@ const TodayScreen = () => {
 			<View style={AppStyle.scrollView}>
 				<Button
 					title={'123'}
-					onPress={() => {}}
+					onPress={() => {
+						navigation.navigate('Tomorrow')
+					}}
 				/>
 				<Group>
 					<WindCard />
@@ -112,4 +117,5 @@ const TodayScreen = () => {
 		</ScrollView>
 	)
 }
-export default TodayScreen
+
+export default memo(TodayScreen)

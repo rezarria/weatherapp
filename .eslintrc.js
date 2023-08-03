@@ -4,5 +4,6 @@ module.exports = {
 	rules: {
 		semi: 'off',
 		'react/react-in-jsx-scope': 'off',
+		'jsx-quotes': ['error'],
 	},
 }
