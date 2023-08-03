@@ -38,5 +38,12 @@ export default ({ points, pos, size, padding, x, y }: DrawLineProps) => {
 		path.moveTo(realPotins[0].x, realPotins[0].y)
 	}
 	realPotins.forEach(p => path.lineTo(p.x, p.y))
-	return <Path path={path} style={'stroke'} strokeWidth={2} color={'#000000'} />
+	return (
+		<Path
+			path={path}
+			style={'stroke'}
+			strokeWidth={2}
+			color={'#000000'}
+		/>
+	)
 }

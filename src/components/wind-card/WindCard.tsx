@@ -12,7 +12,8 @@ const WindCard = () => {
 		<Card
 			title={'Wind speed'}
 			icon={<Logo />}
-			subContext={<TrendStatus ref={subContextRef} />}>
+			subContext={<TrendStatus ref={subContextRef} />}
+		>
 			'TEST km/s'
 		</Card>
 	)

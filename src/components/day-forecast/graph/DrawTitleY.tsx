@@ -67,10 +67,14 @@ function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
 			style={[
 				styles.container,
 				{ paddingTop: padding.top! + pos.y, paddingBottom: padding.bottom! },
-			]}>
+			]}
+		>
 			<View style={styles.section}>
 				{valuesBefore?.map((n, i) => (
-					<TextRN style={styles.yTitle} key={i}>
+					<TextRN
+						style={styles.yTitle}
+						key={i}
+					>
 						{n}
 					</TextRN>
 				))}
@@ -78,7 +82,10 @@ function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
 			<View style={[styles.section, styles.main]}>
 				{layout &&
 					values.map((v, i) => (
-						<TextRN style={styles.yTitle} key={i}>
+						<TextRN
+							style={styles.yTitle}
+							key={i}
+						>
 							{v}
 						</TextRN>
 					))}

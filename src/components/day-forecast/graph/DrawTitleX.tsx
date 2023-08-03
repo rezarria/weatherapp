@@ -14,7 +14,8 @@ const DrawTitleX = ({
 					styles.text,
 					height ? { lineHeight: height, fontSize: height * 0.77 } : {},
 				]}
-				key={i}>
+				key={i}
+			>
 				{n}
 			</Text>
 		))}

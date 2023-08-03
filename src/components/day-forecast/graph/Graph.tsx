@@ -37,7 +37,8 @@ const Graph = (props: Props) => {
 							setLayoutInfo(e.nativeEvent.layout)
 						}
 					}}
-					style={styles.canvas}>
+					style={styles.canvas}
+				>
 					{layoutInfo && (
 						<>
 							<DrawGrid
@@ -60,7 +61,11 @@ const Graph = (props: Props) => {
 						</>
 					)}
 				</Canvas>
-				<DrawTitleX height={20} values={props.titleX} pos={{ x: 0, y: 0 }} />
+				<DrawTitleX
+					height={20}
+					values={props.titleX}
+					pos={{ x: 0, y: 0 }}
+				/>
 			</View>
 		</View>
 	)

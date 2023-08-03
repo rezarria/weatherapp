@@ -20,7 +20,8 @@ const TimeBar = (
 				<Pressable
 					style={styles.button}
 					key={item.key}
-					onPress={() => props.jumpTo(item.key)}>
+					onPress={() => props.jumpTo(item.key)}
+				>
 					<View style={[isForced(index)]}>
 						<Text style={styles.text}>{item.title}</Text>
 					</View>

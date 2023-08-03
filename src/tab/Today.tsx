@@ -56,9 +56,13 @@ const TodayScreen = () => {
 			onTouchStart={onStart}
 			onTouchMove={onMove}
 			onTouchEnd={onCancel}
-			onTouchCancel={onCancel}>
+			onTouchCancel={onCancel}
+		>
 			<View style={AppStyle.scrollView}>
-				<Button title={'123'} onPress={() => {}} />
+				<Button
+					title={'123'}
+					onPress={() => {}}
+				/>
 				<Group>
 					<WindCard />
 					<WindCard />

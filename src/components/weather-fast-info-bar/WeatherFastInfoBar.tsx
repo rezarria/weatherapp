@@ -5,7 +5,10 @@ import Temp from './Temp'
 
 const WeatherFastInfoBar = () => (
 	<View style={styles.container}>
-		<Temp v={3} cv={-2} />
+		<Temp
+			v={3}
+			cv={-2}
+		/>
 		<WeatherIcon />
 	</View>
 )

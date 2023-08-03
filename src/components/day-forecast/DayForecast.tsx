@@ -14,7 +14,11 @@ const DayForecast = () => {
 				<Logo />
 				<Text style={[AppStyle.font, styles.title]}>Day forecast</Text>
 			</View>
-			<Graph titleX={days} titleY={temps} titleBeforeY={subs} />
+			<Graph
+				titleX={days}
+				titleY={temps}
+				titleBeforeY={subs}
+			/>
 		</View>
 	)
 }

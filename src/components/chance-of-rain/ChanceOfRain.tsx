@@ -13,21 +13,34 @@ type ChanceOfRainProps = {
 }
 
 const ChanceOfRain = (props: ChanceOfRainProps) => (
-	<Card2 title={'Chance of rain'} icon={<Logo />}>
+	<Card2
+		title={'Chance of rain'}
+		icon={<Logo />}
+	>
 		<View style={styles.container}>
 			<View style={styles.section}>
 				{props.data.map((item, index) => (
-					<ShowTime time={item.time} key={index} style={styles.item} />
+					<ShowTime
+						time={item.time}
+						key={index}
+						style={styles.item}
+					/>
 				))}
 			</View>
 			<View style={[styles.section, styles.sectionLine]}>
 				{props.data.map((item, index) => (
-					<Line key={index} value={item.value} />
+					<Line
+						key={index}
+						value={item.value}
+					/>
 				))}
 			</View>
 			<View style={styles.section}>
 				{props.data.map((item, index) => (
-					<Text key={index} style={[styles.text, styles.item]}>
+					<Text
+						key={index}
+						style={[styles.text, styles.item]}
+					>
 						{item.value}%
 					</Text>
 				))}

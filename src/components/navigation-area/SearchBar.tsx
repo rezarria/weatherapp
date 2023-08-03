@@ -10,7 +10,11 @@ const SearchBar = forwardRef<Ref, Props>((props, ref) => {
 	const [input, setInput] = useState('Kharkiv, Ukraine')
 	return (
 		<View style={styles.container}>
-			<TextInput value={input} onChangeText={setInput} style={styles.input} />
+			<TextInput
+				value={input}
+				onChangeText={setInput}
+				style={styles.input}
+			/>
 			<SearchLogo style={styles.icon} />
 		</View>
 	)

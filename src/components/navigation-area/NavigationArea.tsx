@@ -7,8 +7,14 @@ import { WeatherFastInfoBar } from '@src/components'
 
 const NavigationArea = () => (
 	<View style={[styles.rounded, styles.background]}>
-		<Image style={styles.image} source={require('@assets/img/bg.png')} />
-		<StatusBar translucent={true} backgroundColor={'#0000'} />
+		<Image
+			style={styles.image}
+			source={require('@assets/img/bg.png')}
+		/>
+		<StatusBar
+			translucent={true}
+			backgroundColor={'#0000'}
+		/>
 		<View style={styles.container}>
 			<SearchBar />
 			<WeatherFastInfoBar />

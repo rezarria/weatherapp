@@ -4,7 +4,8 @@ import { Day } from '@src/components'
 const TomorrowScreen = () => (
 	<ScrollView
 		style={styles.container}
-		contentContainerStyle={{ gap: styles.container.gap }}>
+		contentContainerStyle={{ gap: styles.container.gap }}
+	>
 		{Array.from(Array(10).keys()).map(i => (
 			<Day
 				styles={styles.item}
