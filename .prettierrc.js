@@ -6,4 +6,5 @@ module.exports = {
 	useTabs: true,
 	jsxSingleQuote: true,
 	endOfLine: 'lf',
+	commaDangle: true,
 };
