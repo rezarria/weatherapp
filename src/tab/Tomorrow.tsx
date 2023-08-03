@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { Day } from '@src/components';
 
-export const TomorrowScreen = () => (
+const TomorrowScreen = () => (
 	<ScrollView
 		style={styles.container}
 		contentContainerStyle={{ gap: styles.container.gap }}>
@@ -27,3 +27,5 @@ const styles = StyleSheet.create({
 	},
 	item: {},
 });
+
+export default TomorrowScreen;

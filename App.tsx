@@ -7,10 +7,10 @@
 
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PageView } from '@src/utility/PageView';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { NavigationArea } from '@src/components';
+import CustomTabs from './src/navigator/CustomTabs';
 
 function App() {
 	return (
@@ -18,7 +18,7 @@ function App() {
 			<GestureHandlerRootView style={styles.container}>
 				<View style={styles.background}>
 					<NavigationArea />
-					<PageView />
+					<CustomTabs />
 				</View>
 			</GestureHandlerRootView>
 		</NavigationContainer>

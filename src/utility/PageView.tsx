@@ -1,15 +1,15 @@
 import React, { ComponentType, createContext, useMemo, useRef } from 'react';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import CustomTabBar from '../components/time-bar/TimeBar';
-import { TomorrowScreen } from '../tab/Tomorrow';
 import { Animated } from 'react-native';
 import TestScreen from '../tab/Test';
 import TodayScreen from '../tab/Today';
+import TomorrowScreen from '../tab/Tomorrow';
 
 export type MapperType = {
 	[key: string]: {
 		title: string;
-		view: typeof TodayScreen;
+		view: () => React.JSX.Element;
 	};
 };
 
@@ -28,11 +28,11 @@ const data: MapperType = {
 	},
 };
 
-const a: { [x: string]: ComponentType<unknown> } = {};
+const temp: { [x: string]: ComponentType<unknown> } = {};
 const mapper2 = Object.keys(data).reduce((o, k) => {
 	o[k] = data[k].view;
 	return o;
-}, a);
+}, temp);
 
 const renderScene = SceneMap(mapper2);
 

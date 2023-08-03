@@ -1,7 +1,6 @@
 import { PropsWithChildren, useCallback, useContext, useRef } from 'react';
 import { Button, GestureResponderEvent, ScrollView, View } from 'react-native';
 import AppStyle from '@src/style/styles';
-import { PageViewContext } from '@src/utility/PageView';
 import {
 	WindCard,
 	HourlyForecast,
@@ -9,14 +8,21 @@ import {
 	ChanceOfRain,
 } from '@src/components';
 
+const b = createNa();
+
+export type ParamList = {
+	Today: undefined;
+	Tomorrow: undefined;
+};
+
 function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>;
 }
 
 const TodayScreen = () => {
 	const lastPos = useRef<{ x: number; y: number } | null>(null);
-	const navigation = useContext(PageViewContext);
 	const look = useRef(true);
+
 	const onStart = useCallback((e: GestureResponderEvent) => {
 		console.info('start');
 		lastPos.current = {
@@ -52,12 +58,7 @@ const TodayScreen = () => {
 			onTouchEnd={onCancel}
 			onTouchCancel={onCancel}>
 			<View style={AppStyle.scrollView}>
-				<Button
-					title={'123'}
-					onPress={() => {
-						navigation?.setIndex(1);
-					}}
-				/>
+				<Button title={'123'} onPress={() => {}} />
 				<Group>
 					<WindCard />
 					<WindCard />
