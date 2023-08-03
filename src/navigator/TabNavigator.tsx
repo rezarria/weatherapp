@@ -1,26 +1,19 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import TodayScreen from '../tab/Today'
 import TomorrowScreen from '../tab/Tomorrow'
-
-export type TabsParamList = {
-	Today: undefined
-	Tomorrow: undefined
-}
-
-const Tabs = createMaterialTopTabNavigator<TabsParamList>()
+import { Tab } from './TabType'
 
 const TabsNavigator = () => {
 	return (
-		<Tabs.Navigator initialRouteName={'Today'}>
-			<Tabs.Screen
+		<Tab.Navigator initialRouteName={'Today'}>
+			<Tab.Screen
 				name={'Today'}
 				component={TodayScreen}
 			/>
-			<Tabs.Screen
+			<Tab.Screen
 				name={'Tomorrow'}
 				component={TomorrowScreen}
 			/>
-		</Tabs.Navigator>
+		</Tab.Navigator>
 	)
 }
 

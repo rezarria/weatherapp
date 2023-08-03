@@ -22,8 +22,14 @@ export type RouteType = {
 }
 
 const DATA: ParamList = {
-	Today: { component: TodayScreen, title: 'Today' },
-	Tomorrow: { component: TomorrowScreen, title: 'Tomorrow' },
+	Today: {
+		component: TodayScreen as React.ComponentType<unknown>,
+		title: 'Today',
+	},
+	Tomorrow: {
+		component: TomorrowScreen as React.ComponentType<unknown>,
+		title: 'Tomorrow',
+	},
 }
 const sceneData: { [key: string]: React.ComponentType<unknown> } = {}
 const routesData: RouteType[] = []

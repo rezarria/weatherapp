@@ -9,7 +9,7 @@ import TomorrowScreen from '../tab/Tomorrow'
 export type MapperType = {
 	[key: string]: {
 		title: string
-		view: () => React.JSX.Element
+		view: Function
 	}
 }
 
@@ -30,7 +30,7 @@ const data: MapperType = {
 
 const temp: { [x: string]: ComponentType<unknown> } = {}
 const mapper2 = Object.keys(data).reduce((o, k) => {
-	o[k] = data[k].view
+	o[k] = data[k].view as ComponentType<unknown>
 	return o
 }, temp)
 

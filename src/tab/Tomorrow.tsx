@@ -1,11 +1,9 @@
 import { ScrollView, StyleSheet } from 'react-native'
 import { Day } from '@src/components'
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
-import { TabsParamList } from '../navigator/TabNavigator'
-import { memo } from 'react'
-type Props = MaterialTopTabScreenProps<TabsParamList, 'Tomorrow', 'Tomorrow'>
-const TomorrowScreen = (props: Props) => {
-	console.log('🚀 ~ file: Tomorrow.tsx:8 ~ TomorrowScreen ~ props:', props)
+import { TabParamList } from '../navigator/TabType'
+type Props = MaterialTopTabScreenProps<TabParamList, 'Tomorrow', 'Tomorrow'>
+const TomorrowScreen = (_props: Props) => {
 	return (
 		<ScrollView
 			style={styles.container}
@@ -35,4 +33,4 @@ const styles = StyleSheet.create({
 	item: {},
 })
 
-export default memo(TomorrowScreen)
+export default TomorrowScreen

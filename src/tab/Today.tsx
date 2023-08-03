@@ -1,4 +1,4 @@
-import { PropsWithChildren, memo, useCallback, useRef } from 'react'
+import { PropsWithChildren, useCallback, useRef } from 'react'
 import { Button, GestureResponderEvent, ScrollView, View } from 'react-native'
 import AppStyle from '@src/style/styles'
 import {
@@ -7,7 +7,9 @@ import {
 	DayForecast,
 	ChanceOfRain,
 } from '@src/components'
-import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
+import { TabParamList } from '../navigator/TabType'
+import { TabActionHelpers } from '@react-navigation/native'
+import { SceneRendererProps } from 'react-native-tab-view'
 
 export type ParamList = {
 	Today: undefined
@@ -18,12 +20,9 @@ function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>
 }
 
-const TodayScreen = ({
-	route,
-	navigation,
-}: MaterialTopTabScreenProps<ParamList, 'Today'>) => {
-	console.log('🚀 ~ file: Today.tsx:26 ~ TodayScreen ~ route:', route)
-	console.log('🚀 ~ file: Today.tsx:30 ~ TodayScreen ~ navigation:', navigation)
+const TodayScreen = (
+	props: SceneRendererProps & TabActionHelpers<TabParamList>
+) => {
 	const lastPos = useRef<{ x: number; y: number } | null>(null)
 	const look = useRef(true)
 	const onStart = useCallback((e: GestureResponderEvent) => {
@@ -65,7 +64,10 @@ const TodayScreen = ({
 				<Button
 					title={'123'}
 					onPress={() => {
-						navigation.navigate('Tomorrow')
+						console.log(
+							'🚀 ~ file: Today.tsx:78 ~ position:',
+							props.position.hasListeners
+						)
 					}}
 				/>
 				<Group>
@@ -118,4 +120,4 @@ const TodayScreen = ({
 	)
 }
 
-export default memo(TodayScreen)
+export default TodayScreen
