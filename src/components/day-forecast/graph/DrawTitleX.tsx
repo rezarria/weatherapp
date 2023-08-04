@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { Props } from './DrawTitleY'
+import AppStyle from '../../../style/styles'
 
 const DrawTitleX = ({
 	values,
@@ -11,6 +12,7 @@ const DrawTitleX = ({
 		{values?.map((n, i) => (
 			<Text
 				style={[
+					AppStyle.font,
 					styles.text,
 					height ? { lineHeight: height, fontSize: height * 0.77 } : {},
 				]}
@@ -31,9 +33,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: '#000',
-		fontFamily: 'Product Sans',
 		fontSize: 15,
-		fontWeight: '400',
 		lineHeight: 20,
 		letterSpacing: 0.15,
 	},

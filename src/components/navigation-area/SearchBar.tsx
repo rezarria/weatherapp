@@ -1,33 +1,79 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
+import React, {
+	Dispatch,
+	SetStateAction,
+	forwardRef,
+	useCallback,
+	useContext,
+	useEffect,
+	useImperativeHandle,
+	useState,
+} from 'react'
+import { Animated, StyleSheet, TextInput } from 'react-native'
 import SearchLogo from '@assets/svg/search.svg'
+import { MainScreenAnimationContext } from '../../screen/MainScreen'
 
 export type Ref = {}
 export type Props = {}
 
 const SearchBar = forwardRef<Ref, Props>((props, ref) => {
+	const anime = useContext(MainScreenAnimationContext)
 	useImperativeHandle(ref, () => ({}), [])
 	const [input, setInput] = useState('Kharkiv, Ukraine')
 	return (
-		<View style={styles.container}>
-			<TextInput
-				value={input}
-				onChangeText={setInput}
-				style={styles.input}
+		<Animated.View
+			style={[
+				styles.container,
+				{
+					marginBottom: anime.interpolate({
+						inputRange: [0, 1],
+						outputRange: [11, 40],
+					}),
+				},
+			]}
+		>
+			<Input
+				input={input}
+				setInput={setInput}
 			/>
 			<SearchLogo style={styles.icon} />
-		</View>
+		</Animated.View>
 	)
 })
 
+function Input(props: {
+	input: string
+	setInput: Dispatch<SetStateAction<string>>
+}) {
+	const anime = useContext(MainScreenAnimationContext)
+	const [color, setColor] = useState('#fff')
+	const callback = useCallback((v: { value: number }) => {
+		const n = v.value * 255
+		setColor(`rgb(${n},${n},${n})`)
+	}, [])
+	useEffect(() => {
+		const id = anime.addListener(callback)
+		return () => {
+			anime.removeListener(id)
+		}
+	}, [callback, anime])
+	return (
+		<TextInput
+			value={props.input}
+			onChangeText={props.setInput}
+			style={[styles.input, { color: color }]}
+		/>
+	)
+}
+
 const styles = StyleSheet.create({
 	input: {
-		color: '#fff',
 		fontFamily: 'ProductSans',
 		fontSize: 22,
 		fontStyle: 'normal',
 		fontWeight: '400',
 		lineHeight: 28,
+		padding: 0,
+		margin: 0,
 	},
 	icon: {
 		width: 24,
@@ -38,6 +84,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		height: 28,
 	},
 })
 

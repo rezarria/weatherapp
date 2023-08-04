@@ -5,6 +5,7 @@ import DrawTitleY from './DrawTitleY'
 import DrawGrid from './DrawGrid'
 import DrawLine from './DrawLine'
 import DrawTitleX from './DrawTitleX'
+import AppStyle from '../../../style/styles'
 
 type Props = {
 	titleX?: string[]
@@ -16,7 +17,7 @@ type Props = {
 const Graph = (props: Props) => {
 	const [layoutInfo, setLayoutInfo] = useState<LayoutRectangle>()
 	return (
-		<View style={styles.container}>
+		<View style={[AppStyle.expand, styles.container]}>
 			{props.titleY && (
 				<DrawTitleY
 					values={props.titleY}
@@ -25,7 +26,7 @@ const Graph = (props: Props) => {
 					padding={{ left: 0, right: 0, top: 0, bottom: 20 }}
 				/>
 			)}
-			<View style={styles.group}>
+			<View style={AppStyle.expand}>
 				<Canvas
 					onLayout={e => {
 						const layout = e.nativeEvent.layout
@@ -37,7 +38,7 @@ const Graph = (props: Props) => {
 							setLayoutInfo(e.nativeEvent.layout)
 						}
 					}}
-					style={styles.canvas}
+					style={AppStyle.expand}
 				>
 					{layoutInfo && (
 						<>
@@ -76,12 +77,5 @@ export default Graph
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		flex: 1,
-	},
-	canvas: {
-		flex: 1,
-	},
-	group: {
-		flex: 1,
 	},
 })

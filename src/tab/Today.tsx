@@ -1,5 +1,5 @@
-import { PropsWithChildren, useCallback, useRef } from 'react'
-import { Button, GestureResponderEvent, ScrollView, View } from 'react-native'
+import { PropsWithChildren, useCallback, useRef, useContext } from 'react'
+import { Animated, GestureResponderEvent, ScrollView, View } from 'react-native'
 import AppStyle from '@src/style/styles'
 import {
 	WindCard,
@@ -7,9 +7,7 @@ import {
 	DayForecast,
 	ChanceOfRain,
 } from '@src/components'
-import { TabParamList } from '../navigator/TabType'
-import { TabActionHelpers } from '@react-navigation/native'
-import { SceneRendererProps } from 'react-native-tab-view'
+import { MainScreenAnimationContext } from '../screen/MainScreen'
 
 export type ParamList = {
 	Today: undefined
@@ -19,10 +17,28 @@ export type ParamList = {
 function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>
 }
-
-const TodayScreen = (
-	_props: SceneRendererProps & TabActionHelpers<TabParamList>
-) => {
+enum Status {
+	hidden,
+	show,
+	hidding,
+	showing,
+}
+const TodayScreen = () => {
+	const scrollViewRef = useRef<ScrollView>(null)
+	const anime = useContext(MainScreenAnimationContext)
+	const action = useRef({
+		status: Status.show,
+		hidden: Animated.timing(anime, {
+			toValue: 0,
+			useNativeDriver: false,
+			duration: 400,
+		}),
+		show: Animated.timing(anime, {
+			toValue: 1,
+			useNativeDriver: false,
+			duration: 300,
+		}),
+	})
 	const lastPos = useRef<{ x: number; y: number } | null>(null)
 	const lock = useRef(true)
 	const onStart = useCallback((e: GestureResponderEvent) => {
@@ -35,24 +51,62 @@ const TodayScreen = (
 	const onCancel = useCallback((_: GestureResponderEvent) => {
 		lastPos.current = null
 	}, [])
-	const onMove = ({
-		nativeEvent: { locationX, locationY },
-	}: GestureResponderEvent) => {
+	const onMove = ({ nativeEvent }: GestureResponderEvent) => {
 		if (lock.current) {
-			const _dx = locationX - lastPos.current!.x
-			const _dy = locationY - lastPos.current!.y
-		} else {
+			const dy = nativeEvent.locationY - lastPos.current!.y
+			if (dy > 0) {
+				if (
+					action.current.status !== Status.show &&
+					action.current.status !== Status.showing
+				) {
+					if (action.current.status === Status.hidding) {
+						action.current.hidden.stop()
+					}
+
+					action.current.status = Status.showing
+					action.current.show.start(() => (action.current.status = Status.show))
+				}
+			}
+		} else if (
+			action.current.status !== Status.hidden &&
+			action.current.status !== Status.hidding
+		) {
+			if (action.current.status === Status.showing) {
+				action.current.show.stop()
+			}
+			action.current.status = Status.hidding
+			action.current.hidden.start(() => (action.current.status = Status.hidden))
 		}
-		lastPos.current!.x = locationX
-		lastPos.current!.y = locationY
+		lastPos.current!.y = nativeEvent.locationY
 	}
-	const scrollViewRef = useRef<ScrollView>(null)
 
 	return (
 		<ScrollView
 			ref={scrollViewRef}
 			onScroll={e => {
 				lock.current = e.nativeEvent.contentOffset.y === 0
+				if (lock.current) {
+					if (
+						action.current.status === Status.hidden ||
+						action.current.status === Status.hidding
+					) {
+						if (action.current.status === Status.hidding) {
+							action.current.hidden.stop()
+						}
+						action.current.status = Status.showing
+						action.current.show.start(
+							() => (action.current.status = Status.hidden)
+						)
+					}
+				} else {
+					if (action.current.status === Status.showing) {
+						action.current.show.stop()
+					}
+					action.current.status = Status.hidding
+					action.current.hidden.start(
+						() => (action.current.status = Status.hidden)
+					)
+				}
 				console.info(`error: ${lock.current}`)
 			}}
 			onTouchStart={onStart}

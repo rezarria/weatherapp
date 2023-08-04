@@ -1,59 +1,45 @@
-import {
-	Dispatch,
-	SetStateAction,
-	forwardRef,
-	useImperativeHandle,
-	useRef,
-} from 'react'
+import { Dispatch, SetStateAction, useMemo, useContext } from 'react'
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native'
-import { RouteType } from '../../navigator/TabType'
+import { RouteType } from '@src/navigator/TabType'
+import { MainScreenAnimationContext } from '@src/screen/MainScreen'
+import AppStyle from '@src/style/styles'
 
 export type Props = {
 	index: number
 	setIndex: Dispatch<SetStateAction<number>>
 	routes: RouteType[]
 }
-export type Ref = {
-	setY: (n: number) => void
-}
 
-const TimeBar = forwardRef<Ref, Props>((props, ref) => {
-	useImperativeHandle(
-		ref,
+const TimeBar = (props: Props) => {
+	const anime = useContext(MainScreenAnimationContext)
+
+	const container = useMemo(
 		() => ({
-			setY: _n => {},
+			backgroundColor: '#0000',
+			marginTop: anime.interpolate({
+				inputRange: [0, 1],
+				outputRange: [-73, 0],
+			}),
+			marginBottom: 14,
 		}),
-		[]
+		[anime]
 	)
-
-	const anime = useRef(new Animated.Value(0)).current
-
-	const isForced = (_index: number) => {
-		return {}
-	}
 	return (
-		<Animated.View
-			style={[
-				styles.container,
-				{
-					marginTop: anime,
-				},
-			]}
-		>
+		<Animated.View style={[styles.container, container]}>
 			{props.routes.map((item, index) => (
 				<Pressable
-					style={styles.button}
+					style={[AppStyle.expand, styles.button]}
 					key={index}
 					onPress={() => props.setIndex(index)}
 				>
-					<View style={[isForced(index)]}>
+					<View style={[]}>
 						<Text style={styles.text}>{item.title}</Text>
 					</View>
 				</Pressable>
 			))}
 		</Animated.View>
 	)
-})
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -67,7 +53,7 @@ const styles = StyleSheet.create({
 		gap: 16,
 	},
 	button: {
-		flex: 1,
+		height: 42,
 		borderRadius: 14,
 		backgroundColor: '#E0B6FF',
 		paddingVertical: 9,

@@ -1,5 +1,1 @@
-export {
-	default as TrendStatus,
-	TrendStatusEnum,
-	TrendStatusRef,
-} from './TrendStatus'
+export { default as TrendStatus, TrendStatusEnum } from './TrendStatus'

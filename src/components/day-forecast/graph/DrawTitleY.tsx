@@ -2,6 +2,7 @@ import { SkPoint } from '@shopify/react-native-skia'
 import { LayoutRectangle, StyleSheet, Text as TextRN, View } from 'react-native'
 import { Padding } from '@src/style/layout'
 import React, { useState } from 'react'
+import AppStyle from '@src/style/styles'
 
 export type Props = {
 	values?: string[]
@@ -40,23 +41,6 @@ type DrawProps = {
 	padding: Padding
 }
 
-// function DrawYBySkia({ size, pos, values, padding }: DrawProps) {
-// 	const step =
-// 		(size.height - padding.top! - padding.bottom! - pos.y) /
-// 		(values.length - 1);
-// 	const fontSize = step * 0.35;
-// 	const font = useFont(require('../assets/fonts/OpenSans.ttf'), fontSize);
-// 	const x = pos.x + padding.left!;
-// 	return (
-// 		<>
-// 			{values.map((n, i) => {
-// 				const y = pos.y + padding.top! + i * step;
-// 				return <Text key={i} text={n.toString()} font={font} x={x} y={y} />;
-// 			})}
-// 		</>
-// 	);
-// }
-
 function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
 	const [layout, setLayout] = useState<LayoutRectangle>()
 	return (
@@ -72,7 +56,7 @@ function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
 			<View style={styles.section}>
 				{valuesBefore?.map((n, i) => (
 					<TextRN
-						style={styles.yTitle}
+						style={[AppStyle.font, styles.yTitle]}
 						key={i}
 					>
 						{n}
@@ -83,7 +67,7 @@ function DrawY({ pos, values, valuesBefore, padding }: DrawProps) {
 				{layout &&
 					values.map((v, i) => (
 						<TextRN
-							style={styles.yTitle}
+							style={[AppStyle.font, styles.yTitle]}
 							key={i}
 						>
 							{v}
@@ -108,10 +92,6 @@ const styles = StyleSheet.create({
 	yTitle: {
 		padding: 0,
 		color: '#000',
-		fontFamily: 'ProductSans',
-		fontSize: 16,
-		fontStyle: 'normal',
-		fontWeight: '400',
 		lineHeight: 16,
 	},
 })

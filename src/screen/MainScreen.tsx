@@ -1,14 +1,22 @@
-import { StyleSheet, View } from 'react-native'
+import { Animated, StyleSheet, View } from 'react-native'
 import CustomTabs from '@src/navigator/CustomTabs'
 import { NavigationArea } from '@src/components'
 import { ScreenProps } from '../navigator/StackType'
+import { createContext, useRef } from 'react'
 
-const MainScreen = (_props: ScreenProps<'MainScreen'>) => {
+export const MainScreenAnimationContext = createContext<Animated.Value>(
+	new Animated.Value(0)
+)
+
+const MainScreen = ({}: ScreenProps<'MainScreen'>) => {
+	const anime = useRef(new Animated.Value(1)).current
 	return (
-		<View style={styles.background}>
-			<NavigationArea />
-			<CustomTabs />
-		</View>
+		<MainScreenAnimationContext.Provider value={anime}>
+			<View style={styles.background}>
+				<NavigationArea />
+				<CustomTabs />
+			</View>
+		</MainScreenAnimationContext.Provider>
 	)
 }
 

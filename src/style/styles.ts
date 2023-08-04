@@ -1,6 +1,13 @@
 import { StyleSheet } from 'react-native'
 
 const AppStyle = StyleSheet.create({
+	icon: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	expand: {
+		flex: 1,
+	},
 	scrollView: {
 		padding: 16,
 		paddingTop: 8,

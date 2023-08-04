@@ -9,17 +9,19 @@ export type CardProps = {
 }
 
 const Card = (props: CardProps) => (
-	<View style={[AppStyle.card, styles.container]}>
-		<View style={styles.icon}>{props.icon}</View>
-		<View style={styles.body}>
-			<Text style={styles.title}>{props.title}</Text>
+	<View style={[AppStyle.card, AppStyle.expand, styles.container]}>
+		<View style={[AppStyle.icon, styles.icon]}>{props.icon}</View>
+		<View style={[AppStyle.expand, styles.body]}>
+			<Text style={[AppStyle.font, styles.title]}>{props.title}</Text>
 			{props.children && (
 				<>
 					{typeof props.children === 'string' && (
-						<Text style={styles.content}>{props.children}</Text>
+						<Text style={[AppStyle.font, styles.content]}>
+							{props.children}
+						</Text>
 					)}
 					{typeof props.children !== 'string' && (
-						<View style={{ flex: 1 }}>{props.children}</View>
+						<View style={[AppStyle.expand]}>{props.children}</View>
 					)}
 				</>
 			)}
@@ -36,34 +38,20 @@ export const styles = StyleSheet.create({
 		width: 28,
 		height: 28,
 		backgroundColor: '#FFFBFF',
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 	body: {
-		flex: 1,
 		gap: 4,
 		justifyContent: 'space-between',
 	},
 	title: {
 		color: '#1E1B1B',
-		fontFamily: 'ProductSans',
-		fontSize: 14,
-		fontStyle: 'normal',
-		fontWeight: '400',
-		lineHeight: 24,
-		letterSpacing: 0.15,
 	},
 	content: {
 		color: '#1E1B1B',
 		fontFamily: 'OpenSans',
 		fontSize: 16,
-		fontStyle: 'normal',
-		fontWeight: '400',
-		lineHeight: 24,
-		letterSpacing: 0.15,
 	},
 	container: {
-		flex: 1,
 		flexGrow: 1,
 		alignItems: 'center',
 		alignContent: 'stretch',

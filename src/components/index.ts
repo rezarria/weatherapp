@@ -1,5 +1,7 @@
-export { NavigationArea } from '@src/components/navigation-area'
-export { WeatherFastInfoBar } from '@src/components/weather-fast-info-bar'
+export {
+	NavigationArea,
+	WeatherFastInfoBar,
+} from '@src/components/navigation-area'
 export { WindCard } from '@src/components/wind-card'
 export { HourlyForecast } from '@src/components/hourly-forecast'
 export { DayForecast } from '@src/components/day-forecast'

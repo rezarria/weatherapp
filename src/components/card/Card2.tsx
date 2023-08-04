@@ -3,10 +3,17 @@ import { styles as CardStyle, CardProps } from './Card'
 import AppStyle from '@src/style/styles'
 
 const Card2 = (props: CardProps) => (
-	<View style={[AppStyle.card, CardStyle.container, styles.container]}>
+	<View
+		style={[
+			AppStyle.card,
+			AppStyle.expand,
+			CardStyle.container,
+			styles.container,
+		]}
+	>
 		<View style={[styles.header]}>
-			<View style={[CardStyle.icon]}>{props.icon}</View>
-			<Text style={[CardStyle.title]}>{props.title}</Text>
+			<View style={[AppStyle.icon, CardStyle.icon]}>{props.icon}</View>
+			<Text style={[AppStyle.font, CardStyle.title]}>{props.title}</Text>
 		</View>
 		<View style={[CardStyle.body, styles.body]}>{props.children}</View>
 	</View>

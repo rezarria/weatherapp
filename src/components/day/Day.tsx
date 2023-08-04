@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 
 import { DetailButton } from './DetailButton'
+import AppStyle from '@src/style/styles'
 
 type Props = {
 	time: Date
@@ -20,17 +21,23 @@ type Props = {
 
 const Day = (props: Props) => (
 	<View style={[props.styles, styles.container]}>
-		<View style={styles.main}>
-			<Text style={styles.text}>
+		<View style={[AppStyle.expand, styles.main]}>
+			<Text style={[AppStyle.font, styles.text]}>
 				{props.time.toLocaleDateString('en-US', { weekday: 'long' })}
 			</Text>
-			<Text style={[styles.text, styles.status_text]}>{props.status}</Text>
+			<Text style={[AppStyle.font, styles.text, styles.status_text]}>
+				{props.status}
+			</Text>
 		</View>
 		<View>
-			<Text style={[styles.text, styles.temp]}>{props.temp}°</Text>
-			<Text style={[styles.text, styles.temp]}>{props.feelLike}°</Text>
+			<Text style={[AppStyle.font, styles.text, styles.temp]}>
+				{props.temp}°
+			</Text>
+			<Text style={[AppStyle.font, styles.text, styles.temp]}>
+				{props.feelLike}°
+			</Text>
 		</View>
-		<View style={styles.vr} />
+		<View style={styles.vecrticalRow} />
 		<Image
 			style={styles.image}
 			source={{
@@ -44,7 +51,7 @@ const Day = (props: Props) => (
 export default Day
 
 const styles = StyleSheet.create({
-	vr: {
+	vecrticalRow: {
 		width: 2,
 		height: 51,
 		backgroundColor: '#4B454D',
@@ -60,7 +67,6 @@ const styles = StyleSheet.create({
 		gap: 12,
 	},
 	main: {
-		flex: 1,
 		justifyContent: 'space-between',
 	},
 	image: {
@@ -68,9 +74,7 @@ const styles = StyleSheet.create({
 		height: 54,
 	},
 	text: {
-		fontFamily: 'ProductSans',
 		color: '#000',
-		fontSize: 16,
 		letterSpacing: 0.15,
 		lineHeight: 24,
 	},

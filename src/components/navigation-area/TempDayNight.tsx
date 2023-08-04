@@ -1,26 +1,62 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Animated, ViewStyle } from 'react-native'
 
-const TempDayNight = () => (
-	<View style={styles.container}>
-		<Text style={[styles.font, styles.day]}>Day 3°</Text>
-		<Text style={[styles.font, styles.night]}>Night -1°</Text>
-	</View>
-)
-
-const styles = StyleSheet.create({
-	container: {},
-	day: {},
-	night: {},
-	font: {
-		color: '#fff',
-		fontFamily: 'ProductSans',
-		fontSize: 18,
-		fontStyle: 'normal',
-		fontWeight: '700',
-		lineHeight: 24,
-		letterSpacing: 0.1,
-	},
-})
+const TempDayNight = (props: {
+	animatedStyle: Animated.WithAnimatedObject<ViewStyle>
+	anime: Animated.Value
+}) => {
+	const [display, setDisplay] = useState<'flex' | 'none'>('flex')
+	const styles = useMemo(
+		() => ({
+			container: {},
+			day: {},
+			night: {},
+			font: {
+				color: props.anime.interpolate({
+					inputRange: [0, 1],
+					outputRange: ['#fff0', '#ffff'],
+				}),
+				fontFamily: 'ProductSans',
+				fontSize: 18,
+				fontStyle: 'normal',
+				fontWeight: '700',
+				lineHeight: props.anime.interpolate({
+					inputRange: [0, 1],
+					outputRange: [0, 24],
+				}),
+				letterSpacing: 0.1,
+			},
+			image: {
+				height: props.anime.interpolate({
+					inputRange: [0, 1],
+					outputRange: [59, 107],
+				}),
+			},
+		}),
+		[props.anime]
+	)
+	useEffect(() => {
+		const id = props.anime.addListener(v => {
+			if (v.value === 0) {
+				setDisplay('none')
+			} else {
+				setDisplay('flex')
+			}
+		})
+		return () => {
+			props.anime.removeListener(id)
+		}
+	}, [props.anime])
+	return (
+		<Animated.View
+			style={[styles.container, props.animatedStyle, { display: display }]}
+		>
+			<Animated.Text style={[styles.font, styles.day]}>Day 3°</Animated.Text>
+			<Animated.Text style={[styles.font, styles.night]}>
+				Night -1°
+			</Animated.Text>
+		</Animated.View>
+	)
+}
 
 export default TempDayNight
