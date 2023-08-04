@@ -9,7 +9,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
-import StackNavigator from './src/navigator/StackNavigator'
+import StackNavigator from './navigator/StackNavigator'
 
 function App() {
 	return (
