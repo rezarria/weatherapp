@@ -1,26 +1,50 @@
+import {
+	Dispatch,
+	SetStateAction,
+	forwardRef,
+	useImperativeHandle,
+	useRef,
+} from 'react'
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native'
-import { NavigationState, SceneRendererProps } from 'react-native-tab-view'
+import { RouteType } from '../../navigator/TabType'
 
-const TimeBar = (
-	props: SceneRendererProps & {
-		navigationState: NavigationState<{
-			key: string
-			title: string
-		}>
-	}
-) => {
-	const isForced = (index: number) => {
-		return {
-			backgroundColor: props.navigationState.index === index ? 'white' : 'red',
-		}
+export type Props = {
+	index: number
+	setIndex: Dispatch<SetStateAction<number>>
+	routes: RouteType[]
+}
+export type Ref = {
+	setY: (n: number) => void
+}
+
+const TimeBar = forwardRef<Ref, Props>((props, ref) => {
+	useImperativeHandle(
+		ref,
+		() => ({
+			setY: _n => {},
+		}),
+		[]
+	)
+
+	const anime = useRef(new Animated.Value(0)).current
+
+	const isForced = (_index: number) => {
+		return {}
 	}
 	return (
-		<Animated.View style={[styles.container]}>
-			{props.navigationState.routes.map((item, index) => (
+		<Animated.View
+			style={[
+				styles.container,
+				{
+					marginTop: anime,
+				},
+			]}
+		>
+			{props.routes.map((item, index) => (
 				<Pressable
 					style={styles.button}
-					key={item.key}
-					onPress={() => props.jumpTo(item.key)}
+					key={index}
+					onPress={() => props.setIndex(index)}
 				>
 					<View style={[isForced(index)]}>
 						<Text style={styles.text}>{item.title}</Text>
@@ -29,11 +53,11 @@ const TimeBar = (
 			))}
 		</Animated.View>
 	)
-}
+})
 
 const styles = StyleSheet.create({
 	container: {
-		marginTop: 18,
+		paddingTop: 18,
 		marginBottom: 8,
 		flexDirection: 'row',
 		marginHorizontal: 16,

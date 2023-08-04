@@ -21,10 +21,10 @@ function Group({ children }: PropsWithChildren) {
 }
 
 const TodayScreen = (
-	props: SceneRendererProps & TabActionHelpers<TabParamList>
+	_props: SceneRendererProps & TabActionHelpers<TabParamList>
 ) => {
 	const lastPos = useRef<{ x: number; y: number } | null>(null)
-	const look = useRef(true)
+	const lock = useRef(true)
 	const onStart = useCallback((e: GestureResponderEvent) => {
 		console.info('start')
 		lastPos.current = {
@@ -35,25 +35,25 @@ const TodayScreen = (
 	const onCancel = useCallback((_: GestureResponderEvent) => {
 		lastPos.current = null
 	}, [])
-	const onMove = useCallback(
-		({ nativeEvent: { locationX, locationY } }: GestureResponderEvent) => {
-			if (look.current) {
-				const _dx = locationX - lastPos.current!.x
-				const _dy = locationY - lastPos.current!.y
-			} else {
-				console.log('.....')
-			}
-			lastPos.current!.x = locationX
-			lastPos.current!.y = locationY
-		},
-		[]
-	)
+	const onMove = ({
+		nativeEvent: { locationX, locationY },
+	}: GestureResponderEvent) => {
+		if (lock.current) {
+			const _dx = locationX - lastPos.current!.x
+			const _dy = locationY - lastPos.current!.y
+		} else {
+		}
+		lastPos.current!.x = locationX
+		lastPos.current!.y = locationY
+	}
+	const scrollViewRef = useRef<ScrollView>(null)
 
 	return (
 		<ScrollView
+			ref={scrollViewRef}
 			onScroll={e => {
-				look.current = e.nativeEvent.contentOffset.y === 0
-				console.info(`error: ${look.current}`)
+				lock.current = e.nativeEvent.contentOffset.y === 0
+				console.info(`error: ${lock.current}`)
 			}}
 			onTouchStart={onStart}
 			onTouchMove={onMove}
@@ -61,15 +61,6 @@ const TodayScreen = (
 			onTouchCancel={onCancel}
 		>
 			<View style={AppStyle.scrollView}>
-				<Button
-					title={'123'}
-					onPress={() => {
-						console.log(
-							'🚀 ~ file: Today.tsx:78 ~ position:',
-							props.position.hasListeners
-						)
-					}}
-				/>
 				<Group>
 					<WindCard />
 					<WindCard />

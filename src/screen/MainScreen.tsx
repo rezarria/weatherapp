@@ -3,7 +3,7 @@ import CustomTabs from '@src/navigator/CustomTabs'
 import { NavigationArea } from '@src/components'
 import { ScreenProps } from '../navigator/StackType'
 
-const MainScreen = (props: ScreenProps<'MainScreen'>) => {
+const MainScreen = (_props: ScreenProps<'MainScreen'>) => {
 	return (
 		<View style={styles.background}>
 			<NavigationArea />

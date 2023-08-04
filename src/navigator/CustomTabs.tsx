@@ -1,25 +1,9 @@
 import { SceneMap, TabView } from 'react-native-tab-view'
-import TodayScreen from '../tab/Today'
 import TomorrowScreen from '../tab/Tomorrow'
-import { useState } from 'react'
-
-export enum TabList {
-	Today,
-	Tomorrow,
-}
-
-type KeyType = Extract<keyof typeof TabList, string>
-export type ParamList = {
-	[key in KeyType]: {
-		component: React.ComponentType<unknown>
-		title: string
-	}
-}
-
-export type RouteType = {
-	key: KeyType
-	title: string
-}
+import { useEffect, useState } from 'react'
+import { TimeBar } from '../components'
+import { KeyType, ParamList, RouteType, TabList } from './TabType'
+import TodayScreen from '../tab/Today'
 
 const DATA: ParamList = {
 	Today: {
@@ -47,13 +31,21 @@ const renderScene = SceneMap(sceneData)
 const CustomTabs = () => {
 	const [index, setIndex] = useState(0)
 	const [routes] = useState<RouteType[]>(routesData)
-
+	useEffect(() => {}, [])
 	return (
-		<TabView
-			renderScene={renderScene}
-			navigationState={{ index, routes }}
-			onIndexChange={setIndex}
-		/>
+		<>
+			<TimeBar
+				index={index}
+				setIndex={setIndex}
+				routes={routes}
+			/>
+			<TabView
+				renderScene={renderScene}
+				navigationState={{ index, routes }}
+				onIndexChange={setIndex}
+				renderTabBar={() => null}
+			/>
+		</>
 	)
 }
 
