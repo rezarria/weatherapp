@@ -4,7 +4,7 @@ import AppStyle from '@src/style/styles'
 export type CardProps = {
 	icon?: ReactNode
 	title: string
-	children?: ReactNode
+	children?: ReactNode | string
 	subContext?: ReactNode
 }
 
