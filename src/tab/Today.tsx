@@ -7,7 +7,7 @@ import {
 	DayForecast,
 	ChanceOfRain,
 } from '@src/components'
-import { MainScreenAnimationContext } from '../screen/MainScreen'
+import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 export type ParamList = {
 	Today: undefined
@@ -24,7 +24,6 @@ enum Status {
 	showing,
 }
 const TodayScreen = () => {
-	const scrollViewRef = useRef<ScrollView>(null)
 	const anime = useContext(MainScreenAnimationContext)
 	const action = useRef({
 		status: Status.show,
@@ -82,7 +81,6 @@ const TodayScreen = () => {
 
 	return (
 		<ScrollView
-			ref={scrollViewRef}
 			onScroll={e => {
 				lock.current = e.nativeEvent.contentOffset.y === 0
 				if (lock.current) {
