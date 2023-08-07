@@ -1,7 +1,6 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "NodeNext",
     "baseUrl": ".",
     "paths": {
       "@assets/*": [
