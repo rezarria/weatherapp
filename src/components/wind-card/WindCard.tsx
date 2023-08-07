@@ -2,8 +2,14 @@ import React, { useEffect, useRef } from 'react'
 import Logo from '@assets/svg/wind.svg'
 import { TrendStatus, TrendStatusEnum, TrendStatusRef } from '@src/components'
 import { Card } from '@src/components/card'
+import { Text } from 'react-native'
 
-const WindCard = () => {
+type Props = {
+	value?: string
+	unit?: string
+}
+
+const WindCard = (props: Props) => {
 	const subContextRef = useRef<TrendStatusRef>(null)
 	useEffect(() => {
 		subContextRef.current?.set(TrendStatusEnum.UP, '100 m/s')
@@ -14,7 +20,10 @@ const WindCard = () => {
 			icon={<Logo />}
 			subContext={<TrendStatus ref={subContextRef} />}
 		>
-			'TEST km/s'
+			<Text>
+				{props.value}
+				<Text>{props.unit}</Text>
+			</Text>
 		</Card>
 	)
 }

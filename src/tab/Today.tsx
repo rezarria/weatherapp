@@ -17,16 +17,19 @@ export type ParamList = {
 function Group({ children }: PropsWithChildren) {
 	return <View style={AppStyle.group}>{children}</View>
 }
+
 enum Status {
-	hidden,
-	show,
-	hidding,
-	showing,
+	HIDDEN,
+	SHOW,
+	HIDDING,
+	SHOWING,
 }
+
 const TodayScreen = () => {
+	const scrollViewRef = useRef<ScrollView>(null)
 	const anime = useContext(MainScreenAnimationContext)
 	const action = useRef({
-		status: Status.show,
+		status: Status.SHOW,
 		hidden: Animated.timing(anime, {
 			toValue: 0,
 			useNativeDriver: false,
@@ -55,54 +58,55 @@ const TodayScreen = () => {
 			const dy = nativeEvent.locationY - lastPos.current!.y
 			if (dy > 0) {
 				if (
-					action.current.status !== Status.show &&
-					action.current.status !== Status.showing
+					action.current.status !== Status.SHOW &&
+					action.current.status !== Status.SHOWING
 				) {
-					if (action.current.status === Status.hidding) {
+					if (action.current.status === Status.HIDDING) {
 						action.current.hidden.stop()
 					}
 
-					action.current.status = Status.showing
-					action.current.show.start(() => (action.current.status = Status.show))
+					action.current.status = Status.SHOWING
+					action.current.show.start(() => (action.current.status = Status.SHOW))
 				}
 			}
 		} else if (
-			action.current.status !== Status.hidden &&
-			action.current.status !== Status.hidding
+			action.current.status !== Status.HIDDEN &&
+			action.current.status !== Status.HIDDING
 		) {
-			if (action.current.status === Status.showing) {
+			if (action.current.status === Status.SHOWING) {
 				action.current.show.stop()
 			}
-			action.current.status = Status.hidding
-			action.current.hidden.start(() => (action.current.status = Status.hidden))
+			action.current.status = Status.HIDDING
+			action.current.hidden.start(() => (action.current.status = Status.HIDDEN))
 		}
 		lastPos.current!.y = nativeEvent.locationY
 	}
 
 	return (
 		<ScrollView
+			ref={scrollViewRef}
 			onScroll={e => {
 				lock.current = e.nativeEvent.contentOffset.y === 0
 				if (lock.current) {
 					if (
-						action.current.status === Status.hidden ||
-						action.current.status === Status.hidding
+						action.current.status === Status.HIDDEN ||
+						action.current.status === Status.HIDDING
 					) {
-						if (action.current.status === Status.hidding) {
+						if (action.current.status === Status.HIDDING) {
 							action.current.hidden.stop()
 						}
-						action.current.status = Status.showing
+						action.current.status = Status.SHOWING
 						action.current.show.start(
-							() => (action.current.status = Status.hidden)
+							() => (action.current.status = Status.HIDDEN)
 						)
 					}
 				} else {
-					if (action.current.status === Status.showing) {
+					if (action.current.status === Status.SHOWING) {
 						action.current.show.stop()
 					}
-					action.current.status = Status.hidding
+					action.current.status = Status.HIDDING
 					action.current.hidden.start(
-						() => (action.current.status = Status.hidden)
+						() => (action.current.status = Status.HIDDEN)
 					)
 				}
 				console.info(`error: ${lock.current}`)
