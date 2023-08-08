@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useMemo, useContext } from 'react'
+import { useMemo, useContext } from 'react'
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native'
 import { RouteType } from '@src/navigator/TabType'
 import { MainScreenAnimationContext } from '@src/screen/MainScreen'
@@ -6,7 +6,7 @@ import AppStyle from '@src/style/styles'
 
 export type Props = {
 	index: number
-	setIndex: Dispatch<SetStateAction<number>>
+	setIndex: (n: number) => void
 	routes: RouteType[]
 }
 

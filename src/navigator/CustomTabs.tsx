@@ -1,9 +1,19 @@
 import { SceneMap, TabView } from 'react-native-tab-view'
-import TomorrowScreen from '../tab/Tomorrow'
-import { useEffect, useState } from 'react'
-import { TimeBar } from '../components'
+import TomorrowScreen from '@src/tab/Tomorrow'
+import {
+	Context,
+	MutableRefObject,
+	useCallback,
+	useContext,
+	useMemo,
+	useRef,
+	useState,
+} from 'react'
+import { TimeBar } from '@src/components'
 import { KeyType, ParamList, RouteType, TabList } from './TabType'
-import TodayScreen from '../tab/Today'
+import TodayScreen from '@src/tab/Today'
+import { Status } from '@src/tab/animation'
+import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
 
 const DATA: ParamList = {
 	Today: {
@@ -27,26 +37,92 @@ Object.keys(DATA).forEach(key => {
 })
 
 const renderScene = SceneMap(sceneData)
+const animationObserver: {
+	status: Status[]
+} = { status: [] }
+
+animationObserver.status.push(
+	...Array<Status>(Object.keys(sceneData).length).fill(Status.SHOW)
+)
 
 const CustomTabs = () => {
-	const [index, setIndex] = useState(0)
+	const animationEvents = useContext(MainScreenAnimationEventsContext)
+	const index = useRef(0)
+	const [_render, setRender] = useState(0)
+	const setIndex = useCallback((v: number) => {
+		index.current = v
+		setRender(r => r + 1)
+	}, [])
 	const [routes] = useState<RouteType[]>(routesData)
-	useEffect(() => {}, [])
+	const whenChange = useMemo(
+		() => onChange(setIndex, animationEvents, index),
+		[animationEvents, setIndex]
+	)
 	return (
 		<>
 			<TimeBar
-				index={index}
+				index={index.current}
 				setIndex={setIndex}
 				routes={routes}
 			/>
 			<TabView
 				renderScene={renderScene}
-				navigationState={{ index, routes }}
-				onIndexChange={setIndex}
+				navigationState={{ index: index.current, routes }}
+				onIndexChange={whenChange}
 				renderTabBar={() => null}
 			/>
 		</>
 	)
 }
+
+const onChange =
+	(
+		setIndex: (n: number) => void,
+		animationEvents: typeof MainScreenAnimationEventsContext extends Context<
+			infer U
+		>
+			? U
+			: never,
+		index: MutableRefObject<number>
+	) =>
+	(newIndex: number) => {
+		console.info(
+			`trạng thái hiện tại ${Status[animationEvents.lastPos.action.status]}`
+		)
+
+		// lưu trạng thái của tab hiện tại
+		animationObserver.status[index.current] =
+			animationEvents.lastPos.action.status
+		console.info(
+			`trạng thái nạp vào ${Status[animationEvents.lastPos.action.status]}`
+		)
+		// nạp trạng thái của tab tiếp theo
+		animationEvents.lastPos.action.status = animationObserver.status[newIndex]
+
+		// thay đổi trạng thái của tab hiện tại thành dạng -ing
+		switch (animationEvents.lastPos.action.status) {
+			case Status.HIDDEN:
+				animationEvents.lastPos.action.hidden.start()
+				break
+			case Status.HIDDING:
+				animationEvents.lastPos.action.hidden.start(finished => {
+					if (finished) {
+						animationEvents.lastPos.action.status = Status.HIDDEN
+					}
+				})
+				break
+			case Status.SHOW:
+				animationEvents.lastPos.action.show.start()
+				break
+			case Status.SHOWING:
+				animationEvents.lastPos.action.show.start(finished => {
+					if (finished) {
+						animationEvents.lastPos.action.status = Status.SHOW
+					}
+				})
+				break
+		}
+		setIndex(newIndex)
+	}
 
 export default CustomTabs

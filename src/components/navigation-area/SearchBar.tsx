@@ -10,7 +10,7 @@ import React, {
 } from 'react'
 import { Animated, StyleSheet, TextInput } from 'react-native'
 import SearchLogo from '@assets/svg/search.svg'
-import { MainScreenAnimationContext } from '../../screen/MainScreen'
+import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 export type Ref = {}
 export type Props = {}

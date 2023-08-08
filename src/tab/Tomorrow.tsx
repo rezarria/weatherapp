@@ -1,11 +1,15 @@
 import { ScrollView, StyleSheet } from 'react-native'
 import { Day } from '@src/components'
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
-import { TabParamList } from '../navigator/TabType'
+import { TabParamList } from '@src/navigator/TabType'
+import { useContext } from 'react'
+import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
 type Props = MaterialTopTabScreenProps<TabParamList, 'Tomorrow', 'Tomorrow'>
 const TomorrowScreen = (_props: Props) => {
+	const animationEvents = useContext(MainScreenAnimationEventsContext)
 	return (
 		<ScrollView
+			{...animationEvents}
 			style={styles.container}
 			contentContainerStyle={{ gap: styles.container.gap }}
 		>

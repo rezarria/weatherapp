@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import Icon from '@assets/svg/cloud and sun 1.svg'
-import { MainScreenAnimationContext } from '../../../screen/MainScreen'
+import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 const WeatherIcon = () => {
 	const anime = useContext(MainScreenAnimationContext)

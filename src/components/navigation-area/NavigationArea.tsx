@@ -12,7 +12,7 @@ import SearchBar from './SearchBar'
 import CurrentTime from './CurrentTime'
 import TempDayNight from './TempDayNight'
 import { WeatherFastInfoBar } from '@src/components'
-import { MainScreenAnimationContext } from '../../screen/MainScreen'
+import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 const NavigationArea = () => {
 	const anime = useContext(MainScreenAnimationContext)

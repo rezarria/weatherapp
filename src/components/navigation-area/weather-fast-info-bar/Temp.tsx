@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { MainScreenAnimationContext } from '../../../screen/MainScreen'
+import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 const Temp = (props: { v: number; cv?: number }) => {
 	const anime = useContext(MainScreenAnimationContext)
