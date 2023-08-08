@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
+    "module": "es2022",
     "baseUrl": ".",
     "paths": {
       "@assets/*": [

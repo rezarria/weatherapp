@@ -22,7 +22,7 @@ const useForecastStore = create<ForecastState>()(set => ({
 	clear: () => {
 		set({ lat: 0, lon: 0, forecast: [] })
 	},
-	fetch: async (lat, lon) => {
+	async fetch(lat, lon) {
 		await forecast(lat, lon).then(data =>
 			set({ lat, lon, forecast: data.list })
 		)
