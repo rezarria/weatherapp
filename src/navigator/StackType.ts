@@ -6,7 +6,7 @@ import {
 
 export type StackParamList = {
 	MainScreen: undefined
-	TestScreen: undefined
+	BeginScreen: undefined
 }
 
 export const Stack = createNativeStackNavigator<StackParamList>()

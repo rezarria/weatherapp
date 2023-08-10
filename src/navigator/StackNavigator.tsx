@@ -1,11 +1,11 @@
+import BeginScreen from '../screen/BeginScreen'
 import MainScreen from '../screen/MainScreen'
-import TestScreen from '../screen/TestScreen'
 import { Stack } from './StackType'
 
 const StackNavigator = () => {
 	return (
 		<Stack.Navigator
-			initialRouteName={'MainScreen'}
+			initialRouteName={'BeginScreen'}
 			screenOptions={{ headerShown: false }}
 		>
 			<Stack.Screen
@@ -13,8 +13,8 @@ const StackNavigator = () => {
 				component={MainScreen}
 			/>
 			<Stack.Screen
-				name={'TestScreen'}
-				component={TestScreen}
+				name={'BeginScreen'}
+				component={BeginScreen}
 			/>
 		</Stack.Navigator>
 	)

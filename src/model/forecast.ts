@@ -1,4 +1,5 @@
 import { BSON } from 'realm'
+import { Coord } from './city'
 
 export interface Main {
 	temp: number
@@ -168,10 +169,12 @@ export class ForecastModel extends Realm.Object implements Forecast {
 	snow!: Snow
 	sys!: Sys
 	dt_txt!: string
+	coord!: Coord
 	static schema = {
 		name: 'Forecast',
 		properties: {
 			_id: 'objectId',
+			coord: 'Coord',
 			dt: 'int',
 			main: 'Main',
 			weather: { type: 'list', objectType: 'Weather' },
@@ -180,7 +183,7 @@ export class ForecastModel extends Realm.Object implements Forecast {
 			visibility: 'int',
 			pop: 'int',
 			rain: 'Rain',
-			snow: 'Snow',
+			snow: 'Snow?',
 			sys: 'Sys',
 			dt_txt: 'string',
 		},

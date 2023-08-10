@@ -32,18 +32,20 @@ const forecast = (lat: number, lon: number) =>
 			}
 		})
 
+type ResultType = {
+	name: string
+	local_names: {
+		[key: string]: string
+	}
+	lat: number
+	lon: number
+	state: string
+	country: string
+}
+
 const reverse = (lat: number, lon: number, limit: number = 5) =>
 	openWeather
-		.get<
-			{
-				name: string
-				local_names: { [key: string]: string }
-				lat: number
-				lon: number
-				state: string
-				country: string
-			}[]
-		>('/geo/1.0/reverse', {
+		.get<ResultType[]>('/geo/1.0/reverse', {
 			params: { lat, lon, limit },
 		})
 		.then(res => {

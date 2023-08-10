@@ -2,7 +2,6 @@ import { SceneMap, TabView } from 'react-native-tab-view'
 import TomorrowScreen from '@src/tab/Tomorrow'
 import {
 	Context,
-	MutableRefObject,
 	useCallback,
 	useContext,
 	useMemo,
@@ -55,7 +54,7 @@ const CustomTabs = () => {
 	}, [])
 	const [routes] = useState<RouteType[]>(routesData)
 	const whenChange = useMemo(
-		() => onChange(setIndex, animationEvents, index),
+		() => onChange(setIndex, animationEvents),
 		[animationEvents, setIndex]
 	)
 	return (
@@ -82,20 +81,9 @@ const onChange =
 			infer U
 		>
 			? U
-			: never,
-		index: MutableRefObject<number>
+			: never
 	) =>
 	(newIndex: number) => {
-		console.info(
-			`trạng thái hiện tại ${Status[animationEvents.lastPos.action.status]}`
-		)
-
-		// lưu trạng thái của tab hiện tại
-		animationObserver.status[index.current] =
-			animationEvents.lastPos.action.status
-		console.info(
-			`trạng thái nạp vào ${Status[animationEvents.lastPos.action.status]}`
-		)
 		// nạp trạng thái của tab tiếp theo
 		animationEvents.lastPos.action.status = animationObserver.status[newIndex]
 

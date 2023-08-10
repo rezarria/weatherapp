@@ -1,31 +1,23 @@
 import { create } from 'zustand'
-import { Forecast } from '../model/forecast'
-import { forecast } from '../api/openWeather'
 
 type State = {
+	localtionName: string
 	lat: number
 	lon: number
-	forecast: Forecast[]
 }
 
 type Actions = {
-	clear: () => void
-	fetch: (lat: number, lon: number) => void
+	setLocaltion: (localtion: string, lat: number, pos: number) => void
 }
 
-type ForecastState = State & Actions
+export type ForecastState = State & Actions
 
 const useForecastStore = create<ForecastState>()(set => ({
+	localtionName: '',
 	lat: 0,
 	lon: 0,
-	forecast: [],
-	clear: () => {
-		set({ lat: 0, lon: 0, forecast: [] })
-	},
-	async fetch(lat, lon) {
-		await forecast(lat, lon).then(data =>
-			set({ lat, lon, forecast: data.list })
-		)
+	setLocaltion: (localtionName, lat, lon) => {
+		set({ localtionName, lat, lon })
 	},
 }))
 

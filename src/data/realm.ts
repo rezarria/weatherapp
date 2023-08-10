@@ -25,6 +25,6 @@ export const { RealmProvider, useObject, useQuery, useRealm } =
 			SnowModel,
 			MainModel,
 		],
-		schemaVersion: 20,
+		schemaVersion: 22,
 		deleteRealmIfMigrationNeeded: true,
 	})

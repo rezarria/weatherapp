@@ -1,7 +1,7 @@
 import { BSON, List, Object } from 'realm'
 import { ForecastModel } from './forecast'
 
-interface Coord {
+export interface Coord {
 	lat: number
 	lon: number
 }
@@ -21,7 +21,6 @@ export class CoordRealm extends Object implements Coord {
 }
 
 export interface City {
-	id: number
 	name: string
 	coord: Coord
 	country: string
@@ -33,7 +32,6 @@ export interface City {
 
 export class CityModel extends Realm.Object implements City {
 	_id!: BSON.ObjectId
-	id!: number
 	name!: string
 	coord!: Coord
 	country!: string
@@ -47,7 +45,6 @@ export class CityModel extends Realm.Object implements City {
 		primaryKey: '_id',
 		properties: {
 			_id: 'objectId',
-			id: 'int',
 			name: 'string',
 			coord: 'Coord',
 			country: 'string',

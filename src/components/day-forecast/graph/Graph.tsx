@@ -51,7 +51,7 @@ const Graph = (props: Props) => {
 							<DrawLine
 								points={[...Array(6283).keys()].map((n, i) => ({
 									x: (i - 3141) / 100,
-									y: Math.sin((i - 3141) / 100),
+									y: Math.tanh((i - 3141) / 100),
 								}))}
 								pos={{ x: 0, y: 20 }}
 								padding={{ left: 0, right: 0, top: 0, bottom: 4 }}
