@@ -11,14 +11,16 @@ import React, {
 import { Animated, StyleSheet, TextInput } from 'react-native'
 import SearchLogo from '@assets/svg/search.svg'
 import { MainScreenAnimationContext } from '@src/screen/MainScreen'
+import useForecastStore from '../../zustand/store'
 
 export type Ref = {}
 export type Props = {}
 
 const SearchBar = forwardRef<Ref, Props>((props, ref) => {
 	const anime = useContext(MainScreenAnimationContext)
+
 	useImperativeHandle(ref, () => ({}), [])
-	const [input, setInput] = useState('Kharkiv, Ukraine')
+	const [input, setInput] = useState(useForecastStore(e => e.localtionName))
 	return (
 		<Animated.View
 			style={[

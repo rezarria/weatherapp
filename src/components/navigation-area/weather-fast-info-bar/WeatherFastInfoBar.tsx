@@ -3,12 +3,12 @@ import { Animated, StyleSheet } from 'react-native'
 import WeatherIcon from './WeatherIcon'
 import Temp from './Temp'
 
-const WeatherFastInfoBar = () => {
+const WeatherFastInfoBar = (props: { temp: number; feelLike: number }) => {
 	return (
 		<Animated.View style={[styles.container, {}]}>
 			<Temp
-				v={3}
-				cv={-2}
+				v={props.temp}
+				cv={props.feelLike}
 			/>
 			<WeatherIcon />
 		</Animated.View>

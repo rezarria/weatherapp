@@ -5,15 +5,27 @@ import { Card } from '@src/components/card'
 import { Text } from 'react-native'
 
 type Props = {
-	value?: string
+	value?: number
+	guestValue?: number
 	unit?: string
 }
 
 const WindCard = (props: Props) => {
 	const subContextRef = useRef<TrendStatusRef>(null)
 	useEffect(() => {
-		subContextRef.current?.set(TrendStatusEnum.UP, '100 m/s')
+		const speed = ((props.guestValue ?? 0) * 60 * 60) / 1000
+		subContextRef.current?.set(
+			speed > 0
+				? TrendStatusEnum.UP
+				: speed < 0
+				? TrendStatusEnum.DOWN
+				: TrendStatusEnum.NIL,
+			Math.abs(speed).toFixed(2) + ' km/h'
+		)
 	})
+	const windSpeed = (((props.value ?? 0) * 60 * 60) / 1000)
+		.toFixed(2)
+		.toString()
 	return (
 		<Card
 			title={'Wind speed'}
@@ -21,7 +33,7 @@ const WindCard = (props: Props) => {
 			subContext={<TrendStatus ref={subContextRef} />}
 		>
 			<Text>
-				{props.value}
+				{windSpeed}
 				<Text>{props.unit}</Text>
 			</Text>
 		</Card>

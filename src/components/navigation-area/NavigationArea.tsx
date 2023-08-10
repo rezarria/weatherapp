@@ -13,9 +13,13 @@ import CurrentTime from './CurrentTime'
 import TempDayNight from './TempDayNight'
 import { WeatherFastInfoBar } from '@src/components'
 import { MainScreenAnimationContext } from '@src/screen/MainScreen'
+import { useQuery } from '../../data/realm'
+import { ForecastModel } from '../../model/forecast'
+import useForecastStore from '../../zustand/store'
 
 const NavigationArea = () => {
 	const anime = useContext(MainScreenAnimationContext)
+	const query = useQuery(ForecastModel)
 	const animatedStyle = useRef<{
 		[key: string]: Animated.WithAnimatedObject<
 			ViewStyle | TextStyle | ImageStyle
@@ -31,63 +35,77 @@ const NavigationArea = () => {
 			opacity: anime,
 		},
 	}).current
+	const localtion = useForecastStore(e => ({
+		lat: e.lat,
+		lon: e.lon,
+		name: e.localtionName,
+	}))
+	const currentForcast = getCurrentForecast(query, localtion.lat, localtion.lon)
+	console.log(currentForcast)
 	return (
-		<Animated.View
-			style={[
-				styles.rounded,
-				styles.background,
-				{
-					borderRadius: anime.interpolate({
-						inputRange: [0, 1],
-						outputRange: [0, 33],
-					}),
-				},
-			]}
-		>
-			<Animated.Image
-				style={[styles.image, [{ opacity: anime }]]}
-				source={require('@assets/img/bg.png')}
-			/>
-			<StatusBar
-				translucent={true}
-				backgroundColor={'#0000'}
-			/>
-			<View style={[styles.container]}>
-				<SearchBar />
-				<WeatherFastInfoBar />
+		<>
+			{currentForcast && (
 				<Animated.View
 					style={[
+						styles.rounded,
+						styles.background,
 						{
-							paddingBottom: anime.interpolate({
+							borderRadius: anime.interpolate({
 								inputRange: [0, 1],
-								outputRange: [72, 0],
+								outputRange: [0, 33],
 							}),
 						},
 					]}
 				>
-					<Animated.View
-						style={[
-							styles.footer,
-							{
-								marginTop: anime.interpolate({
-									inputRange: [0, 1],
-									outputRange: [0, 73],
-								}),
-							},
-						]}
-					>
-						<CurrentTime
-							anime={anime}
-							animatedStyle={animatedStyle.view}
+					<Animated.Image
+						style={[styles.image, [{ opacity: anime }]]}
+						source={require('@assets/img/bg.png')}
+					/>
+					<StatusBar
+						translucent={true}
+						backgroundColor={'#0000'}
+					/>
+					<View style={[styles.container]}>
+						<SearchBar />
+						<WeatherFastInfoBar
+							temp={currentForcast.main.temp}
+							feelLike={currentForcast.main.feels_like}
 						/>
-						<TempDayNight
-							anime={anime}
-							animatedStyle={animatedStyle.view}
-						/>
-					</Animated.View>
+						<Animated.View
+							style={[
+								{
+									paddingBottom: anime.interpolate({
+										inputRange: [0, 1],
+										outputRange: [72, 0],
+									}),
+								},
+							]}
+						>
+							<Animated.View
+								style={[
+									styles.footer,
+									{
+										marginTop: anime.interpolate({
+											inputRange: [0, 1],
+											outputRange: [0, 73],
+										}),
+									},
+								]}
+							>
+								<CurrentTime
+									anime={anime}
+									animatedStyle={animatedStyle.view}
+								/>
+								<TempDayNight
+									anime={anime}
+									animatedStyle={animatedStyle.view}
+								/>
+							</Animated.View>
+						</Animated.View>
+					</View>
 				</Animated.View>
-			</View>
-		</Animated.View>
+			)}
+		</>
 	)
 }
 
@@ -122,5 +140,32 @@ const styles = StyleSheet.create({
 		flexBasis: 'auto',
 	},
 })
+
+const getCurrentForecast = (
+	query: Realm.Results<ForecastModel>,
+	lat: number,
+	lon: number
+) => {
+	const result = query.filtered(
+		'dt BETWEEN {$0,$1} AND coord.lat == $2 AND coord.lon == $3',
+		Date.now() - 60 * 60 * 3,
+		Date.now() + 60 * 60 * 6,
+		lat,
+		lon
+	)
+	let minDif = Infinity
+	let closest: ForecastModel | undefined
+	const nowTimestamp = Date.now() / 1000
+	for (const forecast of result) {
+		let dif = Math.abs(nowTimestamp - forecast.dt)
+		if (dif < minDif) {
+			minDif = dif
+			closest = forecast
+		} else if (dif > minDif) {
+			break
+		}
+	}
+	return closest
+}
 
 export default NavigationArea

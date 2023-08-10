@@ -4,7 +4,7 @@ import { Canvas, Circle } from '@shopify/react-native-skia'
 import AppStyle from '../style/styles'
 import { useEffect, useState } from 'react'
 import { useQuery, useRealm } from '../data/realm'
-import { firstJob } from '../job/fetchWeather'
+import { firstJob as doFirstJob } from '../job/fetchWeather'
 import useForecastStore from '../zustand/store'
 import { CityModel } from '../model/city'
 import { ForecastModel } from '../model/forecast'
@@ -14,17 +14,13 @@ const BeginScreen = (props: ScreenProps<'BeginScreen'>) => {
 	const cityQuery = useQuery(CityModel)
 	const forecastQuery = useQuery(ForecastModel)
 	const [size, setSize] = useState({ width: 0, height: 0 })
-	const [setLocaltion, o] = useForecastStore(s => [
-		s.setLocaltion,
-		{ lat: s.lat, lon: s.lon, n: s.localtionName },
-	])
-	console.debug(o)
+	const [setLocaltion] = useForecastStore(s => [s.setLocaltion])
 	useEffect(() => {
-		//firstJob(realm, cityQuery, forecastQuery, setLocaltion)
-		setTimeout(() => {
+		console.log(props.navigation)
+		doFirstJob(realm, setLocaltion, () => {
 			props.navigation.navigate('MainScreen')
-		}, 500)
-	}, [props.navigation, realm, setLocaltion, forecastQuery, cityQuery])
+		})
+	}, [props.navigation, realm, setLocaltion])
 	return (
 		<View
 			style={[AppStyle.expand]}

@@ -4,6 +4,7 @@ import { NavigationArea } from '@src/components'
 import { ScreenProps } from '@src/navigator/StackType'
 import { createContext, useRef } from 'react'
 import createEvents from '@src/tab/animation'
+import DataWrapper from '../job/DataWarpper'
 
 export const MainScreenAnimationEventsContext = createContext<
 	ReturnType<typeof createEvents>
@@ -19,10 +20,12 @@ const MainScreen = ({}: ScreenProps<'MainScreen'>) => {
 	return (
 		<MainScreenAnimationContext.Provider value={anime}>
 			<MainScreenAnimationEventsContext.Provider value={animationEvents}>
-				<View style={styles.background}>
-					<NavigationArea />
-					<CustomTabs />
-				</View>
+				<DataWrapper>
+					<View style={styles.background}>
+						<NavigationArea />
+						<CustomTabs />
+					</View>
+				</DataWrapper>
 			</MainScreenAnimationEventsContext.Provider>
 		</MainScreenAnimationContext.Provider>
 	)

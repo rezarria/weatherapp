@@ -1,5 +1,5 @@
-import { PropsWithChildren, useContext, useEffect, useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { PropsWithChildren, useContext, useMemo } from 'react'
+import { Falsy, ScrollView, View } from 'react-native'
 import AppStyle from '@src/style/styles'
 import {
 	WindCard,
@@ -20,31 +20,37 @@ export type ParamList = {
 function Group({
 	children,
 	target = false,
-}: PropsWithChildren<{ target: any }>) {
-	return (
-		<View style={AppStyle.group}>
-			{children && target === false && children}
-		</View>
-	)
+}: PropsWithChildren<{ target: object | Falsy }>) {
+	return <View style={AppStyle.group}>{children && target && children}</View>
 }
 
 const TodayScreen = () => {
 	const animationEvents = useContext(MainScreenAnimationEventsContext)
-	const [_list, setList] = useState<Forecast[]>([])
-	const [forecast, setForecast] = useState<Forecast | null>(null)
+	const query = useQuery(ForecastModel)
 	const [postion] = useForecastStore(store => [
 		{ lat: store.lat, lon: store.lon },
 	])
-	const query = useQuery(ForecastModel)
-	useEffect(() => {
-		//getCurrentForecast(query, postion, setList, setForecast)
-	}, [postion, query])
+	const list = useMemo(
+		() => getCurrentForecast(query, postion),
+		[postion, query]
+	)
+	const currentForecast = findClosestForcast(list)
+	const oldForecast =
+		currentForecast && list.indexOf(currentForecast) !== 0
+			? list[list.indexOf(currentForecast) - 1]
+			: null
 	return (
 		<ScrollView {...animationEvents}>
 			<View style={AppStyle.scrollView}>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
+				<Group target={currentForecast}>
+					<WindCard
+						value={currentForecast!.wind.speed}
+						unit={'km/h'}
+						guestValue={
+							currentForecast!.wind.speed -
+							(oldForecast?.wind.speed ?? currentForecast!.wind.speed)
+						}
+					/>
 				</Group>
 				<DayForecast />
 				<ChanceOfRain
@@ -59,34 +65,6 @@ const TodayScreen = () => {
 					]}
 				/>
 				<HourlyForecast />
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
-				<Group target={forecast}>
-					<WindCard />
-					<WindCard />
-				</Group>
 			</View>
 		</ScrollView>
 	)
@@ -96,21 +74,28 @@ export default TodayScreen
 
 const getCurrentForecast = (
 	query: Realm.Results<ForecastModel>,
-	postion: { lat: number; lon: number },
-	setList: React.Dispatch<React.SetStateAction<Forecast[]>>,
-	setForecast: React.Dispatch<React.SetStateAction<Forecast | null>>
+	postion: { lat: number; lon: number }
 ) => {
 	const nowTimestamp = Math.floor(Date.now() / 1000)
 	query.filtered(
-		'$0 >= dt AND dt <= $1 AND coord.lat = $2 AND coord.lon = $3',
+		'$0 >= dt AND coord.lat = $1 AND coord.lon = $2 SORT(dt ASC) LIMIT(40)',
 		nowTimestamp,
-		nowTimestamp + 24 * 60 * 60,
 		postion.lat,
 		postion.lon
 	)
-	const list = Array.from(query.values())
-	if (list.length > 0) {
-		setForecast(list[0])
-		setList(list)
-	}
+	return Array.from(query.values())
+}
+const findClosestForcast: (
+	list: ForecastModel[]
+) => ForecastModel | null = list => {
+	const nowTimestamp = Math.floor(Date.now() / 1000)
+	let minDif = Infinity
+	let closestForecast: ForecastModel | null = null
+	list.forEach(forecast => {
+		const dif = Math.abs(forecast.dt - nowTimestamp)
+		if (dif < minDif) {
+			closestForecast = forecast
+		}
+	})
+	return closestForecast
 }

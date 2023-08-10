@@ -5,8 +5,8 @@ import { Stack } from './StackType'
 const StackNavigator = () => {
 	return (
 		<Stack.Navigator
-			initialRouteName={'BeginScreen'}
-			screenOptions={{ headerShown: false }}
+			initialRouteName={'MainScreen'}
+			screenOptions={{ headerShown: false, animation: 'fade' }}
 		>
 			<Stack.Screen
 				name={'MainScreen'}
