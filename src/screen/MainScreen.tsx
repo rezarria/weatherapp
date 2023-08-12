@@ -20,12 +20,11 @@ const MainScreen = ({}: ScreenProps<'MainScreen'>) => {
 	return (
 		<MainScreenAnimationContext.Provider value={anime}>
 			<MainScreenAnimationEventsContext.Provider value={animationEvents}>
-				<DataWrapper>
-					<View style={styles.background}>
-						<NavigationArea />
-						<CustomTabs />
-					</View>
-				</DataWrapper>
+				<View style={styles.background}>
+					<DataWrapper />
+					<NavigationArea />
+					<CustomTabs />
+				</View>
 			</MainScreenAnimationEventsContext.Provider>
 		</MainScreenAnimationContext.Provider>
 	)

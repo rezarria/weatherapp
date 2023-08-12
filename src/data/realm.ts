@@ -1,30 +1,31 @@
-import { CityModel, CoordRealm } from '../model/city'
-import {
-	CloundsModel,
-	ForecastModel,
-	MainModel,
-	RainModel,
-	SnowModel,
-	SysModel,
-	WeatherModel,
-	WindModel,
-} from '../model/forecast'
 import { createRealmContext } from '@realm/react'
+import {
+	Forecast,
+	City,
+	Clounds,
+	Main,
+	Rain,
+	Snow,
+	Sys,
+	Weather,
+	Wind,
+	Coord,
+} from './model'
 
 export const { RealmProvider, useObject, useQuery, useRealm } =
 	createRealmContext({
 		schema: [
-			CityModel,
-			ForecastModel,
-			CoordRealm,
-			SysModel,
-			WindModel,
-			WeatherModel,
-			CloundsModel,
-			RainModel,
-			SnowModel,
-			MainModel,
+			Forecast,
+			City,
+			Coord,
+			Clounds,
+			Main,
+			Rain,
+			Snow,
+			Sys,
+			Weather,
+			Wind,
 		],
-		schemaVersion: 22,
+		schemaVersion: 24,
 		deleteRealmIfMigrationNeeded: true,
 	})

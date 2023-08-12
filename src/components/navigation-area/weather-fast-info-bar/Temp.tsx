@@ -30,7 +30,7 @@ const Temp = (props: { v: number; cv?: number }) => {
 					},
 				]}
 			>
-				{props.v}°
+				{(props.v - 272.15).toFixed(1)}°
 			</Animated.Text>
 			{props.cv && (
 				<Animated.Text
@@ -45,7 +45,7 @@ const Temp = (props: { v: number; cv?: number }) => {
 						},
 					]}
 				>
-					Feels like {props.cv}°
+					Feels like {(props.cv - 272.15).toFixed(1)}°
 				</Animated.Text>
 			)}
 		</View>
@@ -54,7 +54,6 @@ const Temp = (props: { v: number; cv?: number }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row',
 		alignItems: 'baseline',
 		justifyContent: 'flex-start',
 		alignContent: 'flex-end',
@@ -67,7 +66,6 @@ const styles = StyleSheet.create({
 		fontWeight: '400',
 	},
 	feelsLike: {
-		marginLeft: -15,
 		color: '#fff',
 		fontFamily: 'ProductSans',
 		fontStyle: 'normal',

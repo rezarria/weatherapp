@@ -1,23 +1,19 @@
 import { create } from 'zustand'
+import { City } from '../data/model'
 
 type State = {
-	localtionName: string
-	lat: number
-	lon: number
+	city?: City
 }
 
 type Actions = {
-	setLocaltion: (localtion: string, lat: number, pos: number) => void
+	setCity: (city: City) => void
 }
 
 export type ForecastState = State & Actions
 
 const useForecastStore = create<ForecastState>()(set => ({
-	localtionName: '',
-	lat: 0,
-	lon: 0,
-	setLocaltion: (localtionName, lat, lon) => {
-		set({ localtionName, lat, lon })
+	setCity(city) {
+		set({ city })
 	},
 }))
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { City } from '../model/city'
-import { Forecast } from '../model/forecast'
+import Forecast from '../model/forecast'
+import City from '../model/city'
 
 const openWeather = axios.create({
 	baseURL: 'http://api.openweathermap.org',
@@ -20,19 +20,19 @@ const forecast = (lat: number, lon: number) =>
 			city: City
 		}>('/data/2.5/forecast', {
 			params: {
-				lat,
-				lon,
+				lat: lat.toFixed(2),
+				lon: lon.toFixed(2),
 			},
 		})
 		.then(res => {
 			if (res.status === 200) {
 				return res.data
 			} else {
-				throw res
+				throw new Error(JSON.stringify(res.config))
 			}
 		})
 
-type ResultType = {
+export type ReverseResultType = {
 	name: string
 	local_names: {
 		[key: string]: string
@@ -43,9 +43,10 @@ type ResultType = {
 	country: string
 }
 
-const reverse = (lat: number, lon: number, limit: number = 5) =>
-	openWeather
-		.get<ResultType[]>('/geo/1.0/reverse', {
+const reverse = (lat: number, lon: number, limit: number = 5) => {
+	console.debug(`tìm kiếm địa điểm từ tọa độ ${lat} ${lon}`)
+	return openWeather
+		.get<ReverseResultType[]>('/geo/1.0/reverse', {
 			params: { lat, lon, limit },
 		})
 		.then(res => {
@@ -55,6 +56,11 @@ const reverse = (lat: number, lon: number, limit: number = 5) =>
 				throw res
 			}
 		})
+		.catch(r => {
+			console.debug(`có lỗi phát sinh khi gọi api lấy địa điểm, mess: ${r}`)
+			throw r
+		})
+}
 
 export { forecast, reverse }
 export default openWeather

@@ -1,8 +1,8 @@
 import { useQuery } from '@realm/react'
-import { ForecastModel } from '../../../model/forecast'
+import { Forecast } from '../../../data/model'
 
 const WeatherFastInfoBar = () => {
-	const query = useQuery(ForecastModel)
+	const query = useQuery(Forecast)
 	const nowTimestamp = Date.now() / 1000
 
 	return <WeatherFastInfoBar />

@@ -1,4 +1,9 @@
-import React, { forwardRef, useImperativeHandle } from 'react'
+import React, {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useState,
+} from 'react'
 import { Animated, StyleSheet, TextStyle } from 'react-native'
 
 const CurrentTime = forwardRef<
@@ -10,7 +15,13 @@ const CurrentTime = forwardRef<
 		anime: Animated.Value
 	}
 >((props, ref) => {
-	const currentTime = 'January 18, 16:14'
+	const render = useState(0)[1]
+	const currentTime = new Date().toLocaleDateString('vi', {
+		day: '2-digit',
+		month: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+	})
 	useImperativeHandle(
 		ref,
 		() => ({
@@ -18,7 +29,14 @@ const CurrentTime = forwardRef<
 		}),
 		[]
 	)
-
+	useEffect(() => {
+		const job = setInterval(() => {
+			render(i => i + 1)
+		}, 1000)
+		return () => {
+			clearInterval(job)
+		}
+	}, [render])
 	return (
 		<Animated.View>
 			<Animated.Text

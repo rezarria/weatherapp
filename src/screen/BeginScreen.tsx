@@ -14,7 +14,7 @@ const BeginScreen = (props: ScreenProps<'BeginScreen'>) => {
 	const cityQuery = useQuery(CityModel)
 	const forecastQuery = useQuery(ForecastModel)
 	const [size, setSize] = useState({ width: 0, height: 0 })
-	const [setLocaltion] = useForecastStore(s => [s.setLocaltion])
+	const [setLocaltion] = useForecastStore(s => [s.setCity])
 	useEffect(() => {
 		console.log(props.navigation)
 		doFirstJob(realm, setLocaltion, () => {

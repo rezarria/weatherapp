@@ -20,7 +20,8 @@ const SearchBar = forwardRef<Ref, Props>((props, ref) => {
 	const anime = useContext(MainScreenAnimationContext)
 
 	useImperativeHandle(ref, () => ({}), [])
-	const [input, setInput] = useState(useForecastStore(e => e.localtionName))
+	const currentCity = useForecastStore(e => e.city)
+	const [input, setInput] = useState(currentCity?.name ?? '')
 	return (
 		<Animated.View
 			style={[

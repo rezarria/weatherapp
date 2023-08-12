@@ -1,9 +1,13 @@
 import React, { useContext } from 'react'
-import { Animated, StyleSheet, View } from 'react-native'
-import Icon from '@assets/svg/cloud and sun 1.svg'
+import { Animated, Image, StyleSheet, View } from 'react-native'
 import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
-const WeatherIcon = () => {
+type Props = {
+	name: string
+	icon: string
+}
+
+const WeatherIcon = ({ name, icon }: Props) => {
 	const anime = useContext(MainScreenAnimationContext)
 	const size = anime.interpolate({
 		inputRange: [0, 1],
@@ -17,10 +21,11 @@ const WeatherIcon = () => {
 					width: size,
 				}}
 			>
-				<Icon
-					width={'100%'}
-					height={'100%'}
+				<Image
 					style={styles.icon}
+					source={{
+						uri: `https://openweathermap.org/img/wn/${icon}@4x.png`,
+					}}
 				/>
 			</Animated.View>
 			<Animated.Text
@@ -38,7 +43,7 @@ const WeatherIcon = () => {
 					},
 				]}
 			>
-				Cloudy
+				{name}
 			</Animated.Text>
 		</View>
 	)
@@ -50,8 +55,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	icon: {
-		width: 107,
-		height: 107,
+		height: '100%',
+		aspectRatio: 1,
 	},
 	text: {
 		textAlign: 'center',
