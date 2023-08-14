@@ -17,6 +17,7 @@ export default function DrawGrid({ nums, pos, size, padding }: DrawGridProps) {
 			<Line
 				key={i}
 				color={'rgba(0, 0, 0, 0.13)'}
+				strokeWidth={2}
 				p1={{ x, y }}
 				p2={{ x: size.width - padding.right, y }}
 			/>

@@ -43,6 +43,7 @@ const NavigationArea = () => {
 	const [currentForcast, setCurrentForcast] = useState(() =>
 		getCurrentForecast(forecastsInDay)
 	)
+
 	const [dayNightTemp, setDayNightTemp] = useState(() =>
 		calacAvgTemp(currentCity, forecastsInDay)
 	)
@@ -54,7 +55,8 @@ const NavigationArea = () => {
 	}, [query, currentCity])
 
 	useEffect(() => {
-		setCurrentForcast(getCurrentForecast(forecastsInDay))
+		const forcast = getCurrentForecast(forecastsInDay)
+		setCurrentForcast(forcast)
 	}, [forecastsInDay])
 
 	useEffect(() => {
