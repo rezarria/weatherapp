@@ -3,8 +3,8 @@ import { Animated, Image, StyleSheet, View } from 'react-native'
 import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 type Props = {
-	name: string
-	icon: string
+	name?: string
+	icon?: string
 }
 
 const WeatherIcon = ({ name, icon }: Props) => {
@@ -21,12 +21,14 @@ const WeatherIcon = ({ name, icon }: Props) => {
 					width: size,
 				}}
 			>
-				<Image
-					style={styles.icon}
-					source={{
-						uri: `https://openweathermap.org/img/wn/${icon}@4x.png`,
-					}}
-				/>
+				{icon && (
+					<Image
+						style={styles.icon}
+						source={{
+							uri: `https://openweathermap.org/img/wn/${icon}@4x.png`,
+						}}
+					/>
+				)}
 			</Animated.View>
 			<Animated.Text
 				style={[

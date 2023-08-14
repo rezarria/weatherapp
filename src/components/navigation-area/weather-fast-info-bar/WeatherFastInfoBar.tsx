@@ -4,15 +4,15 @@ import WeatherIcon from './WeatherIcon'
 import Temp from './Temp'
 
 const WeatherFastInfoBar = (props: {
-	temp: number
-	feelLike: number
-	weatherName: string
-	weatherIcon: string
+	temp?: number
+	feelLike?: number
+	weatherName?: string
+	weatherIcon?: string
 }) => {
 	return (
 		<Animated.View style={[styles.container, {}]}>
 			<Temp
-				v={props.temp}
+				v={props.temp ?? Number.NaN}
 				cv={props.feelLike}
 			/>
 			<WeatherIcon

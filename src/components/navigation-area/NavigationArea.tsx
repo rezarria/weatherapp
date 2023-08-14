@@ -13,12 +13,13 @@ import CurrentTime from './CurrentTime'
 import TempDayNight from './TempDayNight'
 import { WeatherFastInfoBar } from '@src/components'
 import { MainScreenAnimationContext } from '@src/screen/MainScreen'
-import { useQuery } from '../../data/realm'
-import useForecastStore from '../../zustand/store'
+import { useQuery } from '@src/data/realm'
+import useForecastStore from '@src/zustand/store'
 import { BSON } from 'realm'
-import { Forecast } from '../../data/model'
+import { City, Forecast } from '@src/data/model'
 
 const NavigationArea = () => {
+	const [currentCity, tick] = useForecastStore(e => [e.city, e.tick])
 	const anime = useContext(MainScreenAnimationContext)
 	const query = useQuery(Forecast)
 	const animatedStyle = useRef<{
@@ -36,37 +37,51 @@ const NavigationArea = () => {
 			opacity: anime,
 		},
 	}).current
-	const currentCity = useForecastStore(e => e.city)
-	const [forecasts, setForecasts] = useState<Forecast[]>([])
-	const [currentForcast, setCurrentForcast] = useState<Forecast | null>(null)
-	const [dayNightTemp, setDayNightTemp] = useState({ day: 0, night: 0 })
+	const [forecastsInDay, setForecastInDay] = useState<Forecast[]>(() =>
+		getTodayForcasts(query, currentCity?._id)
+	)
+	const [currentForcast, setCurrentForcast] = useState(() =>
+		getCurrentForecast(forecastsInDay)
+	)
+	const [dayNightTemp, setDayNightTemp] = useState(() =>
+		calacAvgTemp(currentCity, forecastsInDay)
+	)
+	console.debug(`số forecast trong ngày: ${forecastsInDay.length}`)
+	console.debug(`forecast hiện tại: ${JSON.stringify(currentForcast)}`)
 	useEffect(() => {
-		setForecasts(getTodayForcasts(query, currentCity?._id))
-	}, [currentCity?._id, query])
+		setForecastInDay(getTodayForcasts(query, currentCity?._id))
+		console.debug('lấy forecast trong ngày...')
+	}, [query, currentCity])
+
 	useEffect(() => {
-		setCurrentForcast(getCurrentForecast(forecasts))
-	}, [forecasts])
+		setCurrentForcast(getCurrentForecast(forecastsInDay))
+	}, [forecastsInDay])
+
 	useEffect(() => {
-		if (currentCity == null) {
-			return
+		setDayNightTemp(calacAvgTemp(currentCity, forecastsInDay))
+	}, [currentCity, forecastsInDay])
+
+	useEffect(() => {
+		if (currentForcast) {
+			const timeAboveTimestamp =
+				(currentForcast.dt - Math.floor(Date.now() / 1000)) * 1000
+			const task = setInterval(() => {
+				const nextForecast = forecastsInDay.at(
+					forecastsInDay.indexOf(currentForcast) + 1
+				)
+				if (nextForecast) {
+					setCurrentForcast(nextForecast)
+				}
+			}, timeAboveTimestamp)
+			return () => {
+				clearInterval(task)
+			}
 		}
-		const dayForecast = forecasts.filter(
-			forecast =>
-				forecast.dt >= currentCity.sunrise && forecast.dt <= currentCity.sunset
-		)
-		setDayNightTemp({
-			day: dayForecast
-				.map(i => i.main.temp)
-				.reduce((a, c, _i, arr) => a + c / arr.length, 0),
-			night: forecasts
-				.filter(i => !dayForecast.includes(i))
-				.map(i => i.main.temp)
-				.reduce((a, c, _i, arr) => a + c / arr.length, 0),
-		})
-	}, [forecasts, currentCity])
+	}, [currentForcast, forecastsInDay])
+
 	return (
 		<>
-			{currentForcast && (
+			{currentCity && tick !== 0 && (
 				<Animated.View
 					style={[
 						styles.rounded,
@@ -90,10 +105,10 @@ const NavigationArea = () => {
 					<View style={[styles.container]}>
 						<SearchBar />
 						<WeatherFastInfoBar
-							temp={currentForcast.main.temp}
-							feelLike={currentForcast.main.feels_like}
-							weatherName={currentForcast.weather[0].main}
-							weatherIcon={currentForcast.weather[0].icon}
+							temp={currentForcast?.main.temp}
+							feelLike={currentForcast?.main.feels_like}
+							weatherName={currentForcast?.weather[0].main}
+							weatherIcon={currentForcast?.weather[0].icon}
 						/>
 						<Animated.View
 							style={[
@@ -121,8 +136,8 @@ const NavigationArea = () => {
 									animatedStyle={animatedStyle.view}
 								/>
 								<TempDayNight
-									dayTemp={10}
-									nightTemp={10}
+									dayTemp={dayNightTemp.day}
+									nightTemp={dayNightTemp.night}
 									anime={anime}
 									animatedStyle={animatedStyle.view}
 								/>
@@ -171,22 +186,30 @@ const getTodayForcasts = (
 	query: Realm.Results<Forecast>,
 	id?: BSON.ObjectId
 ) => {
-	if (id == null) {
-		return []
-	}
 	console.debug('Nạp các forecast hôm nay từ db')
 	const time = new Date()
 	time.setHours(0, 0, 0, 0)
 	const beginDayTimestamp = Math.floor(time.getTime() / 1000)
 	time.setHours(24, 0, 0)
 	const endDayTimestamp = Math.floor(time.getTime() - 1)
+	return getForcasts(beginDayTimestamp, endDayTimestamp, query, id)
+}
+
+const getForcasts = (
+	beginDayTimestamp: number,
+	endDayTimestamp: number,
+	query: Realm.Results<Forecast>,
+	id?: BSON.ObjectId
+) => {
+	if (id == null) {
+		return []
+	}
 	const result = query.filtered(
 		'dt BETWEEN {$0,$1} AND city_id = $2',
 		beginDayTimestamp,
 		endDayTimestamp,
 		id
 	)
-	console.debug(`số lượng forecast từ db: ${result.length}`)
 	return [...result]
 }
 
@@ -208,6 +231,28 @@ const getCurrentForecast = (list: Forecast[]) => {
 		}
 	}
 	return closest
+}
+
+const calacAvgTemp = (
+	currentCity: City | undefined,
+	forecastsInDay: Forecast[]
+) => {
+	if (currentCity == null) {
+		return { day: 0, night: 0 }
+	}
+	const dayForecast = forecastsInDay.filter(
+		forecast =>
+			forecast.dt >= currentCity.sunrise && forecast.dt <= currentCity.sunset
+	)
+	return {
+		day: dayForecast
+			.map(i => i.main.temp)
+			.reduce((a, c, _i, arr) => a + c / arr.length, 0),
+		night: forecastsInDay
+			.filter(i => !dayForecast.includes(i))
+			.map(i => i.main.temp)
+			.reduce((a, c, _i, arr) => a + c / arr.length, 0),
+	}
 }
 
 export default NavigationArea

@@ -5,24 +5,30 @@ import Geolocation, {
 	GeolocationError,
 	GeolocationResponse,
 } from '@react-native-community/geolocation'
-import { useQuery, useRealm } from '../data/realm'
-import { ReverseResultType, forecast, reverse } from '../api/openWeather'
+import { useQuery, useRealm } from '@src/data/realm'
+import { ReverseResultType, forecast, reverse } from '@src/api/openWeather'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { BSON, Results } from 'realm'
-import { City, Forecast } from '../data/model'
+import { City, Forecast } from '@src/data/model'
 
 const DataWrapper = (props: { children?: ReactNode }) => {
 	console.debug('DataWrapper!')
+	const updateTick = useForecastStore(e => e.updateTick)
+
 	const [setCity] = useForecastStore(e => [e.setCity])
 	const cityQuery = useQuery(City)
 	const forecastQuery = useQuery(Forecast)
 	const realm = useRealm()
 	useEffect(() => {
-		loadConfig(cityQuery, forecastQuery, realm, setCity).then(config => {
-			console.debug('nạp config xong')
-			console.debug(JSON.stringify(config))
-			fetchForecastIfNeed(realm, forecastQuery, cityQuery)(config)
-		})
+		loadConfig(cityQuery, forecastQuery, realm, setCity)
+			.then(config => {
+				console.debug('nạp config xong')
+				console.debug(JSON.stringify(config))
+				fetchForecastIfNeed(realm, forecastQuery, cityQuery)(config)
+			})
+			.then(() => {
+				updateTick()
+			})
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
@@ -102,36 +108,48 @@ const updateCurrentPlaceByGeo = async (
 const fetchForecastIfNeed =
 	(realm: Realm, query: Results<Forecast>, city: Results<City>) =>
 	async ({ lat, lon, id }: { lat: number; lon: number; id: BSON.ObjectId }) => {
-		console.debug(`kiểm tra forecast liên quan đến địa chỉ này ${lat} ${lon}`)
-		let forecasts = query.filtered(
+		const nowTimestamp = Math.floor(Date.now() / 1000)
+		console.debug(
+			`kiểm tra forecast liên quan đến địa chỉ này ${lat} ${lon} trong thời gian ${nowTimestamp}`
+		)
+		let forecastsFromDB = query.filtered(
 			'city_id = $0 AND dt >= $1',
 			id,
-			Math.floor(Date.now() / 1000)
+			nowTimestamp
 		)
-		console.debug(`số forecast tìm thấy trong db: ${forecast.length}`)
-		if (forecasts.length < 32) {
-			console.debug('truy vấn thêm từ openweather')
+		console.debug(`số forecast tìm thấy trong db: ${forecastsFromDB.length}`)
+		if (forecastsFromDB.length < 32) {
+			console.debug('truy vấn thêm forecast từ openweather api')
 			try {
-				const data = await forecast(lat, lon)
-				console.debug(`số lượng bản ghi từ api : ${data.list.length}`)
-				const cityRecord = city.find(i => i._id === id)!
+				const forecastsFromAPI = await forecast(lat, lon)
+				console.debug(
+					`số lượng bản ghi nhận được : ${forecastsFromAPI.list.length}`
+				)
+				const cityFromDB = city.filtered('_id = $0', id)[0]
 				realm.write(() => {
-					data.list.forEach(item =>
+					forecastsFromAPI.list.forEach(item => {
 						realm.create(Forecast, {
 							_id: new BSON.ObjectId(),
 							city_id: id,
 							...item,
 						})
+						console.debug(`thêm bản ghi ${item.dt_txt} UTC`)
+					})
+					console.debug(
+						`thông tin về city mới từ api: sunrise: ${forecastsFromAPI.city.sunrise} , sunset: ${forecastsFromAPI.city.sunset}`
 					)
-					cityRecord.sunrise = data.city.sunrise
-					cityRecord.sunset = data.city.sunset
+					console.debug(
+						`thông tin cũ: sunrise: ${cityFromDB.sunrise} , sunset: ${cityFromDB.sunset}`
+					)
+					cityFromDB.sunrise = forecastsFromAPI.city.sunrise
+					cityFromDB.sunset = forecastsFromAPI.city.sunset
 				})
 			} catch (error) {
 				console.debug('có lỗi khi truy vấn api')
 				console.debug(error)
 			}
 		} else {
-			console.debug('số liệu có vẻ mới')
+			console.debug('forecast còn mới không truy vấn api')
 		}
 	}
 function saveToDB(
@@ -156,14 +174,15 @@ function saveToDB(
 				realm.write(() => {
 					cityRecord = realm.create(City, {
 						_id: _id!,
-						coord: { ...city },
 						country: city.country,
 						name: city.name,
 						population: 0,
 						sunrise: 0,
 						sunset: 0,
 						timezone: 0,
+						coord: { lat: city.lat, lon: city.lon },
 					})
+					console.debug(`tạo city mới : ${JSON.stringify(cityRecord)}`)
 				})
 			} else {
 				_id = citesQuery[0]._id

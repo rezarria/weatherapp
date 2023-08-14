@@ -6,8 +6,8 @@ export default interface Forecast {
 	wind: Wind
 	visibility: number
 	pop: number
-	rain: Rain
-	snow: Snow
+	rain?: Rain
+	snow?: Snow
 	sys: Sys
 	dt_txt: string
 }

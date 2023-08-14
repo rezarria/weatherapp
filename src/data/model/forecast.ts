@@ -24,7 +24,7 @@ export class Forecast
 	wind!: IWind
 	visibility!: number
 	pop!: number
-	rain!: IRain
+	rain?: IRain
 	snow!: ISnow
 	sys!: ISys
 	dt_txt!: string
@@ -41,7 +41,7 @@ export class Forecast
 			wind: 'Wind',
 			visibility: 'int',
 			pop: 'int',
-			rain: 'Rain',
+			rain: 'Rain?',
 			snow: 'Snow?',
 			sys: 'Sys',
 			dt_txt: 'string',
