@@ -21,7 +21,20 @@ const DayForecast = forwardRef<Ref>((_props, ref) => {
 	const forecastQuery = useQuery(Forecast)
 	const city = useForecastStore(e => e.city)
 	useEffect(() => {
-		const forecastsFromDB = forecastQuery.filtered('city_id = $0', city?._id)
+		const date = new Date()
+		let day = date.getDay()
+		date.setDate(date.getDate() - (day === 0 ? 6 : day - 1))
+		date.setHours(0, 0, 0, 0)
+		const mondayTimestamp = Math.floor(date.getTime() / 1000)
+		date.setDate(date.getDate() + 6)
+		date.setHours(23, 59, 59, 59)
+		const sundayTimestamp = Math.floor(date.getTime() / 1000)
+		const forecastsFromDB = forecastQuery.filtered(
+			'city_id = $0 AND dt BETWEEN {$1,$2}',
+			city?._id,
+			mondayTimestamp,
+			sundayTimestamp
+		)
 		if (forecastsFromDB.length > 0) {
 			setForecastInWeek(Array.from(forecastsFromDB))
 		}
