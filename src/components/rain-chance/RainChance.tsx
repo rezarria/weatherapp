@@ -1,10 +1,10 @@
 import { Card } from '../card'
 import Rain from '@assets/svg/rain.svg'
-import { TrendStatus, TrendStatusEnum, TrendStatusRef } from '../trend-status'
+import { TrendStatus, TrendStatusRef, switchToStatus } from '../trend-status'
 import { useEffect, useRef } from 'react'
 import usePrevious from '@src/hook/usePrevious'
 import { StyleSheet, Text, View } from 'react-native'
-import AppStyle from '../../style/styles'
+import AppStyle from '@src/style/styles'
 
 export type Props = {
 	value: number
@@ -76,9 +76,3 @@ const RainChanceNonNULL = (props: Props) => {
 }
 
 export default RainChance
-function switchToStatus(diff: number): TrendStatusEnum {
-	if (diff === 0) {
-		return TrendStatusEnum.NIL
-	}
-	return diff > 0 ? TrendStatusEnum.UP : TrendStatusEnum.DOWN
-}

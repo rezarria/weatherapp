@@ -71,4 +71,11 @@ const styles = StyleSheet.create({
 	},
 })
 
+export function switchToStatus(diff: number): TrendStatusEnum {
+	if (diff === 0) {
+		return TrendStatusEnum.NIL
+	}
+	return diff > 0 ? TrendStatusEnum.UP : TrendStatusEnum.DOWN
+}
+
 export default TrendStatus
