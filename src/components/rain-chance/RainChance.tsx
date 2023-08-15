@@ -29,7 +29,7 @@ const RainChance = (
 			</View>
 		)
 	} else {
-		RainChanceNonNULL({ value: props.value, initValue: props.initValue })
+		return RainChanceNonNULL({ value: props.value, initValue: props.initValue })
 	}
 }
 

@@ -54,7 +54,9 @@ const TodayScreen = () => {
 
 	console.debug(`số lượng forecast đã nạp : ${list.length}`)
 	console.debug(`số lượng forecast trong ngày : ${todayForecasts.length}`)
-	query.forEach(i => console.debug(JSON.stringify(i.rain)))
+	todayForecasts.forEach(i =>
+		console.debug(new Date(i.dt * 1000).toLocaleDateString())
+	)
 
 	return (
 		<ScrollView {...animationEvents}>
@@ -69,7 +71,7 @@ const TodayScreen = () => {
 								(oldForecast?.wind?.speed ?? currentForecast?.wind?.speed ?? 0)
 						}
 					/>
-					<RainChance value={currentForecast?.rain?.['3h']} />
+					<RainChance value={currentForecast?.pop} />
 				</Group>
 				<Group target={show}>
 					<Pressure
@@ -81,7 +83,7 @@ const TodayScreen = () => {
 				<ChanceOfRain
 					data={todayForecasts.map(i => ({
 						time: i.dt,
-						value: i.rain?.['3h'] ?? 0,
+						value: i.pop,
 					}))}
 				/>
 				<HourlyForecast data={todayForecasts} />
@@ -126,14 +128,15 @@ const findClosestForcast: (list: Forecast[]) => Forecast | null = list => {
 }
 
 const filterTodayForecasts = (currentCity: City | undefined) => {
+	console.info(currentCity)
 	const now = new Date()
 	const fixTimestamp = 1000 * (currentCity?.timezone ?? 0)
 	now.setUTCHours(0, 0, 0, 0)
-	now.setTime(now.getTime() + fixTimestamp)
-	const beginOfDay = Math.floor(now.getTime() / 1000)
 	now.setTime(now.getTime() - fixTimestamp)
-	now.setUTCHours(23, 59, 59, 999)
+	const beginOfDay = Math.floor(now.getTime() / 1000)
 	now.setTime(now.getTime() + fixTimestamp)
+	now.setUTCHours(23, 59, 59, 999)
+	now.setTime(now.getTime() - fixTimestamp)
 	const endOfDay = Math.floor(now.getTime() / 1000)
 	return (value: Forecast) => value.dt >= beginOfDay && value.dt <= endOfDay
 }

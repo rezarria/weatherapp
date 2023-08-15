@@ -1,6 +1,5 @@
 import { ReactNode, useEffect } from 'react'
 import useForecastStore from '../zustand/store'
-import { checkPermission } from './fetchWeather'
 import Geolocation, {
 	GeolocationError,
 	GeolocationResponse,
@@ -84,7 +83,14 @@ const getCurrentPostion = () =>
 		(
 			resolve: (position: GeolocationResponse) => void,
 			reject: ((error: GeolocationError) => void) | undefined
-		) => Geolocation.getCurrentPosition(resolve, reject)
+		) =>
+			Geolocation.requestAuthorization(
+				() =>
+					Geolocation.getCurrentPosition(resolve, reject, {
+						enableHighAccuracy: true,
+					}),
+				reject
+			)
 	)
 
 const findCityByCoords = ({
@@ -98,7 +104,6 @@ const updateCurrentPlaceByGeo = async (
 	realm: Realm,
 	setCity: (city: City) => void
 ) => {
-	await checkPermission()
 	const geoResult = await getCurrentPostion()
 	const cites = await findCityByCoords(geoResult)
 	console.debug(`số city tìm thấy ${cites.length}`)
@@ -143,6 +148,7 @@ const fetchForecastIfNeed =
 					)
 					cityFromDB.sunrise = forecastsFromAPI.city.sunrise
 					cityFromDB.sunset = forecastsFromAPI.city.sunset
+					cityFromDB.timezone = forecastsFromAPI.city.timezone
 				})
 			} catch (error) {
 				console.debug('có lỗi khi truy vấn api')

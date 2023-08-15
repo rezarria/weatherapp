@@ -1,26 +1,6 @@
-import { PermissionsAndroid } from 'react-native'
 import clm from 'country-locale-map'
 import { BSON } from 'realm'
 import { City } from '../data/model'
-
-export const checkPermission = async () => {
-	try {
-		const grant = await PermissionsAndroid.request(
-			PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-			{
-				title: 'Location permission',
-				buttonPositive: 'OK',
-				message: 'PLS',
-			}
-		)
-		if (grant !== PermissionsAndroid.RESULTS.GRANTED) {
-			throw grant
-		}
-	} catch (error) {
-		console.error('có vấn đề ở checkPermission')
-		throw error
-	}
-}
 
 export const setLocaltionToState =
 	(

@@ -4,7 +4,7 @@ export const when = (v: number | undefined) => {
 		return '??'
 	}
 	let diff = time - v
-	const text = (diff / 60 / 60).toFixed(0)
+	const text = Math.abs(diff / 60 / 60).toFixed(0)
 	return diff < 0 ? `in ${text}h` : `${text}h ago`
 }
 

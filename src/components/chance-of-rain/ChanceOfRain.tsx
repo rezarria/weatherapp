@@ -40,7 +40,7 @@ const ChanceOfRain = (props: Props) => {
 						scrollEnabled={false}
 						data={props.data}
 						keyExtractor={i => i.time.toString()}
-						renderItem={({ item }) => <Line value={item.value} />}
+						renderItem={({ item }) => <Line value={item.value * 100} />}
 						ItemSeparatorComponent={gap}
 					/>
 				</View>
@@ -50,7 +50,9 @@ const ChanceOfRain = (props: Props) => {
 						data={props.data}
 						keyExtractor={i => i.time.toString()}
 						renderItem={({ item }) => (
-							<Text style={[styles.text, styles.item]}>{item.value}%</Text>
+							<Text style={[styles.text, styles.item]}>
+								{(item.value * 100).toFixed(0)}%
+							</Text>
 						)}
 						ItemSeparatorComponent={gap}
 					/>
@@ -92,10 +94,11 @@ const styles = StyleSheet.create({
 
 function ShowTime(props: { time: number; style?: StyleProp<TextStyle> }) {
 	const dateTime = new Date(props.time * 1000)
+	const hour = dateTime.getHours()
 	return (
 		<Text style={[styles.text, props.style]}>
-			{(dateTime.getHours() % 12) + 1}{' '}
-			<Text>{dateTime.getHours() < 12 ? 'AM' : 'PM'}</Text>
+			{hour > 12 ? hour % 12 : hour}{' '}
+			<Text>{dateTime.getHours() < 13 ? 'AM' : 'PM'}</Text>
 		</Text>
 	)
 }
