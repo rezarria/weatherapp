@@ -24,7 +24,7 @@ export class Forecast
 	wind!: IWind
 	visibility!: number
 	pop!: number
-	rain?: IRain
+	rain!: IRain
 	snow!: ISnow
 	sys!: ISys
 	dt_txt!: string
@@ -61,20 +61,20 @@ export class Sys extends Realm.Object<Sys> implements ISys {
 }
 
 export class Snow extends Realm.Object<Snow> implements ISnow {
-	'3d'!: number
+	'3h'!: number
 	static schema = {
 		name: 'Snow',
 		embedded: true,
-		properties: { '3d': 'float' },
+		properties: { '3h': 'float' },
 	}
 }
 
 export class Rain extends Realm.Object<Rain> implements IRain {
-	'3d'!: number
+	'3h'!: number
 	static schema = {
 		name: 'Rain',
 		embedded: true,
-		properties: { '3d': 'float' },
+		properties: { '3h': 'float' },
 	}
 }
 

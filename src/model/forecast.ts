@@ -42,11 +42,11 @@ export interface Weather {
 }
 
 export interface Rain {
-	'3d': number
+	'3h': number
 }
 
 export interface Snow {
-	'3d': number
+	'3h': number
 }
 
 export interface Sys {

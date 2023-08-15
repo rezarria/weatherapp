@@ -2,52 +2,63 @@ import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native'
 import Logo from '@assets/svg/rain.svg'
 import { Card2 } from '@src/components/card'
 import Line from './Line'
+import { FlatList } from 'react-native-gesture-handler'
 
 export type ChanceOfRainItemType = {
-	time: Date
+	time: number
 	value: number
 }
 
-type ChanceOfRainProps = {
+type Props = {
 	data: ChanceOfRainItemType[]
 }
 
-const ChanceOfRain = (props: ChanceOfRainProps) => (
-	<Card2
-		title={'Chance of rain'}
-		icon={<Logo />}
-	>
-		<View style={styles.container}>
-			<View style={styles.section}>
-				{props.data.map((item, index) => (
-					<ShowTime
-						time={item.time}
-						key={index}
-						style={styles.item}
+const gap = () => <View style={styles.gap} />
+const ChanceOfRain = (props: Props) => {
+	return (
+		<Card2
+			title={'Chance of rain'}
+			icon={<Logo />}
+		>
+			<View style={styles.container}>
+				<View style={styles.section}>
+					<FlatList
+						data={props.data}
+						keyExtractor={i => i.time.toString()}
+						scrollEnabled={false}
+						renderItem={({ item }) => (
+							<ShowTime
+								time={item.time}
+								style={styles.item}
+							/>
+						)}
+						ItemSeparatorComponent={gap}
 					/>
-				))}
-			</View>
-			<View style={[styles.section, styles.sectionLine]}>
-				{props.data.map((item, index) => (
-					<Line
-						key={index}
-						value={item.value}
+				</View>
+				<View style={[styles.section, styles.sectionLine]}>
+					<FlatList
+						scrollEnabled={false}
+						data={props.data}
+						keyExtractor={i => i.time.toString()}
+						renderItem={({ item }) => <Line value={item.value} />}
+						ItemSeparatorComponent={gap}
 					/>
-				))}
+				</View>
+				<View style={styles.section}>
+					<FlatList
+						scrollEnabled={false}
+						data={props.data}
+						keyExtractor={i => i.time.toString()}
+						renderItem={({ item }) => (
+							<Text style={[styles.text, styles.item]}>{item.value}%</Text>
+						)}
+						ItemSeparatorComponent={gap}
+					/>
+				</View>
 			</View>
-			<View style={styles.section}>
-				{props.data.map((item, index) => (
-					<Text
-						key={index}
-						style={[styles.text, styles.item]}
-					>
-						{item.value}%
-					</Text>
-				))}
-			</View>
-		</View>
-	</Card2>
-)
+		</Card2>
+	)
+}
 
 export default ChanceOfRain
 
@@ -76,13 +87,15 @@ const styles = StyleSheet.create({
 		textAlign: 'right',
 		fontWeight: '400',
 	},
+	gap: { paddingTop: 11 },
 })
 
-function ShowTime(props: { time: Date; style?: StyleProp<TextStyle> }) {
+function ShowTime(props: { time: number; style?: StyleProp<TextStyle> }) {
+	const dateTime = new Date(props.time * 1000)
 	return (
 		<Text style={[styles.text, props.style]}>
-			{(props.time.getHours() % 12) + 1}{' '}
-			<Text>{props.time.getHours() < 12 ? 'AM' : 'PM'}</Text>
+			{(dateTime.getHours() % 12) + 1}{' '}
+			<Text>{dateTime.getHours() < 12 ? 'AM' : 'PM'}</Text>
 		</Text>
 	)
 }

@@ -11,7 +11,7 @@ import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
 import useForecastStore from '../zustand/store'
 import { useQuery } from '../data/realm'
 import { BSON } from 'realm'
-import { Forecast } from '../data/model'
+import { City, Forecast } from '../data/model'
 
 export type ParamList = {
 	Today: undefined
@@ -33,6 +33,11 @@ const TodayScreen = () => {
 		() => getCurrentForecast(query, currentCity?._id),
 		[currentCity, query]
 	)
+	const todayForecasts = useMemo(
+		() => list.filter(filterTodayForecasts(currentCity)),
+		[currentCity, list]
+	)
+	//------------------------------------
 	const currentForecast = findClosestForcast(list)
 	let oldForecast: Forecast | undefined
 	if (currentForecast != null) {
@@ -42,6 +47,11 @@ const TodayScreen = () => {
 		}
 	}
 	const show = list.length > 0
+
+	console.debug(`số lượng forecast đã nạp : ${list.length}`)
+	console.debug(`số lượng forecast trong ngày : ${todayForecasts.length}`)
+	query.forEach(i => console.debug(JSON.stringify(i.rain)))
+
 	return (
 		<ScrollView {...animationEvents}>
 			<View style={AppStyle.scrollView}>
@@ -58,15 +68,10 @@ const TodayScreen = () => {
 				</Group>
 				<DayForecast />
 				<ChanceOfRain
-					data={[
-						{ time: new Date(), value: 14 },
-						{ time: new Date(), value: 14 },
-						{ time: new Date(), value: 14 },
-						{ time: new Date(), value: 14 },
-						{ time: new Date(), value: 14 },
-						{ time: new Date(), value: 14 },
-						{ time: new Date(), value: 14 },
-					]}
+					data={todayForecasts.map(i => ({
+						time: i.dt,
+						value: i.rain?.['3h'] ?? 0,
+					}))}
 				/>
 				<HourlyForecast />
 			</View>
@@ -103,4 +108,17 @@ const findClosestForcast: (list: Forecast[]) => Forecast | null = list => {
 		}
 	})
 	return closestForecast
+}
+
+const filterTodayForecasts = (currentCity: City | undefined) => {
+	const now = new Date()
+	const fixTimestamp = 1000 * (currentCity?.timezone ?? 0)
+	now.setUTCHours(0, 0, 0, 0)
+	now.setTime(now.getTime() + fixTimestamp)
+	const beginOfDay = Math.floor(now.getTime() / 1000)
+	now.setTime(now.getTime() - fixTimestamp)
+	now.setUTCHours(23, 59, 59, 999)
+	now.setTime(now.getTime() + fixTimestamp)
+	const endOfDay = Math.floor(now.getTime() / 1000)
+	return (value: Forecast) => value.dt >= beginOfDay && value.dt <= endOfDay
 }
