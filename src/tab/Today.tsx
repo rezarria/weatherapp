@@ -6,6 +6,7 @@ import {
 	HourlyForecast,
 	DayForecast,
 	ChanceOfRain,
+	RainChance,
 } from '@src/components'
 import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
 import useForecastStore from '../zustand/store'
@@ -65,6 +66,7 @@ const TodayScreen = () => {
 								(oldForecast?.wind?.speed ?? currentForecast?.wind?.speed ?? 0)
 						}
 					/>
+					<RainChance value={currentForecast?.rain?.['3h']} />
 				</Group>
 				<DayForecast />
 				<ChanceOfRain
