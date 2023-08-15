@@ -2,11 +2,11 @@ import { Image, StyleSheet, Text, View } from 'react-native'
 import AppStyle from '@src/style/styles'
 import { WeatherInfoType } from './WeatherInfoType'
 
-type ItemProps = {
+export type Props = {
 	data: WeatherInfoType
 }
 
-const Item = (props: ItemProps) => (
+const Item = (props: Props) => (
 	<View style={itemStyle.container}>
 		<Text style={[AppStyle.font, itemStyle.time]}>
 			{props.data.time.getHours()}
@@ -16,11 +16,13 @@ const Item = (props: ItemProps) => (
 		</Text>
 		<Image
 			source={{
-				uri: `https://openweathermap.org/img/wn/${props.data.iconId}@2x.png`,
+				uri: `https://openweathermap.org/img/wn/${props.data.icon}@2x.png`,
 			}}
 			style={itemStyle.icon}
 		/>
-		<Text style={[AppStyle.font, itemStyle.temp]}>{props.data.temp}°</Text>
+		<Text style={[AppStyle.font, itemStyle.temp]}>
+			{(props.data.temp - 272.15).toFixed(1)}°
+		</Text>
 	</View>
 )
 

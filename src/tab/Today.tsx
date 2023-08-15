@@ -73,7 +73,7 @@ const TodayScreen = () => {
 						value: i.rain?.['3h'] ?? 0,
 					}))}
 				/>
-				<HourlyForecast />
+				<HourlyForecast data={todayForecasts} />
 			</View>
 		</ScrollView>
 	)

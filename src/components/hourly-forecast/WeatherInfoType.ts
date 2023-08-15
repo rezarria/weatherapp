@@ -1,8 +1,6 @@
 export type WeatherInfoType = {
-	id: number
-	idType: number
+	id: string
 	temp: number
 	time: Date
-	status: string
-	iconId: string
+	icon: string
 }

@@ -7,7 +7,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 2,
@@ -15,7 +15,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 3,
@@ -23,7 +23,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 4,
@@ -31,7 +31,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 5,
@@ -39,7 +39,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 6,
@@ -47,7 +47,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 7,
@@ -55,7 +55,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 8,
@@ -63,7 +63,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 9,
@@ -71,7 +71,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 	{
 		id: 10,
@@ -79,7 +79,7 @@ const DATA: WeatherInfoType[] = [
 		temp: 14,
 		time: new Date(),
 		status: 'Rain',
-		iconId: '10d',
+		icon: '10d',
 	},
 ]
 
