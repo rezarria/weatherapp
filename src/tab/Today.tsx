@@ -8,6 +8,8 @@ import {
 	ChanceOfRain,
 	RainChance,
 	Pressure,
+	Sunrise,
+	Sunset,
 } from '@src/components'
 import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
 import useForecastStore from '../zustand/store'
@@ -83,6 +85,10 @@ const TodayScreen = () => {
 					}))}
 				/>
 				<HourlyForecast data={todayForecasts} />
+				<Group target={show}>
+					<Sunrise time={currentCity?.sunrise} />
+					<Sunset time={currentCity?.sunset} />
+				</Group>
 			</View>
 		</ScrollView>
 	)

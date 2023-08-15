@@ -1,12 +1,7 @@
 import usePrevious from '../../hook/usePrevious'
 import { Card } from '../card'
 import Logo from '@assets/svg/pressure.svg'
-import {
-	TrendStatus,
-	TrendStatusEnum,
-	TrendStatusRef,
-	switchToStatus,
-} from '../trend-status'
+import { TrendStatus, TrendStatusRef, switchToStatus } from '../trend-status'
 import { useEffect, useRef } from 'react'
 
 export type Props = {
