@@ -1,5 +1,4 @@
 import { SceneMap, TabView } from 'react-native-tab-view'
-import TomorrowScreen from '@src/tab/Tomorrow'
 import {
 	Context,
 	useCallback,
@@ -13,6 +12,7 @@ import { KeyType, ParamList, RouteType, TabList } from './TabType'
 import TodayScreen from '@src/tab/Today'
 import { Status } from '@src/tab/animation'
 import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
+import TomorrowScreen from '@src/tab/Tomorrow'
 
 const DATA: ParamList = {
 	Today: {
@@ -21,7 +21,7 @@ const DATA: ParamList = {
 	},
 	Tomorrow: {
 		component: TomorrowScreen as React.ComponentType<unknown>,
-		title: 'Tomorrow',
+		title: '5 day',
 	},
 }
 const sceneData: { [key: string]: React.ComponentType<unknown> } = {}

@@ -1,46 +1,65 @@
-import { Button, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { Day } from '@src/components'
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
 import { TabParamList } from '@src/navigator/TabType'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
-import { useQuery } from '../data/realm'
-import { Forecast } from '../data/model'
-import useForecastStore from '../zustand/store'
+import { useQuery } from '@src/data/realm'
+import { City, Forecast } from '@src/data/model'
+import useForecastStore from '@src/zustand/store'
+import { divineToGroup, getMainForecastInDay } from '../utility/mainForecast'
+import { FlatList } from 'react-native-gesture-handler'
 type Props = MaterialTopTabScreenProps<TabParamList, 'Tomorrow', 'Tomorrow'>
 const TomorrowScreen = (_props: Props) => {
 	const animationEvents = useContext(MainScreenAnimationEventsContext)
+	const currentCity = useForecastStore(e => e.city)
 	const query = useQuery(Forecast)
-	const currentId = useForecastStore(e => e.city?._id)
+	const [begin, end] = getTimeRange(currentCity, 4)
+	const data = useMemo(() => {
+		if (currentCity == null) {
+			return undefined
+		} else {
+			return divineToGroup(
+				Array.from(
+					query.filtered(
+						'dt BETWEEN {$0, $1} AND city_id = $2',
+						begin,
+						end,
+						currentCity?._id
+					)
+				),
+				currentCity
+			)
+				.map(getMainForecastInDay)
+				.filter(i => i !== null) as NonNullable<
+				ReturnType<typeof getMainForecastInDay>
+			>[]
+		}
+	}, [begin, currentCity, end, query])
+
 	return (
 		<ScrollView
 			{...animationEvents}
 			style={styles.container}
-			contentContainerStyle={{ gap: styles.container.gap }}
 		>
-			<Button
-				title={'a'}
-				onPress={() => {
-					console.warn(
-						query.filtered(
-							'city_id = $0 and dt >= $1',
-							currentId,
-							Math.floor(Date.now() / 1000)
-						).length
-					)
-				}}
-			/>
-			{Array.from(Array(10).keys()).map(i => (
-				<Day
-					styles={styles.item}
-					key={i}
-					feelLike={3}
-					temp={3}
-					icon={'10d'}
-					time={new Date()}
-					status={'brub?'}
+			{data && (
+				<FlatList
+					scrollEnabled={false}
+					data={data}
+					keyExtractor={i => i.dt.toString()}
+					ItemSeparatorComponent={Gap}
+					renderItem={({ item }) => (
+						<Day
+							styles={styles.item}
+							temp={item.temp.max}
+							feelLike={item.temp.min}
+							icon={item.icon ?? ''}
+							time={item.dt}
+							status={item.description ?? ''}
+						/>
+					)}
 				/>
-			))}
+			)}
 		</ScrollView>
 	)
 }
@@ -49,9 +68,22 @@ const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 16,
 		marginTop: 10,
-		gap: 16,
 	},
 	item: {},
+	gap: { paddingTop: 16 },
 })
+
+const Gap = () => <View style={styles.gap} />
+
+function getTimeRange(currentCity: City | undefined, day: number) {
+	const fixTimestamp = currentCity?.timezone ?? 0
+	const time = new Date()
+	time.setUTCHours(0, 0, 0, 0)
+	const beginTimestamp = Math.floor(time.getTime() / 1000) - fixTimestamp
+	time.setUTCHours(23, 59, 59, 999)
+	time.setTime(time.getTime() + day * 24 * 60 * 60 * 1000)
+	const endTimestamp = Math.floor(time.getTime() / 1000) - fixTimestamp
+	return [beginTimestamp, endTimestamp]
+}
 
 export default TomorrowScreen

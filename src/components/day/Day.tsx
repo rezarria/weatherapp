@@ -11,7 +11,7 @@ import { DetailButton } from './DetailButton'
 import AppStyle from '@src/style/styles'
 
 type Props = {
-	time: Date
+	time: number
 	status: string
 	temp: number
 	feelLike: number
@@ -23,7 +23,9 @@ const Day = (props: Props) => (
 	<View style={[props.styles, styles.container]}>
 		<View style={[AppStyle.expand, styles.main]}>
 			<Text style={[AppStyle.font, styles.text]}>
-				{props.time.toLocaleDateString('en-US', { weekday: 'long' })}
+				{new Date(props.time * 1000).toLocaleDateString('en-US', {
+					weekday: 'long',
+				})}
 			</Text>
 			<Text style={[AppStyle.font, styles.text, styles.status_text]}>
 				{props.status}
@@ -31,10 +33,10 @@ const Day = (props: Props) => (
 		</View>
 		<View>
 			<Text style={[AppStyle.font, styles.text, styles.temp]}>
-				{props.temp}°
+				{(props.temp - 272.15).toFixed(0)}°
 			</Text>
 			<Text style={[AppStyle.font, styles.text, styles.temp]}>
-				{props.feelLike}°
+				{(props.feelLike - 272.15).toFixed(0)}°
 			</Text>
 		</View>
 		<View style={styles.vecrticalRow} />
