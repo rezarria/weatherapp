@@ -43,7 +43,6 @@ const DrawCurrentLine = forwardRef<Ref, Props>((props, ref) => {
 	const y = yRatio * (props.maxValue - value)
 	const x = xRatio * (dt - props.beginTimestamp)
 	const paddingTop = props.padding.top + props.pos.y + y
-	console.log(x)
 	return (
 		<Line
 			p1={{ x, y: paddingTop }}

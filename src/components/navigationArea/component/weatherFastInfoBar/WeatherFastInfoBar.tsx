@@ -1,7 +1,7 @@
 import React from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import Temp from './Temp'
-import WeatherIcon from './WeatherIcon'
+import Temp from '@component/navigationArea/component/weatherFastInfoBar/Temp'
+import WeatherIcon from '@component/navigationArea/component/weatherFastInfoBar/WeatherIcon'
 
 const WeatherFastInfoBar = (props: {
 	temp?: number

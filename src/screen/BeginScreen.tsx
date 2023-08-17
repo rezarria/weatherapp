@@ -16,7 +16,6 @@ const BeginScreen = (props: ScreenProps<'BeginScreen'>) => {
 	const [size, setSize] = useState({ width: 0, height: 0 })
 	const [setLocaltion] = useForecastStore(s => [s.setCity])
 	useEffect(() => {
-		console.log(props.navigation)
 		doFirstJob(realm, setLocaltion, () => {
 			props.navigation.navigate('MainScreen')
 		})

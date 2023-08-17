@@ -7,7 +7,7 @@ import { createContext, useRef } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 import ResultPanel, {
 	Ref as ResultPanelRef,
-} from '../components/navigation-area/SearchBar.Input.ResultPanel'
+} from '@component/navigationArea/component/weatherFastInfoBar/SearchBar.Input.ResultPanel'
 
 export const WidthMainScreenAnimatedContext = createContext<Animated.Value>(
 	new Animated.Value(0)

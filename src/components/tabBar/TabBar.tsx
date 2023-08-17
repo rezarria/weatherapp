@@ -1,4 +1,4 @@
-import { styles as NavigationAreaStyle } from '@src/components/navigation-area/NavigationArea'
+import { styles as NavigationAreaStyle } from '@src/components/navigationArea/NavigationArea'
 import { RouteType } from '@src/navigator/TabType'
 import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import AppStyle from '@src/style/styles'

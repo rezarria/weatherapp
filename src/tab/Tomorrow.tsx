@@ -1,6 +1,6 @@
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
 import { Day } from '@src/components'
-import { styles as NavigationAreaStyle } from '@src/components/navigation-area/NavigationArea'
+import { styles as NavigationAreaStyle } from '@src/components/navigationArea/NavigationArea'
 import { City, Forecast } from '@src/data/model'
 import { useQuery } from '@src/data/realm'
 import { TabParamList } from '@src/navigator/TabType'
@@ -61,9 +61,6 @@ const TomorrowScreen = (_props: Props) => {
 				],
 				{
 					useNativeDriver: false,
-					listener: e => {
-						console.info(e.nativeEvent.contentOffset.y)
-					},
 				}
 			)}
 		>

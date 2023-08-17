@@ -7,9 +7,7 @@ const TestScreen = (props: ScreenProps<'TestScreen'>) => {
 			<Text>TEST</Text>
 			<Button
 				title={'BACK'}
-				onPress={() => {
-					console.log(props.navigation.navigate('MainScreen'))
-				}}
+				onPress={() => {}}
 			/>
 		</View>
 	)

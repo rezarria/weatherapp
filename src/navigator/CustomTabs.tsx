@@ -18,7 +18,6 @@ const CustomTabsNavigator = () => {
 	const [routes] = useState<RouteType[]>(routesData)
 	useEffect(() => {
 		const id = widthAnimated.addListener(event => {
-			console.debug('update current animated value!')
 			currentValue.current = event.value
 		})
 		return () => {
@@ -29,7 +28,6 @@ const CustomTabsNavigator = () => {
 	const oldValue = useRef(0)
 	const onChange = useCallback(
 		(newIndex: number) => {
-			console.log('change')
 			widthAnimated.stopAnimation(v => {
 				const toValue = oldValue.current
 				oldValue.current = v
@@ -51,9 +49,6 @@ const CustomTabsNavigator = () => {
 				routes={routes}
 			/>
 			<TabView
-				onSwipeStart={() => {
-					console.log('start')
-				}}
 				onSwipeEnd={() => {
 					animation.current?.start(() => {
 						animation.current = undefined

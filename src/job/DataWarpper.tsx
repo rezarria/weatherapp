@@ -28,9 +28,7 @@ const DataWrapper = (props: { children?: ReactNode }) => {
 			.then(() => {
 				updateTick()
 			})
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [cityQuery, forecastQuery, realm, setCity, updateTick])
 	return <>{props.children}</>
 }
 export default DataWrapper
@@ -172,10 +170,10 @@ function saveToDB(
 				city.lon
 			)
 			let _id: BSON.ObjectId | null = null
-			console.log('kiểm tra địa chỉ đã tồn tại trong db.')
+			console.debug('kiểm tra địa chỉ đã tồn tại trong db.')
 			let cityRecord: City | undefined
 			if (citesQuery.length === 0) {
-				console.log('địa chỉ không tồn tại => lưu vào db')
+				console.debug('địa chỉ không tồn tại => lưu vào db')
 				_id = new BSON.ObjectID()
 				realm.write(() => {
 					cityRecord = realm.create(City, {

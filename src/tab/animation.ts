@@ -72,9 +72,7 @@ const onTouchEnd = (lastPos: LastPosType) => (event: GestureResponderEvent) => {
 
 const onScroll =
 	(lastPos: LastPosType) =>
-	(event: NativeSyntheticEvent<NativeScrollEvent>) => {
-		console.log(event.nativeEvent.contentOffset)
-	}
+	(event: NativeSyntheticEvent<NativeScrollEvent>) => {}
 
 const onScrollBeginDrag =
 	(lastPos: LastPosType) =>

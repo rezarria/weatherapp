@@ -11,7 +11,7 @@ import {
 	ResultPanelRefContext,
 	WidthMainScreenAnimatedContext,
 } from '@src/screen/MainScreen'
-import { styles as NavigationAreaStyles } from './NavigationArea'
+import { styles as NavigationAreaStyles } from 'src/components/navigationArea/NavigationArea'
 
 function Input(props: {
 	input: string
@@ -34,7 +34,11 @@ function Input(props: {
 		<>
 			<TextInput
 				value={props.input}
+				returnKeyType={'search'}
 				onChangeText={props.setInput}
+				onSubmitEditing={e => {
+					resultPanelRef?.current?.search(e.nativeEvent.text)
+				}}
 				style={[styles.input, { color }]}
 				onFocus={() => {
 					resultPanelRef?.current?.show()

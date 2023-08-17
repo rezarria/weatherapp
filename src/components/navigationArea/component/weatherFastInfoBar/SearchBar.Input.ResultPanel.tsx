@@ -9,7 +9,7 @@ import {
 	Text,
 	View,
 } from 'react-native'
-import { styles as InputStyle } from './SearchBar.Input'
+import { styles as InputStyle } from '@component/navigationArea/component/SearchBar.Input'
 import AppStyle from '@src/style/styles'
 import {
 	ForwardedRef,
@@ -18,13 +18,20 @@ import {
 	useImperativeHandle,
 	useMemo,
 	useRef,
+	useState,
 } from 'react'
+import { DirectType, direct } from '@src/api/openWeather'
+import { getCountryNameByAlpha2 } from 'country-locale-map'
+import { useQuery, useRealm } from '@src/data/realm'
+import { City } from '@src/data/model'
+import { BSON } from 'realm'
+import useForecastStore from '@src/zustand/store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export type Ref = {
 	show: () => void
 	hide: () => void
-	setText: (text: string) => void
-	search: () => void
+	search: (localtion: string) => void
 }
 type Props = {}
 
@@ -43,9 +50,37 @@ const gapStyle = StyleSheet.create({
 	},
 })
 
+const Section = (props: {
+	name: string
+	country: string
+	onPress?: () => void
+}) => (
+	<Pressable
+		onPress={props.onPress}
+		style={event => ({
+			marginVertical: 8,
+			borderRadius: 8,
+			paddingHorizontal: 8,
+			flex: 1,
+			backgroundColor: event.pressed ? '#ddd' : '#0000',
+		})}
+	>
+		<View style={styles.section}>
+			<Text style={[AppStyle.font]}>{props.name}</Text>
+			<Text style={[AppStyle.font]}>
+				{getCountryNameByAlpha2(props.country)}
+			</Text>
+		</View>
+	</Pressable>
+)
+
 const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 	const value = useRef(new Animated.Value(styles.container.height)).current
-	const showAnimated = useRef(new Animated.Value(1)).current
+	const [results, setResults] = useState<DirectType[]>([])
+	const showAnimated = useRef(new Animated.Value(0)).current
+	const realm = useRealm()
+	const cityQuery = useQuery(City)
+	const [setCity, updateTick] = useForecastStore(s => [s.setCity, s.updateTick])
 	const showAnimation = useMemo(
 		() =>
 			Animated.timing(showAnimated, {
@@ -75,10 +110,39 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 				showAnimation.stop()
 				showAnimation.reset()
 			},
-			search: () => {},
-			setText: () => {},
+			search: localtion => {
+				direct(localtion).then(data => {
+					data.forEach(item => {
+						if (
+							cityQuery.filtered(
+								'coord.lat = $0 AND coord.lon = $1',
+								item.lat,
+								item.lon
+							).length === 0
+						) {
+							realm.write(() => {
+								realm.create(City, {
+									_id: new BSON.ObjectID(),
+									coord: {
+										lat: item.lat,
+										lon: item.lon,
+									},
+									country: item.country,
+									name: item.name,
+									population: 0,
+									sunrise: 0,
+									sunset: 0,
+									timezone: 0,
+								})
+								console.debug(`lưu city ${item.name} ${item.country} vào db`)
+							})
+						}
+					})
+					setResults(data)
+				})
+			},
 		}),
-		[showAnimation]
+		[cityQuery, realm, showAnimation]
 	)
 	useEffect(() => {
 		const show = Keyboard.addListener('keyboardDidShow', e => {
@@ -125,23 +189,27 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 		>
 			<Animated.View style={[AppStyle.card, styles.panel]}>
 				<FlatList
-					data={Array.from(Array(100).keys())}
-					keyExtractor={i => i.toString()}
-					renderItem={() => (
-						<Pressable
-							style={event => ({
-								marginVertical: 8,
-								borderRadius: 8,
-								paddingHorizontal: 8,
-								flex: 1,
-								backgroundColor: event.pressed ? '#ddd' : '#0000',
-							})}
-						>
-							<View style={styles.section}>
-								<Text>Hà nội</Text>
-								<Text>Việt Nam</Text>
-							</View>
-						</Pressable>
+					data={results}
+					keyExtractor={i => i.lat.toString() + i.lon.toString()}
+					renderItem={({ item }) => (
+						<Section
+							country={item.country}
+							name={item.name}
+							onPress={() => {
+								const city = cityQuery.filtered(
+									'coord.lat = $0 AND coord.lon = $1',
+									item.lat,
+									item.lon
+								)[0]
+								if (city == null) {
+									throw new Error('không tìm thấy địa điểm trong db')
+								}
+								setCity(city)
+								hideAnimation.start()
+								AsyncStorage.setItem('cityID', city._id.toHexString())
+								updateTick()
+							}}
+						/>
 					)}
 					ItemSeparatorComponent={Gap}
 				/>

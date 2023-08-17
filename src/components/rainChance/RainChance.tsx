@@ -4,7 +4,7 @@ import AppStyle from '@src/style/styles'
 import { useEffect, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Card } from '../card'
-import { switchToStatus, TrendStatus, TrendStatusRef } from '../trend-status'
+import { switchToStatus, TrendStatus, TrendStatusRef } from '../trendStatus'
 
 export type Props = {
 	value: number

@@ -8,7 +8,7 @@ import {
 	Sunset,
 	WindCard,
 } from '@src/components'
-import { styles as NavigationAreaStyle } from '@src/components/navigation-area/NavigationArea'
+import { styles as NavigationAreaStyle } from '@src/components/navigationArea/NavigationArea'
 import { City, Forecast } from '@src/data/model'
 import { useQuery } from '@src/data/realm'
 import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
@@ -35,28 +35,28 @@ const TodayScreen = () => {
 
 	const query = useQuery(Forecast)
 	const currentCity = useForecastStore(store => store.city)
-	const list = useMemo(
-		() => getCurrentForecast(query, currentCity?._id),
+	const forecastList = useMemo(
+		() => getCurrentAboveForecast(query, currentCity?._id),
 		[currentCity, query]
 	)
-	const todayForecasts = useMemo(
-		() => list.filter(filterTodayForecasts(currentCity)),
-		[currentCity, list]
+	const todayForecastList = useMemo(
+		() => forecastList.filter(filterTodayForecasts(currentCity)),
+		[currentCity, forecastList]
 	)
 	//------------------------------------
-	const currentForecast = findClosestForcast(list)
+	const currentForecast = findClosestForcast(forecastList)
 	let oldForecast: Forecast | undefined
 	if (currentForecast != null) {
-		const index = list.indexOf(currentForecast)
+		const index = forecastList.indexOf(currentForecast)
 		if (index !== 0) {
-			oldForecast = list[index - 1]
+			oldForecast = forecastList[index - 1]
 		}
 	}
-	const show = list.length > 0
+	const shouldShow = forecastList.length > 0
 
-	console.debug(`số lượng forecast đã nạp : ${list.length}`)
-	console.debug(`số lượng forecast trong ngày : ${todayForecasts.length}`)
-	todayForecasts.forEach(i =>
+	console.debug(`số lượng forecast đã nạp : ${forecastList.length}`)
+	console.debug(`số lượng forecast trong ngày : ${todayForecastList.length}`)
+	todayForecastList.forEach(i =>
 		console.debug(new Date(i.dt * 1000).toLocaleDateString())
 	)
 
@@ -75,9 +75,6 @@ const TodayScreen = () => {
 				],
 				{
 					useNativeDriver: false,
-					listener: e => {
-						console.info(e.nativeEvent.contentOffset.y)
-					},
 				}
 			)}
 		>
@@ -88,7 +85,7 @@ const TodayScreen = () => {
 			/>
 
 			<View style={AppStyle.scrollView}>
-				<Group target={show}>
+				<Group target={shouldShow}>
 					<WindCard
 						value={currentForecast?.wind?.speed}
 						unit={'km/h'}
@@ -100,7 +97,7 @@ const TodayScreen = () => {
 					/>
 					<RainChance value={currentForecast?.pop} />
 				</Group>
-				<Group target={show}>
+				<Group target={shouldShow}>
 					<Pressure
 						value={currentForecast?.main.pressure}
 						initValue={oldForecast?.main.pressure}
@@ -108,13 +105,13 @@ const TodayScreen = () => {
 				</Group>
 				<DayForecast />
 				<ChanceOfRain
-					data={todayForecasts.map(i => ({
+					data={todayForecastList.map(i => ({
 						time: i.dt,
 						value: i.pop,
 					}))}
 				/>
-				<HourlyForecast data={todayForecasts} />
-				<Group target={show}>
+				<HourlyForecast data={todayForecastList} />
+				<Group target={shouldShow}>
 					<Sunrise time={currentCity?.sunrise} />
 					<Sunset time={currentCity?.sunset} />
 				</Group>
@@ -125,7 +122,7 @@ const TodayScreen = () => {
 
 export default TodayScreen
 
-const getCurrentForecast = (
+const getCurrentAboveForecast = (
 	query: Realm.Results<Forecast>,
 	id?: BSON.ObjectId
 ) => {

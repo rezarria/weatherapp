@@ -2,7 +2,7 @@ import Logo from '@assets/svg/pressure.svg'
 import { useEffect, useRef } from 'react'
 import usePrevious from '../../hook/usePrevious'
 import { Card } from '../card'
-import { switchToStatus, TrendStatus, TrendStatusRef } from '../trend-status'
+import { switchToStatus, TrendStatus, TrendStatusRef } from '../trendStatus'
 
 export type Props = {
 	value: number | undefined

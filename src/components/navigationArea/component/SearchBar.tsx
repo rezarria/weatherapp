@@ -8,8 +8,8 @@ import React, {
 	useState,
 } from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import { styles as NavigationAreaStyles } from './NavigationArea'
-import Input from './SearchBar.Input'
+import { styles as NavigationAreaStyles } from 'src/components/navigationArea/NavigationArea'
+import Input from '@component/navigationArea/component/SearchBar.Input'
 
 export type Ref = {}
 export type Props = {}

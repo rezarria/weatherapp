@@ -2,7 +2,7 @@ import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import React, { useContext, useMemo } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
 
-import { styles as NavigationAreaStyles } from '../NavigationArea'
+import { styles as NavigationAreaStyles } from '@component/navigationArea/NavigationArea'
 
 const Temp = (props: { v: number; cv?: number }) => {
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)

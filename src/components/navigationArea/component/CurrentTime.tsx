@@ -7,7 +7,7 @@ import React, {
 	useState,
 } from 'react'
 import { Animated, StyleSheet, TextStyle } from 'react-native'
-import { styles as NavigationAreaStyles } from './NavigationArea'
+import { styles as NavigationAreaStyles } from 'src/components/navigationArea/NavigationArea'
 
 const CurrentTime = forwardRef<
 	{
