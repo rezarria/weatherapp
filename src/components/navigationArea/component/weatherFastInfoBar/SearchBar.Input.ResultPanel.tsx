@@ -134,7 +134,6 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 									sunset: 0,
 									timezone: 0,
 								})
-								console.debug(`lưu city ${item.name} ${item.country} vào db`)
 							})
 						}
 					})

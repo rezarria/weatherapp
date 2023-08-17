@@ -44,7 +44,6 @@ export type ReverseResultType = {
 }
 
 const reverse = (lat: number, lon: number, limit: number = 5) => {
-	console.debug(`tìm kiếm địa điểm từ tọa độ ${lat} ${lon}`)
 	return openWeather
 		.get<ReverseResultType[]>('/geo/1.0/reverse', {
 			params: { lat, lon, limit },
@@ -57,7 +56,6 @@ const reverse = (lat: number, lon: number, limit: number = 5) => {
 			}
 		})
 		.catch(r => {
-			console.debug(`có lỗi phát sinh khi gọi api lấy địa điểm, mess: ${r}`)
 			throw r
 		})
 }
@@ -72,20 +70,17 @@ export type DirectType = {
 }
 
 export const direct = (localtion: string) => {
-	console.debug(`tìm kiếm địa điểm ${localtion}`)
 	return openWeather
 		.get<DirectType[]>('http://api.openweathermap.org/geo/1.0/direct', {
 			params: { q: localtion, limit: 20 },
 		})
 		.then(res => {
 			if (res.status === 200) {
-				console.debug(`tìm thấy ${res.data.length} địa điểm`)
 				return res.data
 			}
 			throw res
 		})
 		.catch(r => {
-			console.debug('có lỗi xảy ra khi truy vấn địa điểm')
 			throw r
 		})
 }

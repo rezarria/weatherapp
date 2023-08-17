@@ -32,7 +32,6 @@ function Group({
 
 const TodayScreen = () => {
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
-
 	const query = useQuery(Forecast)
 	const currentCity = useForecastStore(store => store.city)
 	const forecastList = useMemo(
@@ -43,7 +42,6 @@ const TodayScreen = () => {
 		() => forecastList.filter(filterTodayForecasts(currentCity)),
 		[currentCity, forecastList]
 	)
-	//------------------------------------
 	const currentForecast = findClosestForcast(forecastList)
 	let oldForecast: Forecast | undefined
 	if (currentForecast != null) {
@@ -53,13 +51,6 @@ const TodayScreen = () => {
 		}
 	}
 	const shouldShow = forecastList.length > 0
-
-	console.debug(`số lượng forecast đã nạp : ${forecastList.length}`)
-	console.debug(`số lượng forecast trong ngày : ${todayForecastList.length}`)
-	todayForecastList.forEach(i =>
-		console.debug(new Date(i.dt * 1000).toLocaleDateString())
-	)
-
 	return (
 		<ScrollView
 			showsVerticalScrollIndicator={false}

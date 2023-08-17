@@ -1,6 +1,6 @@
 import { Floating } from '@component/etc'
 import { NavigationArea } from '@component/index'
-import DataWrapper from '@src/job/DataWarpper'
+import DataUpdate from '@src/job/DataUpdate'
 import CustomTabsNavigator from '@src/navigator/CustomTabs'
 import { ScreenProps } from '@src/navigator/StackType'
 import { createContext, useRef } from 'react'
@@ -23,7 +23,7 @@ export const MainScreen = ({}: ScreenProps<'MainScreen'>) => {
 	return (
 		<WidthMainScreenAnimatedContext.Provider value={width}>
 			<View style={styles.background}>
-				<DataWrapper />
+				<DataUpdate />
 				<ResultPanel ref={resultPanelRef} />
 				<Floating zIndex={1}>
 					<ResultPanelRefContext.Provider value={resultPanelRef}>

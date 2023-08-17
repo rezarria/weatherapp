@@ -18,7 +18,6 @@ const getTodayForecasts = (
 	query: Realm.Results<Forecast>,
 	id?: BSON.ObjectId
 ) => {
-	console.debug('Nạp các forecast hôm nay từ db')
 	const time = new Date()
 	time.setHours(0, 0, 0, 0)
 	const beginDayTimestamp = Math.floor(time.getTime() / 1000)

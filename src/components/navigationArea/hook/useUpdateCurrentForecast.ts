@@ -21,7 +21,6 @@ const getCurrentForecast = (list: Forecast[]) => {
 	const nowTimestamp = Date.now() / 1000
 	let minDif = Infinity
 	let closest: Forecast | null = null
-	console.debug('lấy forecast hiện tại')
 	for (const forecast of list) {
 		let dif = Math.abs(nowTimestamp - forecast.dt)
 		if (dif < minDif) {
