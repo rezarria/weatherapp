@@ -1,4 +1,5 @@
 import { Canvas, SkPoint } from '@shopify/react-native-skia'
+import AppStyle from '@src/style/styles'
 import {
 	forwardRef,
 	useImperativeHandle,
@@ -7,12 +8,11 @@ import {
 	useState,
 } from 'react'
 import { LayoutRectangle, StyleSheet, View } from 'react-native'
-import DrawTitleY from './DrawTitleY'
+import DrawCurrentLine, { Ref as DrawCurrentLineRef } from './DrawCurrentLine'
 import DrawGrid from './DrawGrid'
 import DrawLine from './DrawLine'
 import DrawTitleX from './DrawTitleX'
-import AppStyle from '@src/style/styles'
-import DrawCurrentLine, { Ref as DrawCurrentLineRef } from './DrawCurrentLine'
+import DrawTitleY from './DrawTitleY'
 
 type Range = { min: number; max: number }
 

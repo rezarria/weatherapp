@@ -1,9 +1,9 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import AppStyle from '@src/style/styles'
 import HourLogo from '@assets/svg/hour.svg'
-import Item, { Props as ItemProps } from './Item'
 import { Forecast } from '@src/data/model'
+import AppStyle from '@src/style/styles'
 import { useMemo } from 'react'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+import Item, { Props as ItemProps } from './Item'
 
 export type Props = {
 	data: Forecast[]

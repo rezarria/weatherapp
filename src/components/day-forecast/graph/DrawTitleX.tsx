@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { Props } from './DrawTitleY'
 import AppStyle from '../../../style/styles'
+import { Props } from './DrawTitleY'
 
 const DrawTitleX = ({
 	values,

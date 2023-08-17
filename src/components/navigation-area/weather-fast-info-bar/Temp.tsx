@@ -1,16 +1,18 @@
+import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import React, { useContext, useMemo } from 'react'
 import { Animated, StyleSheet, View } from 'react-native'
-import { MainScreenAnimationContext } from '@src/screen/MainScreen'
+
+import { styles as NavigationAreaStyles } from '../NavigationArea'
 
 const Temp = (props: { v: number; cv?: number }) => {
-	const anime = useContext(MainScreenAnimationContext)
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const color = useMemo(
 		() =>
-			anime.interpolate({
-				inputRange: [0, 1],
+			widthAnimated.interpolate({
+				inputRange: [0, NavigationAreaStyles.smallContainer.height],
 				outputRange: ['#000', '#fff'],
 			}),
-		[anime]
+		[widthAnimated]
 	)
 	return (
 		<View style={styles.container}>
@@ -19,13 +21,15 @@ const Temp = (props: { v: number; cv?: number }) => {
 					styles.temp,
 					{
 						color,
-						fontSize: anime.interpolate({
-							inputRange: [0, 1],
-							outputRange: [57, 112],
+						fontSize: widthAnimated.interpolate({
+							inputRange: [0, NavigationAreaStyles.smallContainer.height],
+							outputRange: [112, 57],
+							extrapolate: 'clamp',
 						}),
-						lineHeight: anime.interpolate({
-							inputRange: [0, 1],
-							outputRange: [64, 112],
+						lineHeight: widthAnimated.interpolate({
+							inputRange: [0, NavigationAreaStyles.smallContainer.height],
+							outputRange: [112, 64],
+							extrapolate: 'clamp',
 						}),
 					},
 				]}
@@ -38,9 +42,10 @@ const Temp = (props: { v: number; cv?: number }) => {
 						styles.feelsLike,
 						{
 							color,
-							fontSize: anime.interpolate({
-								inputRange: [0, 1],
+							fontSize: widthAnimated.interpolate({
+								inputRange: [0, NavigationAreaStyles.smallContainer.height],
 								outputRange: [16, 18],
+								extrapolate: 'clamp',
 							}),
 						},
 					]}

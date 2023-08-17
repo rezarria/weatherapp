@@ -1,14 +1,14 @@
-import { ReactNode, useEffect } from 'react'
-import useForecastStore from '../zustand/store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Geolocation, {
 	GeolocationError,
 	GeolocationResponse,
 } from '@react-native-community/geolocation'
-import { useQuery, useRealm } from '@src/data/realm'
-import { ReverseResultType, forecast, reverse } from '@src/api/openWeather'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { BSON, Results } from 'realm'
+import { forecast, reverse, ReverseResultType } from '@src/api/openWeather'
 import { City, Forecast } from '@src/data/model'
+import { useQuery, useRealm } from '@src/data/realm'
+import { ReactNode, useEffect } from 'react'
+import { BSON, Results } from 'realm'
+import useForecastStore from '../zustand/store'
 
 const DataWrapper = (props: { children?: ReactNode }) => {
 	console.debug('DataWrapper!')
@@ -193,8 +193,9 @@ function saveToDB(
 			} else {
 				_id = citesQuery[0]._id
 			}
-			setCity(cityRecord!)
-			AsyncStorage.setItem('cityID', _id.toHexString())
+			AsyncStorage.setItem('cityID', _id.toHexString()).then(() =>
+				setCity(cityRecord!)
+			)
 			return { lat: city.lat, lon: city.lon, id: _id }
 		} else {
 			throw new Error('đầu vào rỗng')

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import Forecast from '../model/forecast'
 import City from '../model/city'
+import Forecast from '../model/forecast'
 
 const openWeather = axios.create({
 	baseURL: 'http://api.openweathermap.org',

@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
 import AppStyle from '@src/style/styles'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import { WeatherInfoType } from './WeatherInfoType'
 
 export type Props = {

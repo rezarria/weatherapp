@@ -1,6 +1,7 @@
+import { styles as NavigationAreaStyles } from '@component/navigation-area/NavigationArea'
+import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import React, { useContext } from 'react'
 import { Animated, Image, StyleSheet, View } from 'react-native'
-import { MainScreenAnimationContext } from '@src/screen/MainScreen'
 
 type Props = {
 	name?: string
@@ -8,10 +9,11 @@ type Props = {
 }
 
 const WeatherIcon = ({ name, icon }: Props) => {
-	const anime = useContext(MainScreenAnimationContext)
-	const size = anime.interpolate({
-		inputRange: [0, 1],
-		outputRange: [59, 107],
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
+	const size = widthAnimated.interpolate({
+		inputRange: [0, NavigationAreaStyles.smallContainer.height],
+		outputRange: [107, 59],
+		extrapolate: 'clamp',
 	})
 	return (
 		<View style={styles.container}>
@@ -34,13 +36,15 @@ const WeatherIcon = ({ name, icon }: Props) => {
 				style={[
 					styles.text,
 					{
-						fontSize: anime.interpolate({
-							inputRange: [0, 1],
-							outputRange: [0, 22],
+						fontSize: widthAnimated.interpolate({
+							inputRange: [0, NavigationAreaStyles.smallContainer.height],
+							outputRange: [22, 0],
+							extrapolate: 'clamp',
 						}),
-						lineHeight: anime.interpolate({
-							inputRange: [0, 1],
-							outputRange: [0, 28],
+						lineHeight: widthAnimated.interpolate({
+							inputRange: [0, NavigationAreaStyles.smallContainer.height],
+							outputRange: [28, 0],
+							extrapolate: 'clamp',
 						}),
 					},
 				]}

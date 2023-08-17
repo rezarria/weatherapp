@@ -1,10 +1,10 @@
-import { Card } from '../card'
 import Rain from '@assets/svg/rain.svg'
-import { TrendStatus, TrendStatusRef, switchToStatus } from '../trend-status'
-import { useEffect, useRef } from 'react'
 import usePrevious from '@src/hook/usePrevious'
-import { StyleSheet, Text, View } from 'react-native'
 import AppStyle from '@src/style/styles'
+import { useEffect, useRef } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { Card } from '../card'
+import { switchToStatus, TrendStatus, TrendStatusRef } from '../trend-status'
 
 export type Props = {
 	value: number

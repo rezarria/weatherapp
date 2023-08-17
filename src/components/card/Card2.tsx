@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { styles as CardStyle, CardProps } from './Card'
 import AppStyle from '@src/style/styles'
+import { StyleSheet, Text, View } from 'react-native'
+import { CardProps, styles as CardStyle } from './Card'
 
 const Card2 = (props: CardProps) => (
 	<View

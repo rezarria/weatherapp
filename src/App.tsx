@@ -5,12 +5,12 @@
  * @format
  */
 
+import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { NavigationContainer } from '@react-navigation/native'
-import StackNavigator from './navigator/StackNavigator'
 import { RealmProvider } from './data/realm'
+import StackNavigator from './navigator/StackNavigator'
 
 function App() {
 	return (

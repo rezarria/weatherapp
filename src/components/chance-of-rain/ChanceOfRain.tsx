@@ -1,8 +1,8 @@
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native'
 import Logo from '@assets/svg/rain.svg'
 import { Card2 } from '@src/components/card'
-import Line from './Line'
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
+import Line from './Line'
 
 export type ChanceOfRainItemType = {
 	time: number

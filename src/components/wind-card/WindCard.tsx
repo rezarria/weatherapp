@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from 'react'
 import Logo from '@assets/svg/wind.svg'
 import { TrendStatus, TrendStatusEnum, TrendStatusRef } from '@src/components'
 import { Card } from '@src/components/card'
+import React, { useEffect, useRef } from 'react'
 import { Text } from 'react-native'
 
 type Props = {

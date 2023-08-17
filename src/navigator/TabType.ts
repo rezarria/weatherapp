@@ -1,7 +1,7 @@
 import {
+	createMaterialTopTabNavigator,
 	MaterialTopTabNavigationProp,
 	MaterialTopTabScreenProps,
-	createMaterialTopTabNavigator,
 } from '@react-navigation/material-top-tabs'
 
 export type TabParamList = {

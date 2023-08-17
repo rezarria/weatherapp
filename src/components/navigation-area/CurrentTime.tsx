@@ -1,10 +1,13 @@
+import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import React, {
 	forwardRef,
+	useContext,
 	useEffect,
 	useImperativeHandle,
 	useState,
 } from 'react'
 import { Animated, StyleSheet, TextStyle } from 'react-native'
+import { styles as NavigationAreaStyles } from './NavigationArea'
 
 const CurrentTime = forwardRef<
 	{
@@ -12,9 +15,9 @@ const CurrentTime = forwardRef<
 	},
 	{
 		animatedStyle: Animated.WithAnimatedObject<TextStyle>
-		anime: Animated.Value
 	}
 >((props, ref) => {
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const render = useState(0)[1]
 	const currentTime = new Date().toLocaleDateString('vi', {
 		day: '2-digit',
@@ -44,9 +47,9 @@ const CurrentTime = forwardRef<
 					styles.text,
 					props.animatedStyle,
 					{
-						lineHeight: props.anime.interpolate({
-							inputRange: [0, 1],
-							outputRange: [0, 28],
+						lineHeight: widthAnimated.interpolate({
+							inputRange: [0, NavigationAreaStyles.smallContainer.height],
+							outputRange: [28, 0],
 						}),
 					},
 				]}

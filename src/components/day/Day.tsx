@@ -1,3 +1,4 @@
+import AppStyle from '@src/style/styles'
 import {
 	Image,
 	StyleProp,
@@ -8,7 +9,6 @@ import {
 } from 'react-native'
 
 import { DetailButton } from './DetailButton'
-import AppStyle from '@src/style/styles'
 
 type Props = {
 	time: number

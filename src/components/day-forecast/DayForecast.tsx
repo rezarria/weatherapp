@@ -1,3 +1,8 @@
+import Logo from '@assets/svg/clac.svg'
+import { Forecast } from '@src/data/model'
+import { useQuery } from '@src/data/realm'
+import AppStyle from '@src/style/styles'
+import useForecastStore from '@src/zustand/store'
 import React, {
 	forwardRef,
 	useEffect,
@@ -6,12 +11,7 @@ import React, {
 	useState,
 } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import AppStyle from '@src/style/styles'
-import Logo from '@assets/svg/clac.svg'
 import { Graph, GraphRef } from './graph'
-import { Forecast } from '@src/data/model'
-import { useQuery } from '@src/data/realm'
-import useForecastStore from '@src/zustand/store'
 
 export type Ref = GraphRef
 

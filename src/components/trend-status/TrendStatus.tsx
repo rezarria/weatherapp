@@ -1,3 +1,5 @@
+import DownArrow from '@assets/svg/down.svg'
+import UpArrow from '@assets/svg/up.svg'
 import React, {
 	forwardRef,
 	useCallback,
@@ -5,8 +7,6 @@ import React, {
 	useState,
 } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import UpArrow from '@assets/svg/up.svg'
-import DownArrow from '@assets/svg/down.svg'
 
 export enum TrendStatusEnum {
 	UP,

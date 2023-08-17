@@ -1,4 +1,3 @@
-import { BSON, List } from 'realm'
 import {
 	Clounds as IClounds,
 	default as IForecast,
@@ -9,6 +8,7 @@ import {
 	Weather as IWeather,
 	Wind as IWind,
 } from '@src/model/forecast'
+import { BSON, List } from 'realm'
 
 export class Forecast
 	extends Realm.Object<Forecast>

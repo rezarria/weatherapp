@@ -1,8 +1,8 @@
 import { SkPoint } from '@shopify/react-native-skia'
-import { LayoutRectangle, StyleSheet, Text as TextRN, View } from 'react-native'
 import { Padding } from '@src/style/layout'
-import React, { useState } from 'react'
 import AppStyle from '@src/style/styles'
+import React, { useState } from 'react'
+import { LayoutRectangle, StyleSheet, Text as TextRN, View } from 'react-native'
 
 export type Props = {
 	values?: string[]

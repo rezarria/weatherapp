@@ -1,3 +1,9 @@
+import { WeatherFastInfoBar } from '@src/components'
+import { City, Forecast } from '@src/data/model'
+import { useQuery } from '@src/data/realm'
+import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
+import AppStyle from '@src/style/styles'
+import useForecastStore from '@src/zustand/store'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
 	Animated,
@@ -5,22 +11,17 @@ import {
 	StatusBar,
 	StyleSheet,
 	TextStyle,
-	View,
 	ViewStyle,
 } from 'react-native'
-import SearchBar from './SearchBar'
-import CurrentTime from './CurrentTime'
-import TempDayNight from './TempDayNight'
-import { WeatherFastInfoBar } from '@src/components'
-import { MainScreenAnimationContext } from '@src/screen/MainScreen'
-import { useQuery } from '@src/data/realm'
-import useForecastStore from '@src/zustand/store'
 import { BSON } from 'realm'
-import { City, Forecast } from '@src/data/model'
+import { TabBarStyle } from '../tab-bar'
+import CurrentTime from './CurrentTime'
+import SearchBar from './SearchBar'
+import TempDayNight from './TempDayNight'
 
 const NavigationArea = () => {
 	const [currentCity, tick] = useForecastStore(e => [e.city, e.tick])
-	const anime = useContext(MainScreenAnimationContext)
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const query = useQuery(Forecast)
 	const animatedStyle = useRef<{
 		[key: string]: Animated.WithAnimatedObject<
@@ -28,96 +29,133 @@ const NavigationArea = () => {
 		>
 	}>({
 		text: {
-			color: anime.interpolate({
-				inputRange: [0, 1],
+			color: widthAnimated.interpolate({
+				inputRange: [0, styles.smallContainer.height],
 				outputRange: ['#000', '#fff'],
+				extrapolate: 'clamp',
 			}),
 		},
 		view: {
-			opacity: anime,
+			opacity: widthAnimated.interpolate({
+				inputRange: [0, styles.smallContainer.height],
+				outputRange: [1, 0],
+				extrapolate: 'clamp',
+			}),
 		},
 	}).current
 	const [forecastsInDay, setForecastInDay] = useState<Forecast[]>(() =>
-		getTodayForcasts(query, currentCity?._id)
+		getTodayForecasts(query, currentCity?._id)
 	)
-	const [currentForcast, setCurrentForcast] = useState(() =>
+	const [currentForecast, setCurrentForecast] = useState(() =>
 		getCurrentForecast(forecastsInDay)
 	)
 
 	const [dayNightTemp, setDayNightTemp] = useState(() =>
-		calacAvgTemp(currentCity, forecastsInDay)
+		calcAvgTemp(currentCity, forecastsInDay)
 	)
 	console.debug(`số forecast trong ngày: ${forecastsInDay.length}`)
-	console.debug(`forecast hiện tại: ${JSON.stringify(currentForcast)}`)
+	console.debug(`forecast hiện tại: ${JSON.stringify(currentForecast)}`)
 	useEffect(() => {
-		setForecastInDay(getTodayForcasts(query, currentCity?._id))
+		setForecastInDay(getTodayForecasts(query, currentCity?._id))
 		console.debug('lấy forecast trong ngày...')
 	}, [query, currentCity])
 
 	useEffect(() => {
-		const forcast = getCurrentForecast(forecastsInDay)
-		setCurrentForcast(forcast)
+		const forecast = getCurrentForecast(forecastsInDay)
+		setCurrentForecast(forecast)
 	}, [forecastsInDay])
 
 	useEffect(() => {
-		setDayNightTemp(calacAvgTemp(currentCity, forecastsInDay))
+		setDayNightTemp(calcAvgTemp(currentCity, forecastsInDay))
 	}, [currentCity, forecastsInDay])
 
 	useEffect(() => {
-		if (currentForcast) {
+		if (currentForecast) {
 			const timeAboveTimestamp =
-				(currentForcast.dt - Math.floor(Date.now() / 1000)) * 1000
+				(currentForecast.dt - Math.floor(Date.now() / 1000)) * 1000
 			const task = setInterval(() => {
 				const nextForecast = forecastsInDay.at(
-					forecastsInDay.indexOf(currentForcast) + 1
+					forecastsInDay.indexOf(currentForecast) + 1
 				)
 				if (nextForecast) {
-					setCurrentForcast(nextForecast)
+					setCurrentForecast(nextForecast)
 				}
 			}, timeAboveTimestamp)
 			return () => {
 				clearInterval(task)
 			}
 		}
-	}, [currentForcast, forecastsInDay])
+	}, [currentForecast, forecastsInDay])
 
 	return (
 		<>
 			{currentCity && tick !== 0 && (
-				<Animated.View
-					style={[
-						styles.rounded,
-						styles.background,
-						{
-							borderRadius: anime.interpolate({
-								inputRange: [0, 1],
-								outputRange: [0, 33],
-							}),
-						},
-					]}
-				>
-					<Animated.Image
-						style={[styles.image, [{ opacity: anime }]]}
-						source={require('@assets/img/bg.png')}
-					/>
+				<Animated.View style={[styles.container]}>
+					<Animated.View
+						style={[
+							styles.rounded,
+							styles.background,
+							{},
+							{
+								borderRadius: widthAnimated.interpolate({
+									inputRange: [0, styles.smallContainer.height],
+									outputRange: [33, 0],
+									extrapolate: 'clamp',
+								}),
+							},
+						]}
+					>
+						<Animated.Image
+							style={[
+								styles.image,
+								{
+									height: styles.padding.height + styles.padding.marginTop,
+									opacity: widthAnimated.interpolate({
+										inputRange: [0, styles.smallContainer.height],
+										outputRange: [1, 0],
+										extrapolate: 'clamp',
+									}),
+								},
+							]}
+							source={require('@assets/img/bg.png')}
+						/>
+					</Animated.View>
 					<StatusBar
 						translucent={true}
 						backgroundColor={'#0000'}
 					/>
-					<View style={[styles.container]}>
+					<Animated.View
+						style={[
+							AppStyle.expand,
+							styles.padding,
+							{
+								height: widthAnimated.interpolate({
+									inputRange: [0, styles.smallContainer.height],
+									outputRange: [
+										styles.padding.height,
+										styles.smallContainer.height +
+											TabBarStyle.button.height +
+											13,
+									],
+									extrapolate: 'clamp',
+								}),
+							},
+						]}
+					>
 						<SearchBar />
 						<WeatherFastInfoBar
-							temp={currentForcast?.main.temp}
-							feelLike={currentForcast?.main.feels_like}
-							weatherName={currentForcast?.weather[0].main}
-							weatherIcon={currentForcast?.weather[0].icon}
+							temp={currentForecast?.main.temp}
+							feelLike={currentForecast?.main.feels_like}
+							weatherName={currentForecast?.weather[0].main}
+							weatherIcon={currentForecast?.weather[0].icon}
 						/>
 						<Animated.View
 							style={[
 								{
-									paddingBottom: anime.interpolate({
-										inputRange: [0, 1],
+									paddingBottom: widthAnimated.interpolate({
+										inputRange: [0, styles.smallContainer.height],
 										outputRange: [72, 0],
+										extrapolate: 'clamp',
 									}),
 								},
 							]}
@@ -126,26 +164,23 @@ const NavigationArea = () => {
 								style={[
 									styles.footer,
 									{
-										marginTop: anime.interpolate({
-											inputRange: [0, 1],
-											outputRange: [0, 73],
+										marginTop: widthAnimated.interpolate({
+											inputRange: [0, styles.smallContainer.height],
+											outputRange: [73, 0],
+											extrapolate: 'clamp',
 										}),
 									},
 								]}
 							>
-								<CurrentTime
-									anime={anime}
-									animatedStyle={animatedStyle.view}
-								/>
+								<CurrentTime animatedStyle={animatedStyle.view} />
 								<TempDayNight
 									dayTemp={dayNightTemp.day}
 									nightTemp={dayNightTemp.night}
-									anime={anime}
 									animatedStyle={animatedStyle.view}
 								/>
 							</Animated.View>
 						</Animated.View>
-					</View>
+					</Animated.View>
 				</Animated.View>
 			)}
 		</>
@@ -154,20 +189,31 @@ const NavigationArea = () => {
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: (StatusBar.currentHeight ?? 0) + 8,
-		paddingLeft: 23,
-		paddingRight: 23,
-		paddingBottom: 16,
 		flexGrow: 1,
+		overflow: 'hidden',
+		zIndex: 1,
+	},
+	smallContainer: {
+		height: 176,
+	},
+	padding: {
+		height: 360,
+		marginTop: 0,
+		paddingTop: StatusBar.currentHeight ?? 0,
+		paddingBottom: 16,
+		paddingHorizontal: 23,
 	},
 	image: {
-		width: '100%',
-		left: 0,
 		position: 'absolute',
+		width: '100%',
 		bottom: 0,
 	},
 	background: {
-		height: null,
+		bottom: 0,
+		left: 0,
+		position: 'absolute',
+		height: '100%',
+		width: '100%',
 		backgroundColor: '#E2D3FA',
 	},
 	rounded: {
@@ -184,7 +230,7 @@ const styles = StyleSheet.create({
 	},
 })
 
-const getTodayForcasts = (
+const getTodayForecasts = (
 	query: Realm.Results<Forecast>,
 	id?: BSON.ObjectId
 ) => {
@@ -194,10 +240,10 @@ const getTodayForcasts = (
 	const beginDayTimestamp = Math.floor(time.getTime() / 1000)
 	time.setHours(24, 0, 0)
 	const endDayTimestamp = Math.floor(time.getTime() - 1)
-	return getForcasts(beginDayTimestamp, endDayTimestamp, query, id)
+	return getForecasts(beginDayTimestamp, endDayTimestamp, query, id)
 }
 
-const getForcasts = (
+const getForecasts = (
 	beginDayTimestamp: number,
 	endDayTimestamp: number,
 	query: Realm.Results<Forecast>,
@@ -235,7 +281,7 @@ const getCurrentForecast = (list: Forecast[]) => {
 	return closest
 }
 
-const calacAvgTemp = (
+const calcAvgTemp = (
 	currentCity: City | undefined,
 	forecastsInDay: Forecast[]
 ) => {
@@ -258,3 +304,4 @@ const calacAvgTemp = (
 }
 
 export default NavigationArea
+export { styles }

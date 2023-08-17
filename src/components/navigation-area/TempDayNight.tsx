@@ -1,12 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Animated, ViewStyle } from 'react-native'
 
 const TempDayNight = (props: {
 	animatedStyle: Animated.WithAnimatedObject<ViewStyle>
-	anime: Animated.Value
 	dayTemp: number
 	nightTemp: number
 }) => {
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const [display, setDisplay] = useState<'flex' | 'none'>('flex')
 	const styles = useMemo(
 		() => ({
@@ -14,31 +15,31 @@ const TempDayNight = (props: {
 			day: {},
 			night: {},
 			font: {
-				color: props.anime.interpolate({
-					inputRange: [0, 1],
+				color: widthAnimated.interpolate({
+					inputRange: [0, 360],
 					outputRange: ['#fff0', '#ffff'],
 				}),
 				fontFamily: 'ProductSans',
 				fontSize: 18,
 				fontStyle: 'normal',
 				fontWeight: '700',
-				lineHeight: props.anime.interpolate({
-					inputRange: [0, 1],
+				lineHeight: widthAnimated.interpolate({
+					inputRange: [0, 360],
 					outputRange: [0, 24],
 				}),
 				letterSpacing: 0.1,
 			},
 			image: {
-				height: props.anime.interpolate({
-					inputRange: [0, 1],
+				height: widthAnimated.interpolate({
+					inputRange: [0, 360],
 					outputRange: [59, 107],
 				}),
 			},
 		}),
-		[props.anime]
+		[widthAnimated]
 	)
 	useEffect(() => {
-		const id = props.anime.addListener(v => {
+		const id = widthAnimated.addListener(v => {
 			if (v.value === 0) {
 				setDisplay('none')
 			} else {
@@ -46,9 +47,9 @@ const TempDayNight = (props: {
 			}
 		})
 		return () => {
-			props.anime.removeListener(id)
+			widthAnimated.removeListener(id)
 		}
-	}, [props.anime])
+	}, [widthAnimated])
 	return (
 		<Animated.View
 			style={[styles.container, props.animatedStyle, { display: display }]}

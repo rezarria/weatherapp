@@ -1,21 +1,22 @@
-import { PropsWithChildren, useContext, useMemo } from 'react'
-import { ScrollView, View } from 'react-native'
-import AppStyle from '@src/style/styles'
 import {
-	WindCard,
-	HourlyForecast,
-	DayForecast,
 	ChanceOfRain,
-	RainChance,
+	DayForecast,
+	HourlyForecast,
 	Pressure,
+	RainChance,
 	Sunrise,
 	Sunset,
+	WindCard,
 } from '@src/components'
-import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
-import useForecastStore from '../zustand/store'
-import { useQuery } from '../data/realm'
+import { styles as NavigationAreaStyle } from '@src/components/navigation-area/NavigationArea'
+import { City, Forecast } from '@src/data/model'
+import { useQuery } from '@src/data/realm'
+import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
+import AppStyle from '@src/style/styles'
+import useForecastStore from '@src/zustand/store'
+import { PropsWithChildren, useContext, useMemo } from 'react'
+import { Animated, NativeScrollEvent, ScrollView, View } from 'react-native'
 import { BSON } from 'realm'
-import { City, Forecast } from '../data/model'
 
 export type ParamList = {
 	Today: undefined
@@ -30,7 +31,8 @@ function Group({
 }
 
 const TodayScreen = () => {
-	const animationEvents = useContext(MainScreenAnimationEventsContext)
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
+
 	const query = useQuery(Forecast)
 	const currentCity = useForecastStore(store => store.city)
 	const list = useMemo(
@@ -59,7 +61,31 @@ const TodayScreen = () => {
 	)
 
 	return (
-		<ScrollView {...animationEvents}>
+		<ScrollView
+			onScroll={Animated.event<NativeScrollEvent>(
+				[
+					{
+						nativeEvent: {
+							contentOffset: {
+								y: widthAnimated,
+							},
+						},
+					},
+				],
+				{
+					useNativeDriver: false,
+					listener: e => {
+						console.info(e.nativeEvent.contentOffset.y)
+					},
+				}
+			)}
+		>
+			<View
+				style={{
+					paddingTop: NavigationAreaStyle.padding.height,
+				}}
+			/>
+
 			<View style={AppStyle.scrollView}>
 				<Group target={show}>
 					<WindCard

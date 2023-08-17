@@ -3,8 +3,8 @@ import {
 	LinearGradient,
 	Path,
 	Shadow,
-	SkPoint,
 	Skia,
+	SkPoint,
 } from '@shopify/react-native-skia'
 import React from 'react'
 

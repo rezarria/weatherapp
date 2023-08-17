@@ -1,5 +1,5 @@
 import { useQuery } from '@realm/react'
-import { Forecast } from '../../../data/model'
+import { Forecast } from '@src/data/model'
 
 const WeatherFastInfoBar = () => {
 	const query = useQuery(Forecast)

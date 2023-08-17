@@ -1,15 +1,15 @@
 import { createRealmContext } from '@realm/react'
 import {
-	Forecast,
 	City,
 	Clounds,
+	Coord,
+	Forecast,
 	Main,
 	Rain,
 	Snow,
 	Sys,
 	Weather,
 	Wind,
-	Coord,
 } from './model'
 
 export const { RealmProvider, useObject, useQuery, useRealm } =

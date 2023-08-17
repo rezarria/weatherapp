@@ -1,13 +1,13 @@
-import { View } from 'react-native'
-import { ScreenProps } from '../navigator/StackType'
 import { Canvas, Circle } from '@shopify/react-native-skia'
-import AppStyle from '../style/styles'
 import { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import { useQuery, useRealm } from '../data/realm'
 import { firstJob as doFirstJob } from '../job/fetchWeather'
-import useForecastStore from '../zustand/store'
 import { CityModel } from '../model/city'
 import { ForecastModel } from '../model/forecast'
+import { ScreenProps } from '../navigator/StackType'
+import AppStyle from '../style/styles'
+import useForecastStore from '../zustand/store'
 
 const BeginScreen = (props: ScreenProps<'BeginScreen'>) => {
 	const realm = useRealm()

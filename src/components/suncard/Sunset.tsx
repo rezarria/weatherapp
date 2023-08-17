@@ -1,6 +1,6 @@
+import Logo from '@assets/svg/sunset.svg'
 import { Text } from 'react-native'
 import { Card } from '../card'
-import Logo from '@assets/svg/sunset.svg'
 import { convertToTime, when } from './share'
 
 interface Props {

@@ -1,5 +1,5 @@
-import { create } from 'zustand'
 import { City } from '@src/data/model'
+import { create } from 'zustand'
 
 type State = {
 	city?: City

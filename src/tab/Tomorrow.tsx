@@ -1,17 +1,17 @@
-import { ScrollView, StyleSheet, View } from 'react-native'
-import { Day } from '@src/components'
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
-import { TabParamList } from '@src/navigator/TabType'
-import { useContext, useMemo } from 'react'
-import { MainScreenAnimationEventsContext } from '@src/screen/MainScreen'
-import { useQuery } from '@src/data/realm'
+import { Day } from '@src/components'
+import { styles as NavigationAreaStyle } from '@src/components/navigation-area/NavigationArea'
 import { City, Forecast } from '@src/data/model'
+import { useQuery } from '@src/data/realm'
+import { TabParamList } from '@src/navigator/TabType'
+import { divineToGroup, getMainForecastInDay } from '@src/utility/mainForecast'
 import useForecastStore from '@src/zustand/store'
-import { divineToGroup, getMainForecastInDay } from '../utility/mainForecast'
+import { useMemo } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
+
 type Props = MaterialTopTabScreenProps<TabParamList, 'Tomorrow', 'Tomorrow'>
 const TomorrowScreen = (_props: Props) => {
-	const animationEvents = useContext(MainScreenAnimationEventsContext)
 	const currentCity = useForecastStore(e => e.city)
 	const query = useQuery(Forecast)
 	const [begin, end] = getTimeRange(currentCity, 4)
@@ -38,10 +38,12 @@ const TomorrowScreen = (_props: Props) => {
 	}, [begin, currentCity, end, query])
 
 	return (
-		<ScrollView
-			{...animationEvents}
-			style={styles.container}
-		>
+		<ScrollView style={styles.container}>
+			<View
+				style={{
+					paddingTop: NavigationAreaStyle.padding.height,
+				}}
+			/>
 			{data && (
 				<FlatList
 					scrollEnabled={false}

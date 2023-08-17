@@ -1,6 +1,7 @@
+import AppStyle from '@src/style/styles'
 import React, { ReactNode } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import AppStyle from '@src/style/styles'
+
 export type CardProps = {
 	icon?: ReactNode
 	title: string

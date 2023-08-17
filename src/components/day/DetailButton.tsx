@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet } from 'react-native'
 import Arrow from '@assets/svg/downArrow.svg'
+import { Pressable, StyleSheet } from 'react-native'
 
 export const DetailButton = () => (
 	<Pressable style={styles.container}>

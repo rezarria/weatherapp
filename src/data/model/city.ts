@@ -1,5 +1,5 @@
+import { Coord as ICoord, default as ICity } from '@src/model/city'
 import { BSON } from 'realm'
-import { default as ICity, Coord as ICoord } from '@src/model/city'
 
 export class City extends Realm.Object<City> implements ICity {
 	_id!: BSON.ObjectId
