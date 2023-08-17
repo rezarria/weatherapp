@@ -6,15 +6,23 @@ import { useQuery } from '@src/data/realm'
 import { TabParamList } from '@src/navigator/TabType'
 import { divineToGroup, getMainForecastInDay } from '@src/utility/mainForecast'
 import useForecastStore from '@src/zustand/store'
-import { useMemo } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { useContext, useMemo } from 'react'
+import {
+	Animated,
+	NativeScrollEvent,
+	ScrollView,
+	StyleSheet,
+	View,
+} from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
+import { WidthMainScreenAnimatedContext } from '../screen/MainScreen'
 
 type Props = MaterialTopTabScreenProps<TabParamList, 'Tomorrow', 'Tomorrow'>
 const TomorrowScreen = (_props: Props) => {
 	const currentCity = useForecastStore(e => e.city)
 	const query = useQuery(Forecast)
 	const [begin, end] = getTimeRange(currentCity, 4)
+	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const data = useMemo(() => {
 		if (currentCity == null) {
 			return undefined
@@ -38,7 +46,27 @@ const TomorrowScreen = (_props: Props) => {
 	}, [begin, currentCity, end, query])
 
 	return (
-		<ScrollView style={styles.container}>
+		<ScrollView
+			style={styles.container}
+			showsVerticalScrollIndicator={false}
+			onScroll={Animated.event<NativeScrollEvent>(
+				[
+					{
+						nativeEvent: {
+							contentOffset: {
+								y: widthAnimated,
+							},
+						},
+					},
+				],
+				{
+					useNativeDriver: false,
+					listener: e => {
+						console.info(e.nativeEvent.contentOffset.y)
+					},
+				}
+			)}
+		>
 			<View
 				style={{
 					paddingTop: NavigationAreaStyle.padding.height,

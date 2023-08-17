@@ -62,6 +62,7 @@ const TodayScreen = () => {
 
 	return (
 		<ScrollView
+			showsVerticalScrollIndicator={false}
 			onScroll={Animated.event<NativeScrollEvent>(
 				[
 					{
