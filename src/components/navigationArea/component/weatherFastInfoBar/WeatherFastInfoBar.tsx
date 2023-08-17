@@ -12,7 +12,7 @@ const WeatherFastInfoBar = (props: {
 	return (
 		<Animated.View style={[styles.container, {}]}>
 			<Temp
-				v={props.temp ?? Number.NaN}
+				v={props.temp}
 				cv={props.feelLike}
 			/>
 			<WeatherIcon

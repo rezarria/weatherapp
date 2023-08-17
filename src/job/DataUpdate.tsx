@@ -11,11 +11,10 @@ import { BSON, Results } from 'realm'
 import useForecastStore from '../zustand/store'
 
 const DataUpdate = (props: { children?: ReactNode }) => {
-	const updateTick = useForecastStore(e => e.updateTick)
-	const [setCity] = useForecastStore(e => [e.setCity])
-	const cityQuery = useQuery(City)
+	const [setCity, updateTick] = useForecastStore(e => [e.setCity, e.updateTick])
 	const forecastQuery = useQuery(Forecast)
 	const realm = useRealm()
+	const cityQuery = useQuery(City)
 	useEffect(() => {
 		loadConfig(cityQuery, forecastQuery, realm, setCity)
 			.then(config => {
@@ -27,6 +26,7 @@ const DataUpdate = (props: { children?: ReactNode }) => {
 	}, [cityQuery, forecastQuery, realm, setCity, updateTick])
 	return <>{props.children}</>
 }
+
 export default DataUpdate
 async function loadConfig(
 	cityQuery: Realm.Results<City>,

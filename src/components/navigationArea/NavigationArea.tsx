@@ -23,7 +23,7 @@ import {
 } from './hook'
 
 const NavigationArea = () => {
-	const [currentCity, tick] = useForecastStore(e => [e.city, e.tick])
+	const [currentCity] = useForecastStore(e => [e.city])
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const animatedStyle = useRef<{
 		[key: string]: Animated.WithAnimatedObject<
@@ -54,100 +54,96 @@ const NavigationArea = () => {
 
 	return (
 		<>
-			{currentCity && tick !== 0 && (
-				<Animated.View style={[styles.container]}>
-					<Animated.View
+			<Animated.View style={[styles.container]}>
+				<Animated.View
+					style={[
+						styles.rounded,
+						styles.background,
+						{},
+						{
+							borderRadius: widthAnimated.interpolate({
+								inputRange: [0, styles.smallContainer.height],
+								outputRange: [33, 0],
+								extrapolate: 'clamp',
+							}),
+						},
+					]}
+				>
+					<Animated.Image
 						style={[
-							styles.rounded,
-							styles.background,
-							{},
+							styles.image,
 							{
-								borderRadius: widthAnimated.interpolate({
+								height: styles.padding.height + styles.padding.marginTop,
+								opacity: widthAnimated.interpolate({
 									inputRange: [0, styles.smallContainer.height],
-									outputRange: [33, 0],
+									outputRange: [1, 0],
 									extrapolate: 'clamp',
 								}),
 							},
 						]}
-					>
-						<Animated.Image
-							style={[
-								styles.image,
-								{
-									height: styles.padding.height + styles.padding.marginTop,
-									opacity: widthAnimated.interpolate({
-										inputRange: [0, styles.smallContainer.height],
-										outputRange: [1, 0],
-										extrapolate: 'clamp',
-									}),
-								},
-							]}
-							source={require('@assets/img/bg.png')}
-						/>
-					</Animated.View>
-					<StatusBar
-						translucent={true}
-						backgroundColor={'#0000'}
+						source={require('@assets/img/bg.png')}
+					/>
+				</Animated.View>
+				<StatusBar
+					translucent={true}
+					backgroundColor={'#0000'}
+				/>
+				<Animated.View
+					style={[
+						AppStyle.expand,
+						styles.padding,
+						{
+							height: widthAnimated.interpolate({
+								inputRange: [0, styles.smallContainer.height],
+								outputRange: [
+									styles.padding.height,
+									styles.smallContainer.height + TabBarStyle.button.height + 13,
+								],
+								extrapolate: 'clamp',
+							}),
+						},
+					]}
+				>
+					<SearchBar />
+					<WeatherFastInfoBar
+						temp={currentForecast?.main.temp}
+						feelLike={currentForecast?.main.feels_like}
+						weatherName={currentForecast?.weather[0].main}
+						weatherIcon={currentForecast?.weather[0].icon}
 					/>
 					<Animated.View
 						style={[
-							AppStyle.expand,
-							styles.padding,
 							{
-								height: widthAnimated.interpolate({
+								paddingBottom: widthAnimated.interpolate({
 									inputRange: [0, styles.smallContainer.height],
-									outputRange: [
-										styles.padding.height,
-										styles.smallContainer.height +
-											TabBarStyle.button.height +
-											13,
-									],
+									outputRange: [72, 0],
 									extrapolate: 'clamp',
 								}),
 							},
 						]}
 					>
-						<SearchBar />
-						<WeatherFastInfoBar
-							temp={currentForecast?.main.temp}
-							feelLike={currentForecast?.main.feels_like}
-							weatherName={currentForecast?.weather[0].main}
-							weatherIcon={currentForecast?.weather[0].icon}
-						/>
 						<Animated.View
 							style={[
+								styles.footer,
 								{
-									paddingBottom: widthAnimated.interpolate({
+									marginTop: widthAnimated.interpolate({
 										inputRange: [0, styles.smallContainer.height],
-										outputRange: [72, 0],
+										outputRange: [73, 0],
 										extrapolate: 'clamp',
 									}),
 								},
 							]}
 						>
-							<Animated.View
-								style={[
-									styles.footer,
-									{
-										marginTop: widthAnimated.interpolate({
-											inputRange: [0, styles.smallContainer.height],
-											outputRange: [73, 0],
-											extrapolate: 'clamp',
-										}),
-									},
-								]}
-							>
-								<CurrentTime animatedStyle={animatedStyle.view} />
-								<TempDayNight
-									dayTemp={dayNightTemp.day}
-									nightTemp={dayNightTemp.night}
-									animatedStyle={animatedStyle.view}
-								/>
-							</Animated.View>
+							<CurrentTime animatedStyle={animatedStyle.view} />
+							<TempDayNight
+								dayTemp={dayNightTemp.day}
+								nightTemp={dayNightTemp.night}
+								animatedStyle={animatedStyle.view}
+							/>
 						</Animated.View>
 					</Animated.View>
 				</Animated.View>
-			)}
+			</Animated.View>
 		</>
 	)
 }

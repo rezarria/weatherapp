@@ -143,7 +143,6 @@ const findClosestForcast: (list: Forecast[]) => Forecast | null = list => {
 }
 
 const filterTodayForecasts = (currentCity: City | undefined) => {
-	console.info(currentCity)
 	const now = new Date()
 	const fixTimestamp = 1000 * (currentCity?.timezone ?? 0)
 	now.setUTCHours(0, 0, 0, 0)

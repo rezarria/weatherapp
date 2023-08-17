@@ -1,6 +1,7 @@
 import { Canvas, SkPoint } from '@shopify/react-native-skia'
 import AppStyle from '@src/style/styles'
 import {
+	ForwardedRef,
 	forwardRef,
 	useImperativeHandle,
 	useMemo,
@@ -28,7 +29,7 @@ export type Props = {
 
 export type Ref = DrawCurrentLineRef
 
-const Graph = forwardRef<Ref, Props>((props, ref) => {
+const Graph = (props: Props, ref: ForwardedRef<Ref>) => {
 	const [layoutInfo, setLayoutInfo] = useState<LayoutRectangle>()
 	const titleX = useMemo(
 		() => props.titleX ?? ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -48,6 +49,9 @@ const Graph = forwardRef<Ref, Props>((props, ref) => {
 		}),
 		[]
 	)
+	if (props.points?.length === 0) {
+		return <></>
+	}
 	return (
 		<View style={[AppStyle.expand, styles.container]}>
 			<DrawTitleY
@@ -107,9 +111,9 @@ const Graph = forwardRef<Ref, Props>((props, ref) => {
 			</View>
 		</View>
 	)
-})
+}
 
-export default Graph
+export default forwardRef(Graph)
 
 const styles = StyleSheet.create({
 	container: {

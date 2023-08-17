@@ -1,7 +1,8 @@
-import { styles as NavigationAreaStyles } from '@component/navigation-area/NavigationArea'
+import { styles as NavigationAreaStyles } from '@component/navigationArea/NavigationArea'
 import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import React, { useContext } from 'react'
 import { Animated, Image, StyleSheet, View } from 'react-native'
+import Logo from '@assets/svg/question exchange.svg'
 
 type Props = {
 	name?: string
@@ -15,6 +16,11 @@ const WeatherIcon = ({ name, icon }: Props) => {
 		outputRange: [107, 59],
 		extrapolate: 'clamp',
 	})
+
+	if (icon == null) {
+		return <Logo fill={'#fff'} />
+	}
+
 	return (
 		<View style={styles.container}>
 			<Animated.View

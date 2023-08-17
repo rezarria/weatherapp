@@ -33,11 +33,14 @@ function Input(props: {
 	return (
 		<>
 			<TextInput
+				placeholder={'typing some where?'}
 				value={props.input}
 				returnKeyType={'search'}
 				onChangeText={props.setInput}
 				onSubmitEditing={e => {
-					resultPanelRef?.current?.search(e.nativeEvent.text)
+					if (e.nativeEvent.text.length !== 0) {
+						resultPanelRef?.current?.search(e.nativeEvent.text)
+					}
 				}}
 				style={[styles.input, { color }]}
 				onFocus={() => {

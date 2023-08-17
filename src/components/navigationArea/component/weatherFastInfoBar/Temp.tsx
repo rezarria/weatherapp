@@ -4,7 +4,7 @@ import { Animated, StyleSheet, View } from 'react-native'
 
 import { styles as NavigationAreaStyles } from '@component/navigationArea/NavigationArea'
 
-const Temp = (props: { v: number; cv?: number }) => {
+const Temp = (props: { v?: number; cv?: number }) => {
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const color = useMemo(
 		() =>
@@ -34,7 +34,7 @@ const Temp = (props: { v: number; cv?: number }) => {
 					},
 				]}
 			>
-				{(props.v - 272.15).toFixed(1)}°
+				{((props.v ?? 272.15) - 272.15).toFixed(1)}°
 			</Animated.Text>
 			{props.cv && (
 				<Animated.Text

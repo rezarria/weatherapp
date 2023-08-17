@@ -23,7 +23,7 @@ export const MainScreen = ({}: ScreenProps<'MainScreen'>) => {
 	return (
 		<WidthMainScreenAnimatedContext.Provider value={width}>
 			<View style={styles.background}>
-				<DataUpdate />
+				{/* <DataUpdate /> */}
 				<ResultPanel ref={resultPanelRef} />
 				<Floating zIndex={1}>
 					<ResultPanelRefContext.Provider value={resultPanelRef}>
