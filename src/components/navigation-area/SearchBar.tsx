@@ -52,7 +52,7 @@ function Input(props: {
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const [color, setColor] = useState('#fff')
 	const callback = useCallback((v: { value: number }) => {
-		const n = (v.value / NavigationAreaStyles.smallContainer.height) * 255
+		const n = (1 - v.value / NavigationAreaStyles.smallContainer.height) * 255
 		setColor(`rgb(${n},${n},${n})`)
 	}, [])
 	useEffect(() => {

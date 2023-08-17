@@ -50,7 +50,7 @@ const TabBar = (props: Props) => {
 					onPress={() => props.setIndex(index)}
 				>
 					<View style={[]}>
-						<Text style={styles.text}>{item.title}</Text>
+						<Text style={[AppStyle.font, styles.text]}>{item.title}</Text>
 					</View>
 				</Pressable>
 			))}
@@ -79,9 +79,13 @@ export const styles = StyleSheet.create({
 		borderRadius: 14,
 		backgroundColor: '#E0B6FF',
 		paddingVertical: 9,
+		alignItems: 'center',
 	},
 	text: {
 		textAlign: 'center',
+		fontSize: 16,
+		letterSpacing: 0.5,
+		color: '#2E004E',
 	},
 })
 

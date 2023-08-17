@@ -10,7 +10,7 @@ const Temp = (props: { v: number; cv?: number }) => {
 		() =>
 			widthAnimated.interpolate({
 				inputRange: [0, NavigationAreaStyles.smallContainer.height],
-				outputRange: ['#000', '#fff'],
+				outputRange: ['#fff', '#000'],
 			}),
 		[widthAnimated]
 	)
