@@ -40,7 +40,7 @@ export class Forecast
 			clounds: 'Clounds',
 			wind: 'Wind',
 			visibility: 'int',
-			pop: 'int',
+			pop: 'float',
 			rain: 'Rain?',
 			snow: 'Snow?',
 			sys: 'Sys',
