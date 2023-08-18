@@ -3,10 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 function useUpdateCurrentForecast(
 	forecastsInDay: Forecast[]
-): [Forecast | null, Dispatch<SetStateAction<Forecast | null>>] {
-	const [currentForecast, setCurrentForecast] = useState(() =>
-		getCurrentForecast(forecastsInDay)
-	)
+): [Forecast | undefined, Dispatch<SetStateAction<Forecast | undefined>>] {
+	const [currentForecast, setCurrentForecast] = useState<Forecast>()
 	useEffect(() => {
 		const forecast = getCurrentForecast(forecastsInDay)
 		setCurrentForecast(forecast)
@@ -16,11 +14,11 @@ function useUpdateCurrentForecast(
 
 const getCurrentForecast = (list: Forecast[]) => {
 	if (list.length === 0) {
-		return null
+		return undefined
 	}
 	const nowTimestamp = Date.now() / 1000
 	let minDif = Infinity
-	let closest: Forecast | null = null
+	let closest: Forecast | undefined
 	for (const forecast of list) {
 		let dif = Math.abs(nowTimestamp - forecast.dt)
 		if (dif < minDif) {

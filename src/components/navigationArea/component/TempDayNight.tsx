@@ -4,8 +4,8 @@ import { Animated, ViewStyle } from 'react-native'
 
 const TempDayNight = (props: {
 	animatedStyle: Animated.WithAnimatedObject<ViewStyle>
-	dayTemp: number
-	nightTemp: number
+	dayTemp?: number
+	nightTemp?: number
 }) => {
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const [display, setDisplay] = useState<'flex' | 'none'>('flex')
@@ -55,10 +55,10 @@ const TempDayNight = (props: {
 			style={[styles.container, props.animatedStyle, { display: display }]}
 		>
 			<Animated.Text style={[styles.font, styles.day]}>
-				Day {(props.dayTemp - 272.15).toFixed(1)}°
+				Day {((props.dayTemp ?? 272.15) - 272.15).toFixed(1)}°
 			</Animated.Text>
 			<Animated.Text style={[styles.font, styles.night]}>
-				Night {(props.nightTemp - 272.15).toFixed(1)}°
+				Night {((props.nightTemp ?? 272.15) - 272.15).toFixed(1)}°
 			</Animated.Text>
 		</Animated.View>
 	)

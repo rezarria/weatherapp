@@ -1,3 +1,4 @@
+import { NavigationAreaStyles } from '@component/navigationArea'
 import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import React, {
 	forwardRef,
@@ -7,7 +8,6 @@ import React, {
 	useState,
 } from 'react'
 import { Animated, StyleSheet, TextStyle } from 'react-native'
-import { styles as NavigationAreaStyles } from 'src/components/navigationArea/NavigationArea'
 
 const CurrentTime = forwardRef<
 	{

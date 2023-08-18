@@ -1,6 +1,6 @@
 import { City, Forecast } from '@src/data/model'
-import { useEffect, useState } from 'react'
 import { useQuery } from '@src/data/realm'
+import { useEffect, useState } from 'react'
 import { BSON } from 'realm'
 
 const useUpdateTodayForecast = (currentCity: City | undefined) => {

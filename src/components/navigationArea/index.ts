@@ -1,2 +1,5 @@
-export { default as NavigationArea } from './NavigationArea'
+export {
+	default as NavigationArea,
+	styles as NavigationAreaStyles,
+} from './NavigationArea'
 export { WeatherFastInfoBar } from './component/weatherFastInfoBar'

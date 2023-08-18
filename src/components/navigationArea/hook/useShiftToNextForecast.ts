@@ -2,9 +2,9 @@ import { Forecast } from '@src/data/model'
 import { useEffect } from 'react'
 
 const useShiftToNextForecast = (
-	currentForecast: Forecast | null,
+	currentForecast: Forecast | undefined,
 	forecastsInDay: Forecast[],
-	setCurrentForecast: React.Dispatch<React.SetStateAction<Forecast | null>>
+	setCurrentForecast: React.Dispatch<React.SetStateAction<Forecast | undefined>>
 ) => {
 	useEffect(() => {
 		if (currentForecast) {

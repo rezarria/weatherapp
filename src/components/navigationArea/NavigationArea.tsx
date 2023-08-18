@@ -1,86 +1,38 @@
-import { WeatherFastInfoBar } from '@src/components'
-import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
 import AppStyle from '@src/style/styles'
 import useForecastStore from '@src/zustand/store'
-import { useContext, useRef } from 'react'
+import { Animated, StatusBar, StyleSheet } from 'react-native'
 import {
-	Animated,
-	ImageStyle,
-	StatusBar,
-	StyleSheet,
-	TextStyle,
-	ViewStyle,
-} from 'react-native'
-import { TabBarStyle } from '../tabBar'
-import CurrentTime from 'src/components/navigationArea/component/CurrentTime'
-import SearchBar from 'src/components/navigationArea/component/SearchBar'
-import TempDayNight from 'src/components/navigationArea/component/TempDayNight'
+	CurrentTime,
+	SearchBar,
+	TempDayNight,
+	WeatherFastInfoBar,
+} from './component'
 import {
-	useUpdateTodayForecast,
+	useAnimation,
+	useShiftToNextForecast,
 	useUpdateCurrentForecast,
 	useUpdateDayNightTemp,
-	useShiftToNextForecast,
+	useUpdateTodayForecast,
 } from './hook'
 
 const NavigationArea = () => {
 	const [currentCity] = useForecastStore(e => [e.city])
-	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
-	const animatedStyle = useRef<{
-		[key: string]: Animated.WithAnimatedObject<
-			ViewStyle | TextStyle | ImageStyle
-		>
-	}>({
-		text: {
-			color: widthAnimated.interpolate({
-				inputRange: [0, styles.smallContainer.height],
-				outputRange: ['#000', '#fff'],
-				extrapolate: 'clamp',
-			}),
-		},
-		view: {
-			opacity: widthAnimated.interpolate({
-				inputRange: [0, styles.smallContainer.height],
-				outputRange: [1, 0],
-				extrapolate: 'clamp',
-			}),
-		},
-	}).current
-
 	const [forecastsInDay] = useUpdateTodayForecast(currentCity)
 	const [currentForecast, setCurrentForecast] =
 		useUpdateCurrentForecast(forecastsInDay)
 	const [dayNightTemp] = useUpdateDayNightTemp(currentCity, forecastsInDay)
 	useShiftToNextForecast(currentForecast, forecastsInDay, setCurrentForecast)
 
+	const { animation, animatedStyle } = useAnimation()
+
 	return (
 		<>
 			<Animated.View style={[styles.container]}>
 				<Animated.View
-					style={[
-						styles.rounded,
-						styles.background,
-						{},
-						{
-							borderRadius: widthAnimated.interpolate({
-								inputRange: [0, styles.smallContainer.height],
-								outputRange: [33, 0],
-								extrapolate: 'clamp',
-							}),
-						},
-					]}
+					style={[styles.rounded, styles.background, animation.background]}
 				>
 					<Animated.Image
-						style={[
-							styles.image,
-							{
-								height: styles.padding.height + styles.padding.marginTop,
-								opacity: widthAnimated.interpolate({
-									inputRange: [0, styles.smallContainer.height],
-									outputRange: [1, 0],
-									extrapolate: 'clamp',
-								}),
-							},
-						]}
+						style={[styles.image, animation.image]}
 						source={require('@assets/img/bg.png')}
 					/>
 				</Animated.View>
@@ -89,20 +41,7 @@ const NavigationArea = () => {
 					backgroundColor={'#0000'}
 				/>
 				<Animated.View
-					style={[
-						AppStyle.expand,
-						styles.padding,
-						{
-							height: widthAnimated.interpolate({
-								inputRange: [0, styles.smallContainer.height],
-								outputRange: [
-									styles.padding.height,
-									styles.smallContainer.height + TabBarStyle.button.height + 13,
-								],
-								extrapolate: 'clamp',
-							}),
-						},
-					]}
+					style={[AppStyle.expand, styles.padding, animation.panel]}
 				>
 					<SearchBar />
 					<WeatherFastInfoBar
@@ -111,33 +50,12 @@ const NavigationArea = () => {
 						weatherName={currentForecast?.weather[0].main}
 						weatherIcon={currentForecast?.weather[0].icon}
 					/>
-					<Animated.View
-						style={[
-							{
-								paddingBottom: widthAnimated.interpolate({
-									inputRange: [0, styles.smallContainer.height],
-									outputRange: [72, 0],
-									extrapolate: 'clamp',
-								}),
-							},
-						]}
-					>
-						<Animated.View
-							style={[
-								styles.footer,
-								{
-									marginTop: widthAnimated.interpolate({
-										inputRange: [0, styles.smallContainer.height],
-										outputRange: [73, 0],
-										extrapolate: 'clamp',
-									}),
-								},
-							]}
-						>
+					<Animated.View style={[animation.paddingBottom]}>
+						<Animated.View style={[styles.footer, animation.footer]}>
 							<CurrentTime animatedStyle={animatedStyle.view} />
 							<TempDayNight
-								dayTemp={dayNightTemp.day}
-								nightTemp={dayNightTemp.night}
+								dayTemp={dayNightTemp?.day}
+								nightTemp={dayNightTemp?.night}
 								animatedStyle={animatedStyle.view}
 							/>
 						</Animated.View>

@@ -12,7 +12,9 @@ import {
 import { styles as InputStyle } from '@component/navigationArea/component/SearchBar.Input'
 import AppStyle from '@src/style/styles'
 import {
+	Dispatch,
 	ForwardedRef,
+	SetStateAction,
 	forwardRef,
 	useEffect,
 	useImperativeHandle,
@@ -75,117 +77,13 @@ const Section = (props: {
 )
 
 const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
-	const value = useRef(new Animated.Value(styles.container.height)).current
+	const { showAnimation, animation, hideAnimation, showAnimated } =
+		useAnimation()
 	const [results, setResults] = useState<DirectType[]>([])
-	const showAnimated = useRef(new Animated.Value(0)).current
-	const realm = useRealm()
-	const cityQuery = useQuery(City)
 	const [setCity, updateTick] = useForecastStore(s => [s.setCity, s.updateTick])
-	const showAnimation = useMemo(
-		() =>
-			Animated.timing(showAnimated, {
-				toValue: 1,
-				duration: 200,
-				useNativeDriver: false,
-			}),
-		[showAnimated]
-	)
-	const hideAnimation = useMemo(
-		() =>
-			Animated.timing(showAnimated, {
-				toValue: 0,
-				duration: 200,
-				useNativeDriver: false,
-			}),
-		[showAnimated]
-	)
-	useImperativeHandle(
-		ref,
-		() => ({
-			show: () => {
-				showAnimation.stop()
-				showAnimation.start()
-			},
-			hide: () => {
-				showAnimation.stop()
-				showAnimation.reset()
-			},
-			search: localtion => {
-				direct(localtion).then(data => {
-					data.forEach(item => {
-						if (
-							cityQuery.filtered(
-								'coord.lat == $0 AND coord.lon == $1',
-								item.lat,
-								item.lon
-							).length === 0
-						) {
-							realm.write(() => {
-								realm.create(City, {
-									_id: new BSON.ObjectID(),
-									coord: {
-										lat: item.lat,
-										lon: item.lon,
-									},
-									country: item.country,
-									name: item.name,
-									population: 0,
-									sunrise: 0,
-									sunset: 0,
-									timezone: 0,
-								})
-							})
-						}
-					})
-					setResults(data)
-				})
-			},
-		}),
-		[cityQuery, realm, showAnimation]
-	)
-	useEffect(() => {
-		const show = Keyboard.addListener('keyboardDidShow', e => {
-			value.stopAnimation(() => {
-				Animated.timing(value, {
-					toValue: styles.container.height - e.endCoordinates.height,
-					duration: 200,
-					useNativeDriver: false,
-				}).start()
-			})
-		})
-		const hide = Keyboard.addListener('keyboardDidHide', () => {
-			value.stopAnimation(() => {
-				Animated.timing(value, {
-					toValue: styles.container.height,
-					duration: 200,
-					useNativeDriver: false,
-				}).start()
-			})
-		})
-		return () => {
-			Keyboard.removeSubscription(show)
-			Keyboard.removeSubscription(hide)
-		}
-	}, [showAnimated, value])
+	const cityQuery = useSetupRef(ref, showAnimation, setResults)
 	return (
-		<Animated.View
-			style={[
-				styles.container,
-				{
-					height: value,
-					transform: [
-						{
-							translateY: showAnimated.interpolate({
-								inputRange: [0, 1],
-								outputRange: [Dimensions.get('window').height, 0],
-								extrapolate: 'clamp',
-							}),
-						},
-					],
-					opacity: showAnimated,
-				},
-			]}
-		>
+		<Animated.View style={[styles.container, animation.container]}>
 			<Animated.View style={[AppStyle.card, styles.panel]}>
 				<FlatList
 					data={results}
@@ -245,6 +143,130 @@ export const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 })
+function useSetupRef(
+	ref: ForwardedRef<Ref>,
+	showAnimation: Animated.CompositeAnimation,
+	setResults: Dispatch<SetStateAction<DirectType[]>>
+) {
+	const realm = useRealm()
+	const cityQuery = useQuery(City)
+	const task = useRef<Promise<any>>()
+	useImperativeHandle(
+		ref,
+		() => ({
+			show: () => {
+				showAnimation.stop()
+				showAnimation.start()
+			},
+			hide: () => {
+				showAnimation.stop()
+				showAnimation.reset()
+			},
+			search: localtion => {
+				if (task.current != null) {
+					task.current = direct(localtion).then(data => {
+						data.forEach(item => {
+							if (
+								cityQuery.filtered(
+									'coord.lat == $0 AND coord.lon == $1',
+									item.lat,
+									item.lon
+								).length === 0
+							) {
+								realm.write(() => {
+									realm.create(City, {
+										_id: new BSON.ObjectID(),
+										coord: {
+											lat: item.lat,
+											lon: item.lon,
+										},
+										country: item.country,
+										name: item.name,
+										population: 0,
+										sunrise: 0,
+										sunset: 0,
+										timezone: 0,
+									})
+								})
+							}
+						})
+						setResults(data)
+						task.current = undefined
+					})
+				}
+			},
+		}),
+		[cityQuery, realm, setResults, showAnimation]
+	)
+	return cityQuery
+}
+
+function useAnimation() {
+	const value = useRef(new Animated.Value(styles.container.height)).current
+	const showAnimated = useRef(new Animated.Value(0)).current
+	const showAnimation = useMemo(
+		() =>
+			Animated.timing(showAnimated, {
+				toValue: 1,
+				duration: 200,
+				useNativeDriver: false,
+			}),
+		[showAnimated]
+	)
+	const hideAnimation = useMemo(
+		() =>
+			Animated.timing(showAnimated, {
+				toValue: 0,
+				duration: 200,
+				useNativeDriver: false,
+			}),
+		[showAnimated]
+	)
+	useEffect(() => {
+		const show = Keyboard.addListener('keyboardDidShow', e => {
+			value.stopAnimation(() => {
+				Animated.timing(value, {
+					toValue: styles.container.height - e.endCoordinates.height,
+					duration: 200,
+					useNativeDriver: false,
+				}).start()
+			})
+		})
+		const hide = Keyboard.addListener('keyboardDidHide', () => {
+			value.stopAnimation(() => {
+				Animated.timing(value, {
+					toValue: styles.container.height,
+					duration: 200,
+					useNativeDriver: false,
+				}).start()
+			})
+		})
+		return () => {
+			Keyboard.removeSubscription(show)
+			Keyboard.removeSubscription(hide)
+		}
+	}, [showAnimated, value])
+	const animation = useMemo(
+		() => ({
+			container: {
+				height: value,
+				transform: [
+					{
+						translateY: showAnimated.interpolate({
+							inputRange: [0, 1],
+							outputRange: [Dimensions.get('window').height, 0],
+							extrapolate: 'clamp',
+						}),
+					},
+				],
+				opacity: showAnimated,
+			},
+		}),
+		[showAnimated, value]
+	)
+	return { showAnimation, animation, hideAnimation, showAnimated }
+}
+
 function exitButton(
 	showAnimated: Animated.Value,
 	hideAnimation: Animated.CompositeAnimation

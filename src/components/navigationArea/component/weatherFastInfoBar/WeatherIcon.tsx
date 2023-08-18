@@ -1,8 +1,7 @@
-import { styles as NavigationAreaStyles } from '@component/navigationArea/NavigationArea'
-import { WidthMainScreenAnimatedContext } from '@src/screen/MainScreen'
-import React, { useContext } from 'react'
-import { Animated, Image, StyleSheet, View } from 'react-native'
 import Logo from '@assets/svg/question exchange.svg'
+import React from 'react'
+import { Animated, Image, StyleSheet, View } from 'react-native'
+import { useAnimation } from './hook/useAnimation'
 
 type Props = {
 	name?: string
@@ -10,12 +9,7 @@ type Props = {
 }
 
 const WeatherIcon = ({ name, icon }: Props) => {
-	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
-	const size = widthAnimated.interpolate({
-		inputRange: [0, NavigationAreaStyles.smallContainer.height],
-		outputRange: [107, 59],
-		extrapolate: 'clamp',
-	})
+	const animation = useAnimation()
 
 	if (icon == null) {
 		return <Logo fill={'#fff'} />
@@ -23,38 +17,15 @@ const WeatherIcon = ({ name, icon }: Props) => {
 
 	return (
 		<View style={styles.container}>
-			<Animated.View
-				style={{
-					height: size,
-					width: size,
-				}}
-			>
-				{icon && (
-					<Image
-						style={styles.icon}
-						source={{
-							uri: `https://openweathermap.org/img/wn/${icon}@4x.png`,
-						}}
-					/>
-				)}
+			<Animated.View style={animation.icon}>
+				<Image
+					style={styles.icon}
+					source={{
+						uri: `https://openweathermap.org/img/wn/${icon}@4x.png`,
+					}}
+				/>
 			</Animated.View>
-			<Animated.Text
-				style={[
-					styles.text,
-					{
-						fontSize: widthAnimated.interpolate({
-							inputRange: [0, NavigationAreaStyles.smallContainer.height],
-							outputRange: [22, 0],
-							extrapolate: 'clamp',
-						}),
-						lineHeight: widthAnimated.interpolate({
-							inputRange: [0, NavigationAreaStyles.smallContainer.height],
-							outputRange: [28, 0],
-							extrapolate: 'clamp',
-						}),
-					},
-				]}
-			>
+			<Animated.Text style={[styles.text, animation.text]}>
 				{name}
 			</Animated.Text>
 		</View>

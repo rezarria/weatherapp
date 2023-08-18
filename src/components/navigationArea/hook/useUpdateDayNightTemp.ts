@@ -5,9 +5,10 @@ const useUpdateDayNightTemp = (
 	currentCity: City | undefined,
 	forecastsInDay: Forecast[]
 ) => {
-	const [dayNightTemp, setDayNightTemp] = useState(() =>
-		calcAvgTemp(currentCity, forecastsInDay)
-	)
+	const [dayNightTemp, setDayNightTemp] = useState<{
+		day: number
+		night: number
+	}>()
 	useEffect(() => {
 		setDayNightTemp(calcAvgTemp(currentCity, forecastsInDay))
 	}, [currentCity, forecastsInDay, setDayNightTemp])

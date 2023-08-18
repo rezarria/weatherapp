@@ -1,22 +1,15 @@
-import {
-	Dispatch,
-	SetStateAction,
-	useContext,
-	useState,
-	useCallback,
-	useEffect,
-} from 'react'
-import { StyleSheet, TextInput } from 'react-native'
+import { NavigationAreaStyles } from '@component/navigationArea'
 import {
 	ResultPanelRefContext,
 	WidthMainScreenAnimatedContext,
 } from '@src/screen/MainScreen'
-import { styles as NavigationAreaStyles } from 'src/components/navigationArea/NavigationArea'
+import useForecastStore from '@src/zustand/store'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { StyleSheet, TextInput } from 'react-native'
 
-function Input(props: {
-	input: string
-	setInput: Dispatch<SetStateAction<string>>
-}) {
+function Input() {
+	const [currentCity] = useForecastStore(e => [e.city])
+	const [input, setInput] = useState('')
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const resultPanelRef = useContext(ResultPanelRefContext)
 	const [color, setColor] = useState('#fff')
@@ -24,6 +17,9 @@ function Input(props: {
 		const n = (1 - v.value / NavigationAreaStyles.smallContainer.height) * 255
 		setColor(`rgb(${n},${n},${n})`)
 	}, [])
+	useEffect(() => {
+		setInput(currentCity?.name ?? '')
+	}, [currentCity])
 	useEffect(() => {
 		const id = widthAnimated.addListener(callback)
 		return () => {
@@ -34,9 +30,9 @@ function Input(props: {
 		<>
 			<TextInput
 				placeholder={'typing some where?'}
-				value={props.input}
+				value={input}
 				returnKeyType={'search'}
-				onChangeText={props.setInput}
+				onChangeText={setInput}
 				onSubmitEditing={e => {
 					if (e.nativeEvent.text.length !== 0) {
 						resultPanelRef?.current?.search(e.nativeEvent.text)

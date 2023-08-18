@@ -1,6 +1,5 @@
 import { Floating } from '@component/etc'
 import { NavigationArea } from '@component/index'
-import DataUpdate from '@src/job/DataUpdate'
 import CustomTabsNavigator from '@src/navigator/CustomTabs'
 import { ScreenProps } from '@src/navigator/StackType'
 import { createContext, useRef } from 'react'
