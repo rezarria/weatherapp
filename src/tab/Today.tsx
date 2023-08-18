@@ -138,10 +138,11 @@ const getCurrentAboveForecast = (
 		return []
 	}
 	const nowTimestamp = Math.floor(Date.now() / 1000)
+
 	return Array.from(
 		query
 			.filtered(
-				'$0 >= dt AND city_id == $1 SORT(dt ASC) LIMIT(40)',
+				'dt >= $0 AND city_id == $1 SORT(dt ASC) LIMIT(40)',
 				nowTimestamp,
 				id
 			)
