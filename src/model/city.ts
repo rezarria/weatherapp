@@ -1,6 +1,6 @@
 export interface Coord {
-	lat: number
-	lon: number
+	lat: string
+	lon: string
 }
 
 export default interface City {

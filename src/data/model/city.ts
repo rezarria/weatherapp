@@ -27,15 +27,15 @@ export class City extends Realm.Object<City> implements ICity {
 }
 
 export class Coord extends Realm.Object<Coord> implements ICoord {
-	lat!: number
-	lon!: number
+	lat!: string
+	lon!: string
 
 	static schema = {
 		name: 'Coord',
 		embedded: true,
 		properties: {
-			lat: 'float',
-			lon: 'float',
+			lat: 'string',
+			lon: 'string',
 		},
 	}
 }

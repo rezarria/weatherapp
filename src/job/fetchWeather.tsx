@@ -36,7 +36,10 @@ export const setLocaltionToState =
 			realm.write(() => {
 				realm.create(City, {
 					_id: new BSON.ObjectID(),
-					coord: { lat: localtion.lat, lon: localtion.lon },
+					coord: {
+						lat: localtion.lat.toFixed(2),
+						lon: localtion.lon.toFixed(2),
+					},
 					country: localtion.country,
 					name: localtion.name,
 					population: 0,

@@ -87,7 +87,7 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 			<Animated.View style={[AppStyle.card, styles.panel]}>
 				<FlatList
 					data={results}
-					keyExtractor={i => i.lat.toString() + i.lon.toString()}
+					keyExtractor={i => i.name + i.country + i.state}
 					renderItem={({ item }) => (
 						<Section
 							country={item.country}
@@ -95,8 +95,8 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 							onPress={() => {
 								const city = cityQuery.filtered(
 									'coord.lat == $0 AND coord.lon == $1',
-									item.lat,
-									item.lon
+									item.lat.toFixed(2),
+									item.lon.toFixed(2)
 								)[0]
 								if (city == null) {
 									throw new Error('không tìm thấy địa điểm trong db')
@@ -169,16 +169,16 @@ function useSetupRef(
 							if (
 								cityQuery.filtered(
 									'coord.lat == $0 AND coord.lon == $1',
-									item.lat,
-									item.lon
+									item.lat.toFixed(2),
+									item.lon.toFixed(2)
 								).length === 0
 							) {
 								realm.write(() => {
 									realm.create(City, {
 										_id: new BSON.ObjectID(),
 										coord: {
-											lat: item.lat,
-											lon: item.lon,
+											lat: item.lat.toFixed(2),
+											lon: item.lon.toFixed(2),
 										},
 										country: item.country,
 										name: item.name,

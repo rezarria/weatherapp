@@ -46,7 +46,7 @@ export type ReverseResultType = {
 const reverse = (lat: number, lon: number, limit: number = 5) => {
 	return openWeather
 		.get<ReverseResultType[]>('/geo/1.0/reverse', {
-			params: { lat, lon, limit },
+			params: { lat: lat.toFixed(2), lon: lon.toFixed(2), limit },
 		})
 		.then(res => {
 			if (res.status === 200) {

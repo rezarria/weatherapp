@@ -1,18 +1,14 @@
 import { Canvas, Circle } from '@shopify/react-native-skia'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { useQuery, useRealm } from '../data/realm'
+import { useRealm } from '../data/realm'
 import { firstJob as doFirstJob } from '../job/fetchWeather'
-import { CityModel } from '../model/city'
-import { ForecastModel } from '../model/forecast'
 import { ScreenProps } from '../navigator/StackType'
 import AppStyle from '../style/styles'
 import useForecastStore from '../zustand/store'
 
 const BeginScreen = (props: ScreenProps<'BeginScreen'>) => {
 	const realm = useRealm()
-	const cityQuery = useQuery(CityModel)
-	const forecastQuery = useQuery(ForecastModel)
 	const [size, setSize] = useState({ width: 0, height: 0 })
 	const [setLocaltion] = useForecastStore(s => [s.setCity])
 	useEffect(() => {

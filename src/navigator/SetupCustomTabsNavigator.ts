@@ -1,4 +1,3 @@
-import { Status } from '@src/tab/animation'
 import TodayScreen from '@src/tab/Today'
 import TomorrowScreen from '@src/tab/Tomorrow'
 import React from 'react'
@@ -27,10 +26,3 @@ Object.keys(DATA).forEach(key => {
 })
 
 export const renderScene = SceneMap(sceneData)
-export const animationObserver: {
-	status: Status[]
-} = { status: [] }
-
-animationObserver.status.push(
-	...Array<Status>(Object.keys(sceneData).length).fill(Status.SHOW)
-)

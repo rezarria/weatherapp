@@ -7,6 +7,7 @@ import { Animated, StyleSheet, View } from 'react-native'
 import ResultPanel, {
 	Ref as ResultPanelRef,
 } from '@component/navigationArea/component/weatherFastInfoBar/SearchBar.Input.ResultPanel'
+import DataUpdate from '../job/DataUpdate'
 
 export const WidthMainScreenAnimatedContext = createContext<Animated.Value>(
 	new Animated.Value(0)
@@ -22,7 +23,7 @@ export const MainScreen = ({}: ScreenProps<'MainScreen'>) => {
 	return (
 		<WidthMainScreenAnimatedContext.Provider value={width}>
 			<View style={styles.background}>
-				{/* <DataUpdate /> */}
+				<DataUpdate />
 				<ResultPanel ref={resultPanelRef} />
 				<Floating zIndex={1}>
 					<ResultPanelRefContext.Provider value={resultPanelRef}>

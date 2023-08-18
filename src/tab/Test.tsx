@@ -63,8 +63,8 @@ function fetchCity(localtion: string, realm: Realm) {
 			realm.create(City, {
 				_id: new BSON.ObjectId(),
 				coord: {
-					lat: data[0].lat,
-					lon: data[0].lon,
+					lat: data[0].lat.toFixed(2),
+					lon: data[0].lon.toFixed(2),
 				},
 				name: data[0].name,
 				country: data[0].country,
