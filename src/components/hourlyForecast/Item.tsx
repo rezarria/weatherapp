@@ -9,9 +9,9 @@ export type Props = {
 const Item = (props: Props) => (
 	<View style={itemStyle.container}>
 		<Text style={[AppStyle.font, itemStyle.time]}>
-			{props.data.time.getHours()}
+			{props.data.time.getHours() % 12 || 12}
 			<Text style={[AppStyle.font, itemStyle.meridiem]}>
-				{props.data.time.getHours() < 12 ? 'AM' : 'PM'}
+				{props.data.time.getHours() < 13 ? 'AM' : 'PM'}
 			</Text>
 		</Text>
 		<Image

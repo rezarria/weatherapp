@@ -20,7 +20,6 @@ const Test = () => {
 					fetchCity('thanh hoa', realm),
 					fetchCity('london', realm),
 				]).then(() => {
-					console.log('nạp xong dữ liệu')
 					setTick(i => i + 1)
 				})
 			}

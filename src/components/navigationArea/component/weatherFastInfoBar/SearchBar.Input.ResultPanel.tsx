@@ -112,7 +112,7 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 					)}
 					ItemSeparatorComponent={Gap}
 				/>
-				{exitButton(showAnimated, hideAnimation)}
+				{ExitButton(showAnimated, hideAnimation)}
 			</Animated.View>
 		</Animated.View>
 	)
@@ -269,10 +269,15 @@ function useAnimation() {
 	return { showAnimation, animation, hideAnimation, showAnimated }
 }
 
-function exitButton(
+const exitButtonStyles = StyleSheet.create({
+	text: { textAlign: 'center', fontSize: 18, fontWeight: '800' },
+	container: { paddingVertical: 8 },
+})
+
+const ExitButton = (
 	showAnimated: Animated.Value,
 	hideAnimation: Animated.CompositeAnimation
-) {
+) => {
 	return (
 		<Pressable
 			style={exitButtonStyles.container}
@@ -284,8 +289,3 @@ function exitButton(
 		</Pressable>
 	)
 }
-
-const exitButtonStyles = StyleSheet.create({
-	text: { textAlign: 'center', fontSize: 18, fontWeight: '800' },
-	container: { paddingVertical: 8 },
-})
