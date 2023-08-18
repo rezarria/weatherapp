@@ -33,24 +33,41 @@ function Group({
 const TodayScreen = () => {
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const query = useQuery(Forecast)
-	const currentCity = useForecastStore(store => store.city)
-	const forecastList = useMemo(
-		() => getCurrentAboveForecast(query, currentCity?._id),
-		[currentCity, query]
-	)
-	const todayForecastList = useMemo(
-		() => forecastList.filter(filterTodayForecasts(currentCity)),
-		[currentCity, forecastList]
-	)
-	const currentForecast = findClosestForcast(forecastList)
-	let oldForecast: Forecast | undefined
-	if (currentForecast != null) {
-		const index = forecastList.indexOf(currentForecast)
-		if (index !== 0) {
-			oldForecast = forecastList[index - 1]
+	const [currentCity, stage] = useForecastStore(store => [
+		store.city,
+		store.stage,
+	])
+	const forecastList = useMemo(() => {
+		if (stage === 'need-update-forecast') {
+			return undefined
 		}
-	}
-	const shouldShow = forecastList.length > 0
+		return getCurrentAboveForecast(query, currentCity?._id)
+	}, [currentCity, query, stage])
+
+	const todayForecastList = useMemo(() => {
+		if (forecastList == null) {
+			return undefined
+		}
+		return forecastList.filter(filterTodayForecasts(currentCity))
+	}, [currentCity, forecastList])
+	const currentForecast = useMemo(() => {
+		if (forecastList == null) {
+			return undefined
+		}
+		return findClosestForcast(forecastList)
+	}, [forecastList])
+	const oldForecast = useMemo(() => {
+		if (forecastList == null) {
+			return undefined
+		}
+		if (currentForecast != null) {
+			const index = forecastList.indexOf(currentForecast)
+			if (index !== 0) {
+				return forecastList[index - 1]
+			}
+		}
+	}, [currentForecast, forecastList])
+	const shouldShow = forecastList != null && forecastList.length > 0
 	return (
 		<ScrollView
 			showsVerticalScrollIndicator={false}
@@ -96,7 +113,7 @@ const TodayScreen = () => {
 				</Group>
 				<DayForecast />
 				<ChanceOfRain
-					data={todayForecastList.map(i => ({
+					data={todayForecastList?.map(i => ({
 						time: i.dt,
 						value: i.pop,
 					}))}
@@ -121,12 +138,15 @@ const getCurrentAboveForecast = (
 		return []
 	}
 	const nowTimestamp = Math.floor(Date.now() / 1000)
-	query.filtered(
-		'$0 >= dt AND city_id == $1 SORT(dt ASC) LIMIT(40)',
-		nowTimestamp,
-		id
+	return Array.from(
+		query
+			.filtered(
+				'$0 >= dt AND city_id == $1 SORT(dt ASC) LIMIT(40)',
+				nowTimestamp,
+				id
+			)
+			.values()
 	)
-	return Array.from(query.values())
 }
 
 const findClosestForcast: (list: Forecast[]) => Forecast | null = list => {

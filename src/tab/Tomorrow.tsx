@@ -20,12 +20,12 @@ import { WidthMainScreenAnimatedContext } from '../screen/MainScreen'
 
 type Props = MaterialTopTabScreenProps<TabParamList, 'Tomorrow', 'Tomorrow'>
 const TomorrowScreen = (_props: Props) => {
-	const currentCity = useForecastStore(e => e.city)
+	const [currentCity, stage] = useForecastStore(e => [e.city, e.stage])
 	const query = useQuery(Forecast)
 	const [begin, end] = getTimeRange(currentCity, 4)
 	const widthAnimated = useContext(WidthMainScreenAnimatedContext)
 	const data = useMemo(() => {
-		if (currentCity == null) {
+		if (currentCity == null || stage === 'need-update-forecast') {
 			return undefined
 		} else {
 			return divineToGroup(
@@ -44,7 +44,7 @@ const TomorrowScreen = (_props: Props) => {
 				ReturnType<typeof getMainForecastInDay>
 			>[]
 		}
-	}, [begin, currentCity, end, query])
+	}, [begin, currentCity, end, query, stage])
 
 	return (
 		<ScrollView

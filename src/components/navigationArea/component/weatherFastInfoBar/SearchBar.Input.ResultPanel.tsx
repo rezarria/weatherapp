@@ -1,16 +1,11 @@
-import {
-	Animated,
-	Dimensions,
-	FlatList,
-	Keyboard,
-	Pressable,
-	StatusBar,
-	StyleSheet,
-	Text,
-	View,
-} from 'react-native'
 import { styles as InputStyle } from '@component/navigationArea/component/SearchBar.Input'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { DirectType, direct } from '@src/api/openWeather'
+import { City } from '@src/data/model'
+import { useQuery, useRealm } from '@src/data/realm'
 import AppStyle from '@src/style/styles'
+import useForecastStore from '@src/zustand/store'
+import { getCountryNameByAlpha2 } from 'country-locale-map'
 import {
 	Dispatch,
 	ForwardedRef,
@@ -22,13 +17,18 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import { DirectType, direct } from '@src/api/openWeather'
-import { getCountryNameByAlpha2 } from 'country-locale-map'
-import { useQuery, useRealm } from '@src/data/realm'
-import { City } from '@src/data/model'
+import {
+	Animated,
+	Dimensions,
+	FlatList,
+	Keyboard,
+	Pressable,
+	StatusBar,
+	StyleSheet,
+	Text,
+	View,
+} from 'react-native'
 import { BSON } from 'realm'
-import useForecastStore from '@src/zustand/store'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export type Ref = {
 	show: () => void
@@ -80,7 +80,7 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 	const { showAnimation, animation, hideAnimation, showAnimated } =
 		useAnimation()
 	const [results, setResults] = useState<DirectType[]>([])
-	const [setCity, updateTick] = useForecastStore(s => [s.setCity, s.updateTick])
+	const [setCity, setStage] = useForecastStore(s => [s.setCity, s.setStage])
 	const cityQuery = useSetupRef(ref, showAnimation, setResults)
 	return (
 		<Animated.View style={[styles.container, animation.container]}>
@@ -101,10 +101,12 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 								if (city == null) {
 									throw new Error('không tìm thấy địa điểm trong db')
 								}
-								setCity(city)
 								hideAnimation.start()
 								AsyncStorage.setItem('cityID', city._id.toHexString())
-								updateTick()
+								console.debug(`chọn ${city.name} ${city.country}`)
+								setCity(city)
+								setStage('need-update-forecast')
+								console.debug('chuyển sang stage update forecast')
 							}}
 						/>
 					)}
@@ -163,7 +165,7 @@ function useSetupRef(
 				showAnimation.reset()
 			},
 			search: localtion => {
-				if (task.current != null) {
+				if (task.current == null) {
 					task.current = direct(localtion).then(data => {
 						data.forEach(item => {
 							if (

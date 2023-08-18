@@ -6,20 +6,23 @@ import Geolocation, {
 import { ReverseResultType, forecast, reverse } from '@src/api/openWeather'
 import { City, Forecast } from '@src/data/model'
 import { useQuery, useRealm } from '@src/data/realm'
+import useForecastStore from '@src/zustand/store'
 import { useEffect, useRef } from 'react'
 import { BSON, Results } from 'realm'
-import useForecastStore from '../../zustand/store'
 
 const useFirstUpdate = () => {
-	const [setCity] = useForecastStore(e => [e.setCity])
+	const [setCity, setStage, stage] = useForecastStore(e => [
+		e.setCity,
+		e.setStage,
+		e.stage,
+	])
 	const forecastQuery = useQuery(Forecast)
 	const realm = useRealm()
 	const cityQuery = useQuery(City)
 	const currentTask = useRef<Promise<any>>()
 	useEffect(() => {
-		console.debug('kiểm tra xem hiện có task nào đang chạy không?')
-		if (currentTask.current == null) {
-			console.debug('không có, bắt đầu lấy thông tin về địa điểm và thời tiết')
+		if (currentTask.current == null && stage === 'first-load') {
+			console.debug('Bắt đầu lấy thông tin về địa điểm và thời tiết')
 			currentTask.current = loadConfig(cityQuery, forecastQuery, realm)
 				.then(currentCity => {
 					if (currentCity == null) {
@@ -27,28 +30,17 @@ const useFirstUpdate = () => {
 					}
 					AsyncStorage.setItem('cityID', currentCity._id.toHexString()).then(
 						() => {
-							fetchForecastIfNeed(
-								realm,
-								forecastQuery,
-								cityQuery
-							)(currentCity).then(() => {
-								const updatedCity = cityQuery.filtered(
-									'_id == $0',
-									currentCity._id
-								)[0]
-								setCity(updatedCity)
-								console.debug('xong')
-							})
+							setCity(currentCity)
+							setStage('need-update-forecast')
+							console.debug('xong')
 						}
 					)
 				})
 				.finally(() => {
 					currentTask.current = undefined
 				})
-		} else {
-			console.debug('có task đang chạy')
 		}
-	}, [cityQuery, forecastQuery, realm, setCity])
+	}, [cityQuery, forecastQuery, realm, setCity, setStage, stage])
 }
 
 async function loadConfig(
@@ -119,7 +111,7 @@ const updateCurrentPlaceByGeo = async (
 
 export const fetchForecastIfNeed =
 	(realm: Realm, forecastQuery: Results<Forecast>, cityQuery: Results<City>) =>
-	async ({ coord: { lat, lon }, _id }: City) => {
+	async (lat: string, lon: string, _id: BSON.ObjectId) => {
 		const nowTimestamp = Math.floor(Date.now() / 1000)
 		let forecastsFromDB = forecastQuery.filtered(
 			'city_id == $0 AND dt >= $1',
@@ -137,13 +129,16 @@ export const fetchForecastIfNeed =
 				console.debug(`Số lượng lấy từ api ${forecastsFromAPI.list.length}`)
 				const cityFromDB = cityQuery.filtered('_id == $0', _id)[0]
 				realm.write(() => {
-					forecastsFromAPI.list.forEach(item => {
-						realm.create(Forecast, {
-							_id: new BSON.ObjectId(),
-							city_id: _id,
-							...item,
+					const timeList = forecastsFromDB.map(i => i.dt)
+					forecastsFromAPI.list
+						.filter(i => !timeList.includes(i.dt))
+						.forEach(item => {
+							realm.create(Forecast, {
+								_id: new BSON.ObjectId(),
+								city_id: _id,
+								...item,
+							})
 						})
-					})
 					cityFromDB.sunrise = forecastsFromAPI.city.sunrise
 					cityFromDB.sunset = forecastsFromAPI.city.sunset
 					cityFromDB.timezone = forecastsFromAPI.city.timezone
