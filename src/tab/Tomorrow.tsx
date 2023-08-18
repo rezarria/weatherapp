@@ -31,7 +31,7 @@ const TomorrowScreen = (_props: Props) => {
 			return divineToGroup(
 				Array.from(
 					query.filtered(
-						'dt BETWEEN {$0, $1} AND city_id = $2',
+						'dt BETWEEN {$0, $1} AND city_id == $2',
 						begin,
 						end,
 						currentCity?._id

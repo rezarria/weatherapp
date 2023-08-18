@@ -36,7 +36,7 @@ const getForecasts = (
 		return []
 	}
 	const result = query.filtered(
-		'dt BETWEEN {$0,$1} AND city_id = $2',
+		'dt BETWEEN {$0,$1} AND city_id == $2',
 		beginDayTimestamp,
 		endDayTimestamp,
 		id

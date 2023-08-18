@@ -115,7 +115,7 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 					data.forEach(item => {
 						if (
 							cityQuery.filtered(
-								'coord.lat = $0 AND coord.lon = $1',
+								'coord.lat == $0 AND coord.lon == $1',
 								item.lat,
 								item.lon
 							).length === 0
@@ -196,7 +196,7 @@ const ResultPanel = (_props: Props, ref: ForwardedRef<Ref>) => {
 							name={item.name}
 							onPress={() => {
 								const city = cityQuery.filtered(
-									'coord.lat = $0 AND coord.lon = $1',
+									'coord.lat == $0 AND coord.lon == $1',
 									item.lat,
 									item.lon
 								)[0]

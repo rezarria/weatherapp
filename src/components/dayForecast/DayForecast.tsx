@@ -32,7 +32,7 @@ const DayForecast = forwardRef<Ref>((_props, ref) => {
 		date.setHours(23, 59, 59, 59)
 		const sundayTimestamp = Math.floor(date.getTime() / 1000)
 		const forecastsFromDB = forecastQuery.filtered(
-			'city_id = $0 AND dt BETWEEN {$1,$2}',
+			'city_id == $0 AND dt BETWEEN {$1,$2}',
 			city?._id,
 			mondayTimestamp,
 			sundayTimestamp

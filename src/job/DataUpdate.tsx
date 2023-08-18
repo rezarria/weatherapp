@@ -102,14 +102,14 @@ const fetchForecastIfNeed =
 	async ({ lat, lon, id }: { lat: number; lon: number; id: BSON.ObjectId }) => {
 		const nowTimestamp = Math.floor(Date.now() / 1000)
 		let forecastsFromDB = query.filtered(
-			'city_id = $0 AND dt >= $1',
+			'city_id == $0 AND dt >= $1',
 			id,
 			nowTimestamp
 		)
 		if (forecastsFromDB.length < 32) {
 			try {
 				const forecastsFromAPI = await forecast(lat, lon)
-				const cityFromDB = city.filtered('_id = $0', id)[0]
+				const cityFromDB = city.filtered('_id == $0', id)[0]
 				realm.write(() => {
 					forecastsFromAPI.list.forEach(item => {
 						realm.create(Forecast, {
