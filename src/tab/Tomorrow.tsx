@@ -12,6 +12,7 @@ import {
 	NativeScrollEvent,
 	ScrollView,
 	StyleSheet,
+	Text,
 	View,
 } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
@@ -69,7 +70,7 @@ const TomorrowScreen = (_props: Props) => {
 					paddingTop: NavigationAreaStyle.padding.height,
 				}}
 			/>
-			{data && (
+			{data ? (
 				<FlatList
 					scrollEnabled={false}
 					data={data}
@@ -86,6 +87,8 @@ const TomorrowScreen = (_props: Props) => {
 						/>
 					)}
 				/>
+			) : (
+				<Text>....</Text>
 			)}
 		</ScrollView>
 	)

@@ -12,6 +12,8 @@ import React, {
 } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Graph, GraphRef } from './graph'
+import { forecast } from '../../api/openWeather'
+import { GraphProps } from './graph/Graph'
 
 export type Ref = GraphRef
 
@@ -49,20 +51,39 @@ const DayForecast = forwardRef<Ref>((_props, ref) => {
 		[]
 	)
 
-	const maxTemp = Math.floor(
-		Math.max(...forecastInWeek.map(i => i.main.temp_max)) - 272.15 + 1
-	)
-	const minTemp = Math.floor(
-		Math.min(...forecastInWeek.map(i => i.main.temp_min)) - 272.15
-	)
+	const maxTemp =
+		forecastInWeek.length === 0
+			? undefined
+			: Math.floor(
+					Math.max(...forecastInWeek.map(i => i.main.temp_max)) - 272.15 + 1
+			  )
 
-	const step = Math.floor((maxTemp - minTemp) / 4)
+	const minTemp =
+		forecast.length === 0
+			? undefined
+			: Math.floor(
+					Math.min(...forecastInWeek.map(i => i.main.temp_min)) - 272.15
+			  )
 
-	const titleY = [maxTemp, maxTemp - step, minTemp + step, minTemp].map(
-		i => `${i}°`
-	)
+	const step =
+		maxTemp && minTemp ? Math.floor((maxTemp - minTemp) / 4) : undefined
 
-	const points = forecastInWeek.map(i => ({ y: i.main.temp, x: i.dt }))
+	const graphProps: GraphProps | undefined =
+		forecastInWeek.length === 0
+			? undefined
+			: {
+					points: forecastInWeek.map(i => ({ y: i.main.temp, x: i.dt })),
+					titleY: [maxTemp, maxTemp! - step!, minTemp! + step!, minTemp].map(
+						i => `${i}°`
+					),
+
+					rangeY: { max: maxTemp! + 272.15, min: minTemp! + 272.15 },
+
+					rangeX: {
+						max: Math.max(...forecastInWeek.map(i => i.dt)),
+						min: Math.min(...forecastInWeek.map(i => i.dt)),
+					},
+			  }
 
 	return (
 		<View style={[AppStyle.card, styles.container]}>
@@ -72,13 +93,7 @@ const DayForecast = forwardRef<Ref>((_props, ref) => {
 			</View>
 			<Graph
 				ref={graphRef}
-				rangeY={{ max: maxTemp + 272.15, min: minTemp + 272.15 }}
-				rangeX={{
-					max: Math.max(...forecastInWeek.map(i => i.dt)),
-					min: Math.min(...forecastInWeek.map(i => i.dt)),
-				}}
-				points={points}
-				titleY={titleY}
+				{...graphProps}
 			/>
 		</View>
 	)

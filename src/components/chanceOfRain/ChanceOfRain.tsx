@@ -10,7 +10,7 @@ export type ChanceOfRainItemType = {
 }
 
 type Props = {
-	data: ChanceOfRainItemType[]
+	data?: ChanceOfRainItemType[]
 }
 
 const gap = () => <View style={styles.gap} />
@@ -35,28 +35,35 @@ const ChanceOfRain = (props: Props) => {
 						ItemSeparatorComponent={gap}
 					/>
 				</View>
-				<View style={[styles.section, styles.sectionLine]}>
-					<FlatList
-						scrollEnabled={false}
-						data={props.data}
-						keyExtractor={i => i.time.toString()}
-						renderItem={({ item }) => <Line value={item.value * 100} />}
-						ItemSeparatorComponent={gap}
-					/>
-				</View>
-				<View style={styles.section}>
-					<FlatList
-						scrollEnabled={false}
-						data={props.data}
-						keyExtractor={i => i.time.toString()}
-						renderItem={({ item }) => (
-							<Text style={[styles.text, styles.item]}>
-								{(item.value * 100).toFixed(0)}%
-							</Text>
-						)}
-						ItemSeparatorComponent={gap}
-					/>
-				</View>
+
+				{props.data != null && props.data.length !== 0 ? (
+					<>
+						<View style={[styles.section, styles.sectionLine]}>
+							<FlatList
+								scrollEnabled={false}
+								data={props.data}
+								keyExtractor={i => i.time.toString()}
+								renderItem={({ item }) => <Line value={item.value * 100} />}
+								ItemSeparatorComponent={gap}
+							/>
+						</View>
+						<View style={styles.section}>
+							<FlatList
+								scrollEnabled={false}
+								data={props.data}
+								keyExtractor={i => i.time.toString()}
+								renderItem={({ item }) => (
+									<Text style={[styles.text, styles.item]}>
+										{(item.value * 100).toFixed(0)}%
+									</Text>
+								)}
+								ItemSeparatorComponent={gap}
+							/>
+						</View>
+					</>
+				) : (
+					<Text>NO DATA</Text>
+				)}
 			</View>
 		</Card2>
 	)

@@ -23,7 +23,10 @@ type DrawLineProps = {
 	}
 }
 
-export default ({ points, pos, size, padding, x, y }: DrawLineProps) => {
+const DrawLine = ({ points, pos, size, padding, x, y }: DrawLineProps) => {
+	if (points == null || points.length === 0) {
+		return <></>
+	}
 	const path = calc(pos, padding, size, x, y, points)
 	const pathBG = path.copy()
 	pathBG.lineTo(size.width - 1, size.height - 1)
@@ -124,3 +127,5 @@ function calc(
 	realPotins.forEach(p => path.lineTo(p.x, p.y))
 	return path
 }
+
+export default DrawLine

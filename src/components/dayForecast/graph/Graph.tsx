@@ -14,10 +14,11 @@ import DrawGrid from './DrawGrid'
 import DrawLine from './DrawLine'
 import DrawTitleX from './DrawTitleX'
 import DrawTitleY from './DrawTitleY'
+import NoData from '../../NoData'
 
 type Range = { min: number; max: number }
 
-export type Props = {
+export type GraphProps = {
 	titleX?: string[]
 	titleY?: string[]
 	titleBeforeX?: string[]
@@ -27,18 +28,15 @@ export type Props = {
 	points?: SkPoint[]
 }
 
-export type Ref = DrawCurrentLineRef
+export type GraphRef = DrawCurrentLineRef
 
-const Graph = (props: Props, ref: ForwardedRef<Ref>) => {
+const Graph = (props: GraphProps, ref: ForwardedRef<GraphRef>) => {
 	const [layoutInfo, setLayoutInfo] = useState<LayoutRectangle>()
 	const titleX = useMemo(
 		() => props.titleX ?? ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'],
 		[props.titleX]
 	)
-	const titleY = useMemo(
-		() => props.titleY ?? [30, 15, 0].map(t => `${t}°`),
-		[props.titleY]
-	)
+
 	const drawCurrentLineRef = useRef<DrawCurrentLineRef>(null)
 	useImperativeHandle(
 		ref,
@@ -49,13 +47,11 @@ const Graph = (props: Props, ref: ForwardedRef<Ref>) => {
 		}),
 		[]
 	)
-	if (props.points?.length === 0) {
-		return <></>
-	}
+
 	return (
 		<View style={[AppStyle.expand, styles.container]}>
 			<DrawTitleY
-				values={titleY}
+				values={props.titleY}
 				valuesBefore={props.titleBeforeY}
 				pos={{ x: 0, y: 20 }}
 				padding={{ left: 0, right: 0, top: 0, bottom: 20 }}
@@ -77,7 +73,7 @@ const Graph = (props: Props, ref: ForwardedRef<Ref>) => {
 					{layoutInfo && (
 						<>
 							<DrawGrid
-								nums={titleY.length}
+								nums={props.titleY?.length}
 								pos={{ x: 0, y: 20 }}
 								padding={{ left: 0, right: 0, top: 0, bottom: 4 }}
 								size={layoutInfo}
@@ -108,6 +104,7 @@ const Graph = (props: Props, ref: ForwardedRef<Ref>) => {
 					values={titleX}
 					pos={{ x: 0, y: 0 }}
 				/>
+				{props.points == null && <NoData />}
 			</View>
 		</View>
 	)

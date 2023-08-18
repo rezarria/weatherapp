@@ -6,25 +6,29 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import Item, { Props as ItemProps } from './Item'
 
 export type Props = {
-	data: Forecast[]
+	data?: Forecast[]
 }
 
 const HourlyForecast = (props: Props) => {
-	const data = useMemo(() => props.data.map(convert), [props.data])
+	const data = useMemo(() => props.data?.map(convert), [props.data])
 	return (
 		<View style={[AppStyle.card, styles.container]}>
 			<View style={styles.header}>
 				<HourLogo />
 				<Text style={[AppStyle.font]}>Hourly forecast</Text>
 			</View>
-			<FlatList
-				ItemSeparatorComponent={Separator}
-				horizontal
-				nestedScrollEnabled
-				data={data}
-				keyExtractor={item => item.id.toString()}
-				renderItem={({ item }) => <Item data={item} />}
-			/>
+			{data != null && data.length !== 0 ? (
+				<FlatList
+					ItemSeparatorComponent={Separator}
+					horizontal
+					nestedScrollEnabled
+					data={data}
+					keyExtractor={item => item.id.toString()}
+					renderItem={({ item }) => <Item data={item} />}
+				/>
+			) : (
+				<Text>NO DATA</Text>
+			)}
 		</View>
 	)
 }
